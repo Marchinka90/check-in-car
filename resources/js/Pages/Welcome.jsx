@@ -1,4 +1,7 @@
 import { Link, Head } from '@inertiajs/react';
+import { Card } from 'primereact/card';
+import { Button } from 'primereact/button';
+import PrimaryButton from '@/Components/PrimaryButton';
 
 export default function Welcome({ auth, laravelVersion, phpVersion }) {
     return (
