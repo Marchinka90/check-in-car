@@ -12,20 +12,20 @@ export default function Calendar(props) {
   let currentYear = date.getFullYear();
 
   const renderCalendar = () => {
-    const selectDateHandler = (selectDate) => {
+    const selectDateHandler = (date) => {
       let oldSelectedDate = document.getElementById('selected-date');
       if (oldSelectedDate) {
         oldSelectedDate.id = '';
       }
-      if (selectDate.target.classList.contains('prev') || selectDate.target.classList.contains('next')) {
+      if (date.target.classList.contains('prev') || date.target.classList.contains('next')) {
         return;
       }
-      selectDate.target.id = 'selected-date';
+      date.target.id = 'selected-date';
     }
 
-    const combineClickHandler = (selectDate) => {
-      selectDateHandler(selectDate);
-      props.setSelectedDate(selectDate.target.innerHTML);
+    const combineClickHandler = (date) => {
+      selectDateHandler(date);
+      props.setSelectedDate(date.target.innerHTML);
     }
 
     let isTodayBtnHide = true;

@@ -2,6 +2,10 @@ import { Link, Head } from '@inertiajs/react';
 import WebLayout from '@/Layouts/WebLayout';
 import Home from './Web/Home';
 import Reservation from './Web/Reservation';
+import Services from './Web/Services';
+import Documents from './Web/Documents';
+import AboutUs from './Web/AboutUs';
+import { ScrollTop } from 'primereact/scrolltop';
 
 export default function Welcome() {
   return (
@@ -10,64 +14,12 @@ export default function Welcome() {
       <WebLayout>        
         <Home />
         <Reservation /> 
-        <div className='bg-white pt-96'>
-            <div className="container ">
-                <h1 className="home-title">Годишни Технически Прегледи</h1>
-                <h2 className="home-subtitle">Онлайн часове на промо цена 
-                  <span>49.00 ЛВ</span>
-                  </h2>
-            </div>
-        </div>
-        <div className='bg-white pt-96'>
-            <div className="container ">
-                <h1 className="home-title">Годишни Технически Прегледи</h1>
-                <h2 className="home-subtitle">Онлайн часове на промо цена 
-                  <span>49.00 ЛВ</span>
-                  </h2>
-            </div>
-        </div>
-        <div className='bg-white pt-96'>
-            <div className="container ">
-                <h1 className="home-title">Годишни Технически Прегледи</h1>
-                <h2 className="home-subtitle">Онлайн часове на промо цена 
-                  <span>49.00 ЛВ</span>
-                  </h2>
-            </div>
-        </div>
-        <div className='bg-secondary pt-96' id='services'>
-            <div className="container ">
-                <h1 className="home-title">Годишни Технически Прегледи</h1>
-                <h2 className="home-subtitle">Онлайн часове на промо цена 
-                  <span>49.00 ЛВ</span>
-                  </h2>
-            </div>
-        </div>
-        <div className='bg-white pt-96'>
-            <div className="container ">
-                <h1 className="home-title">Годишни Технически Прегледи</h1>
-                <h2 className="home-subtitle">Онлайн часове на промо цена 
-                  <span>49.00 ЛВ</span>
-                  </h2>
-            </div>
-        </div>
-        <div className='bg-white pt-96'>
-            <div className="container ">
-                <h1 className="home-title">Годишни Технически Прегледи</h1>
-                <h2 className="home-subtitle">Онлайн часове на промо цена 
-                  <span>49.00 ЛВ</span>
-                  </h2>
-            </div>
-        </div>
-        <div className='bg-white pt-96'>
-            <div className="container ">
-                <h1 className="home-title">Годишни Технически Прегледи</h1>
-                <h2 className="home-subtitle">Онлайн часове на промо цена 
-                  <span>49.00 ЛВ</span>
-                  </h2>
-            </div>
-        </div>
-    
-        
+        <Services /> 
+        <Documents /> 
+        <AboutUs /> 
+      
+        {/* <ScrollTop className="w-2rem h-2rem border-round-md bg-secondary text-3xl"/> */}
+        {/* <ScrollTop target="home" threshold={100} className="w-2rem h-2rem border-round-md bg-primary" icon="pi pi-arrow-up text-base" /> */}
       </WebLayout>
       <style>{`
         .bg-dots-darker {

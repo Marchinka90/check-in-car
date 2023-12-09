@@ -7,6 +7,7 @@ export default function NavLinks() {
   const handleSetActive = (section) => {
     setActiveSection(section);
   };
+  
   return (
     <>
       <ul className='flex justify-between'>
@@ -78,7 +79,7 @@ export default function NavLinks() {
             spy={true}
             offset={-90}
             onSetActive={handleSetActive}
-            className='cursor-pointer transition-all ease-in-out duration-300 text-white bg-secondary p-2 border-none text-xl rounded-2xl	shadow-2xl shadow-black hover:text-primary hover:bg-white'
+            className='cursor-pointer transition-all ease-in-out duration-300 text-white bg-secondary p-2 border-none text-xl rounded-2xl hover:text-primary hover:bg-white'
           >Запази час
           </ScrollLink>
         </li>

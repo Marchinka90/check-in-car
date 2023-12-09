@@ -38,6 +38,9 @@ export default {
                 lato: ['Lato', 'sans-serif'],
                 montserrat: ['Montserrat', 'sans-serif'],
             },
+            width: {
+                '128': '32rem',
+            }
         },
     },
 

@@ -1,117 +1,133 @@
 import { useState, useRef, useEffect } from 'react';
 import Section from '@/Components/Section';
-import Calendar from '@/Components/Calendar/Calendar';
+
+import StepOne from '@/Components/Forms/MultistepForm/StepOne';
+import StepTwo from '@/Components/Forms/MultistepForm/StepTwo';
+import StepThree from '@/Components/Forms/MultistepForm/StepThree';
 
 import { Card } from 'primereact/card';
 import { Steps } from 'primereact/steps';
+import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { TreeSelect } from 'primereact/treeselect';
-import { Button } from 'primereact/button';
 import { CascadeSelect } from 'primereact/cascadeselect';
 import { Toast } from 'primereact/toast'; // попъп за съобщения
-import { InputMask } from 'primereact/inputmask';
 
 export default function Reservation() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [vehicleCategories, setVehicleCategories] = useState([]);
+  const toast = useRef(null);
+  // First step states
+  const [activeIndex, setActiveIndex] = useState(1);
   const [vehicleCategory, setVehicleCategory] = useState(null);
   const [plateLicense, setPlateLicense] = useState('');
   const [selectedDate, setSelectedDate] = useState(0);
 
+  // Second step states
+  const [selectedHour, setSelectedHour] = useState('');
+  const [firstname, setFirstname] = useState('');
+  const [lastname, setLastname] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+
+  // Third step states
+  const [agreedTerms, setAgreedTerms] = useState(false);
+
+  const totalSteps = 3;
   const steps = [
-    {
-      label: 'Дата',
-    },
-    {
-      label: 'Детайли',
-    },
-    {
-      label: 'Потвърдете',
-    },
+    { label: 'Дата' },
+    { label: 'Детайли' },
+    { label: 'Потвърдете' }
   ];
 
-  const categories = [
-    {
-      key: '1',
-      label: 'Лек Автомобил',
-      data: 'Лек Автомобил',
-    },
-    {
-      key: '2',
-      label: 'Лек Автомобил Джип /4x4/',
-      data: 'Лек Автомобил Джип /4x4/',
+  const handleNextStep = () => {
+    checkFirstStepDataHandler()
+    if (activeIndex < totalSteps) {
+      setActiveIndex(activeIndex + 1);
+    }
+  };
 
-    },
-    {
-      key: '3',
-      label: 'Таксиметров автомобил',
-      data: 'Таксиметров автомобил',
-    },
-    {
-      key: '4',
-      label: 'Мотоциклет',
-      data: 'Мотоциклет',
-    },
-    {
-      key: '5',
-      label: 'Ремаркета до 750 кг.',
-      data: 'Ремаркета до 750 кг.',
-    },
-    {
-      key: '6',
-      label: 'Товарен автомобил до 3.5 тона',
-      data: 'Товарен автомобил до 3.5 тона',
-    },
-    {
-      key: '7',
-      label: 'Проверка на амортисьори (на ос)',
-      data: 'Проверка на амортисьори (на ос)',
-    },
-  ];
+  const handlePrevStep = () => {
+    if (activeIndex > 1) {
+      setActiveIndex(activeIndex - 1);
+    }
+  };
 
-  useEffect(() => {
-    setVehicleCategories(categories);
-  }, []);
+  const renderStepContent = () => {
+    switch (activeIndex) {
+      case 1:
+        return <StepOne
+          plateLicense={plateLicense}
+          setPlateLicense={setPlateLicense}
+          vehicleCategory={vehicleCategory}
+          setVehicleCategory={setVehicleCategory}
+          setSelectedDate={setSelectedDate}
+        />;
+      case 2:
+        return <StepTwo
+          selectedDate={selectedDate}
+          selectedHour={selectedHour}
+          setSelectedHour={setSelectedHour}
+          firstname={firstname}
+          setFirstname={setFirstname}
+          lastname={lastname}
+          setLastname={setLastname}
+          email={email}
+          setEmail={setEmail}
+          phone={phone}
+          setPhone={setPhone}
+        />;
+      case 3:
+        return <StepThree
+          setAgreedTerms={setAgreedTerms}
+          plateLicense={plateLicense}
+        />;
+      default:
+        return null;
+    }
+  };
+
+  //   const showToast = () => {
+  //     toast.current.show({ severity: 'error', summary: 'Error', detail: 'Моля МОЛЯ' });
+  // };
 
   const checkFirstStepDataHandler = () => {
-    console.log('active step: ' + (activeIndex + 1));
-    console.log('selected Vehicle Category: ' + vehicleCategory);
-    console.log('plate License: ' + plateLicense);
-    console.log('selected Date: ' + selectedDate);
-    
+    if (!vehicleCategory || vehicleCategory == 0) {
+
+    }
+
+  }
+
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+    console.log('plateLicense: ' + plateLicense);
+    console.log('vehicleCategory: ' + vehicleCategory);
+    console.log('selectedDate: ' + selectedDate);
+
+    console.log('selectedHour: ' + selectedHour);
+    console.log('firstname: ' + firstname);
+    console.log('lastname: ' + lastname);
+    console.log('email: ' + email);
+    console.log('phone: ' + phone);
   }
 
   return (
     <>
-      <Section id='reservation' className='bg-background-light pb-5'>
+      {/* <Toast ref={toast} /> */}
+      <Section id='reservation' className='bg-background-light pb-20'>
         <h1 className="text-primary text-4xl text-center font-montserrat py-14">Запази час</h1>
         <div className="container">
           <Card>
-            <Steps model={steps} activeIndex={activeIndex} readOnly={true} className='mb-16' />
-            <div id='step-1' className='flex'>
-              <div className='w-1/2 mr-5'>
-                <div className="p-float-label w-full">
-                  <InputText className='w-full' id="car-license-plate" value={plateLicense} onChange={(e) => setPlateLicense(e.target.value)} />
-                  <label htmlFor="car-license-plate">Регистрационен номер на латиница (пр: В2345РА)</label>
-                </div>
-
-
-                <div className="card flex justify-content-center mt-10 w-full">
-                  <span className="p-float-label w-full">
-                    <TreeSelect inputId="vehicle-category" value={vehicleCategory} onChange={(e) => setVehicleCategory(e.value)} options={vehicleCategories}
-                      className="md:w-20rem w-full"></TreeSelect>
-                    <label htmlFor="vehicle-type">Категория на автомобила</label>
-                  </span>
-                </div>
+            <Steps model={steps} activeIndex={activeIndex - 1} readOnly={true} className='mb-16' />
+            <form onSubmit={onSubmitHandler}>
+              {renderStepContent()}
+              <div className='flex justify-end mt-5'>
+                <Button type="button" label="Назад" severity="secondary" className='mr-2' onClick={handlePrevStep} disabled={activeIndex === 1} />
+                {activeIndex < totalSteps && (<>
+                  <Button type="button" label="Напред" onClick={handleNextStep} disabled={activeIndex === totalSteps} />
+                </>
+                )}
+                {activeIndex === totalSteps && <Button label="Изпрати" />}
               </div>
-
-              <Calendar setSelectedDate={setSelectedDate} />
-
-            </div>
-            <div className='flex justify-end mt-5'>
-               <Button label="Назад" severity="secondary" className='mr-2' />
-              <Button label="Напред" onClick={checkFirstStepDataHandler} />
-            </div>
+            </form>
           </Card>
         </div>
       </Section>
