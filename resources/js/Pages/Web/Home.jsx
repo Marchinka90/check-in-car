@@ -18,7 +18,7 @@ export default function Home(){
             height: 60vh;
           }
           .home-wrapper {
-            background: linear-gradient(to right, rgba(87, 84, 113, 0.6) 10%, transparent), url(./img/engine.jpg) left 10% top 10%/cover no-repeat border-box, #54536f;
+            background: linear-gradient(to right, rgba(87, 84, 113, 0.6) 10%, transparent), url(./img/engine.webp) left 10% top 10%/cover no-repeat border-box, #54536f;
           }
       `}</style>
     </>

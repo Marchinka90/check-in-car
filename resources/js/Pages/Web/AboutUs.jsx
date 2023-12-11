@@ -10,7 +10,7 @@ export default function Documents() {
         <div className="container">
           <div className="flex items-center justify-between">
             <div className="w-2/5 text-center">
-              <Image src="./img/about-us.jpg" alt="about-us" width="450"  preview />
+              <Image src="./img/about-us.webp" alt="about-us" width="450"  preview />
             </div>
             <div className="w-3/5 flex flex-col items-center">
               <h1 className="text-primary text-4xl text-center font-montserrat mb-10">Кои сме ние</h1>

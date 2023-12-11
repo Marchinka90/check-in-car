@@ -1,4 +1,5 @@
 import MainNavigation from '@/Components/Navigation/MainNavigation';
+import Footer from '@/Components/Footer/Footer';
 
 export default function Web({ children }) {
     return (
@@ -7,9 +8,7 @@ export default function Web({ children }) {
         <main>
           {children}
         </main>
-        <footer>
-
-        </footer>
+        <Footer />
       </>
     );
 }

@@ -43,7 +43,7 @@ export default function Documents(){
 
   return (
     <>
-        <Section id='documents' className='bg-white py-16'>
+        <Section id='documents' className='bg-white py-32'>
         <div className="container">
           <h1 className="text-primary text-4xl text-center font-montserrat mb-10">Необходими документи</h1>
           { docs.map(item => (
