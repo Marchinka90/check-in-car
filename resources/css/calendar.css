@@ -96,7 +96,7 @@
   transition: all 0.3s;
   user-select: none;
 }
-.calendar .days .day:not(.next):not(.prev):hover {
+.calendar .days .day:not(.next):not(.prev):not(.sunday):hover {
   color: #fff;
   background: var(--primary-color);
   transform: scale(1.05);
@@ -104,7 +104,8 @@
   border: none;
 }
 .calendar .days .day.next,
-.calendar .days .day.prev {
+.calendar .days .day.prev,
+.calendar .days .day.sunday {
   color: #ccc;
 }
 .calendar .days .day.today {

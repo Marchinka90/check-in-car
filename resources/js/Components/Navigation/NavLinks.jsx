@@ -31,7 +31,7 @@ export default function NavLinks() {
             spy={true}
             offset={-90}
             onSetActive={handleSetActive}
-            className={`${activeSection === 'services' ? 'nav-link-active' : ''} nav-link relative cursor-pointer transition-all ease-in-out duration-300 hover:text-secondary after:absolute after:w-0 after:left-0 after:bg-transparent after:hover:bg-secondary after:hover:transition-all after:hover:ease-in-out after:hover:duration-300 after:hover:w-full`}
+            className={`${activeSection === 'services' ? 'nav-link-active' : ''} nav-link relative cursor-pointer transition-all ease-in-out duration-300 hover:text-secondary focus:text-white active:text-white visited:text-white after:absolute after:w-0 after:left-0 after:bg-transparent after:hover:bg-secondary after:hover:transition-all after:hover:ease-in-out after:hover:duration-300 after:hover:w-full`}
           >УСЛУГИ
           </ScrollLink>
         </li>

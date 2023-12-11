@@ -13,10 +13,7 @@ export default function Calendar(props) {
 
   const renderCalendar = () => {
     const selectDateHandler = (date) => {
-      let oldSelectedDate = document.getElementById('selected-date');
-      if (oldSelectedDate) {
-        oldSelectedDate.id = '';
-      }
+      clearSelectedDateHandler();
       if (date.target.classList.contains('prev') || date.target.classList.contains('next')) {
         return;
       }
@@ -29,7 +26,7 @@ export default function Calendar(props) {
     }
 
     let isTodayBtnHide = true;
-    
+
     const hideTodayButtonHandler = () => {
       if (currentMonth === new Date().getMonth() && currentYear === new Date().getFullYear()) {
         isTodayBtnHide = true;
@@ -39,12 +36,15 @@ export default function Calendar(props) {
     }
 
     const currentMonthButtonHandler = () => {
+      clearSelectedDateHandler();
       currentMonth = date.getMonth();
       currentYear = date.getFullYear();
+
       renderCalendar();
     }
 
     const prevMonthButtonHandler = () => {
+      clearSelectedDateHandler();
       currentMonth--;
       if (currentMonth < 0) {
         currentMonth = 11;
@@ -54,12 +54,31 @@ export default function Calendar(props) {
     }
 
     const nextMonthButtonHandler = () => {
+      clearSelectedDateHandler()
       currentMonth++;
       if (currentMonth > 11) {
         currentMonth = 0;
         currentYear++;
       }
       renderCalendar();
+    }
+
+    const clearSelectedDateHandler = () => {
+      let oldSelectedDate = document.getElementById('selected-date');
+      if (oldSelectedDate) {
+        oldSelectedDate.id = '';
+      }
+    }
+
+    const checkTodayDate = (day, month, year) => {
+      if (
+        day === new Date().getDate() &&
+        month === new Date().getMonth() &&
+        year === new Date().getFullYear()
+      ) {
+        return true;
+      }
+      return false;      
     }
 
     date.setDate(1);
@@ -69,7 +88,7 @@ export default function Calendar(props) {
     const lastDayIndex = lastDay.getDay();
     const lastDayDate = lastDay.getDate();
     const prevLastDay = new Date(currentYear, currentMonth, 0);
-
+    const today = new Date();
     const prevLastDayDate = prevLastDay.getDate();
     const nextDays = 7 - lastDayIndex;
 
@@ -92,20 +111,38 @@ export default function Calendar(props) {
     }
 
     for (let i = 1; i <= lastDayDate; i++) {
+      const currentDayDate = new Date(currentYear, currentMonth, 1);
+      currentDayDate.setDate(i);
+      const dayOfWeek = currentDayDate.getDay();
+
       counterDays++;
-      if (
-        i === new Date().getDate() &&
-        currentMonth === new Date().getMonth() &&
-        currentYear === new Date().getFullYear()
-      ) {
+      let classesForDays = 'day';
+      let isToday = checkTodayDate(i, currentMonth, currentYear);
+
+      if (currentDayDate < today) {
+        if (isToday) {
+          classesForDays += ' today';
+          days.push(<div key={key} className={classesForDays} onClick={combineClickHandler}>{i}</div>);
+        } else {
+          classesForDays += ' prev';
+          days.push(
+            <div key={key} className={classesForDays}>{i}</div>
+          );
+        }
+      } else if (dayOfWeek == 0) {
+        classesForDays += ' sunday';
+        if (isToday) {
+          classesForDays += ' today';
+        }
         days.push(
-          <div key={key} className="day today" onClick={combineClickHandler}>{i}</div>
+          <div key={key} className={classesForDays}>{i}</div>
         );
       } else {
         days.push(
-          <div key={key} className="day" onClick={combineClickHandler}>{i}</div>
+          <div key={key} className={classesForDays} onClick={combineClickHandler}>{i}</div>
         );
       }
+
       key++;
     }
 

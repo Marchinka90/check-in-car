@@ -1,7 +1,7 @@
 import Section from '@/Components/Section';
 import DocumentItem from '@/Components/DocumentItem/DocumentItem';
 
-export default function Documents(){
+export default function Documents() {
   const docs = [
     {
       id: 1,
@@ -43,21 +43,24 @@ export default function Documents(){
 
   return (
     <>
-        <Section id='documents' className='bg-white py-32'>
+      <Section id='documents' className='bg-white py-32'>
         <div className="container">
           <h1 className="text-primary text-4xl text-center font-montserrat mb-10">Необходими документи</h1>
-          { docs.map(item => (
-            <DocumentItem  
-            key={item.id}
-            title={item.title} 
-            icon={item.icon} 
-            iconClasses={item.iconClasses} 
-            />
+          <div className='ml-10'>
 
-          ))}
+            {docs.map(item => (
+              <DocumentItem
+                key={item.id}
+                title={item.title}
+                icon={item.icon}
+                iconClasses={item.iconClasses}
+              />
+
+            ))}
+          </div>
         </div>
       </Section>
-        <style>{`
+      <style>{`
           
       `}</style>
     </>

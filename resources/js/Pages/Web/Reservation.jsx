@@ -77,8 +77,16 @@ export default function Reservation() {
         />;
       case 3:
         return <StepThree
+          agreedTerms={agreedTerms}
           setAgreedTerms={setAgreedTerms}
           plateLicense={plateLicense}
+          vehicleCategory={vehicleCategory}
+          selectedDate={selectedDate}
+          selectedHour={selectedHour}
+          firstname={firstname}
+          lastname={lastname}
+          email={email}
+          phone={phone}
         />;
       default:
         return null;
@@ -153,11 +161,18 @@ export default function Reservation() {
           margin-left: 10px;
           background: #676388;
           border-color: #676388;
-          
+          box-shadow:none;
         }
         .p-button:enabled:hover {
           background: #575471;
           border-color: #575471
+        }
+        .p-button:enabled:focus {
+          box-shadow:none;
+          background: #575471;
+        }
+        .p-button.p-button-secondary:enabled:focus {
+          box-shadow:none;
         }
         .p-treeselect-header {
           display: none;

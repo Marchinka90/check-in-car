@@ -17,8 +17,8 @@ export default function ContactsForm() {
 
   return (
     <>
-      <form onSubmit={onSubmitHandler}>
-        <div className='flex flex-col mt-10'>
+      <form onSubmit={onSubmitHandler} className='mx-5'>
+        <div className='flex flex-col mt-5'>
           <div className='w-full flex my-10'>
             <div className="p-float-label w-full mr-5">
               <InputText className='w-full' id="contact-us-title" value={contactUsTitle} onChange={(e) => setContactUsTitle(e.target.value)} />

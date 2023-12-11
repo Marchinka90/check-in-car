@@ -6,7 +6,6 @@ import Services from './Web/Services';
 import Documents from './Web/Documents';
 import AboutUs from './Web/AboutUs';
 import Contacts from './Web/Contacts';
-import { ScrollTop } from 'primereact/scrolltop';
 
 export default function Welcome() {
   return (
@@ -19,9 +18,6 @@ export default function Welcome() {
         <Documents /> 
         <AboutUs /> 
         <Contacts /> 
-      
-        {/* <ScrollTop className="w-2rem h-2rem border-round-md bg-secondary text-3xl"/> */}
-        {/* <ScrollTop target="home" threshold={100} className="w-2rem h-2rem border-round-md bg-primary" icon="pi pi-arrow-up text-base" /> */}
       </WebLayout>
       <style>{`
         .bg-dots-darker {
