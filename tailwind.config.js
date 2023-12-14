@@ -26,7 +26,7 @@ export default {
                 'secondary': '#FFA000',
                 'white': '#fff',
                 'black': '#3c3d47',
-                'gray': '#8D8D91',
+                'gray': '#f2efe9',
                 'background-dark': '#575471',
                 'background-light': '#f2efe9',
                 'backgrount-dark-transperant': 'rgba(87, 84, 113, 0.6)'

@@ -22,7 +22,10 @@ export default function Calendar(props) {
 
     const combineClickHandler = (date) => {
       selectDateHandler(date);
-      props.setSelectedDate(date.target.innerHTML);
+      let selectedDate = date.target.innerHTML;
+      let dateObj = new Date(currentYear, currentMonth, selectedDate);
+      
+      props.setSelectedDate(dateObj);
     }
 
     let isTodayBtnHide = true;

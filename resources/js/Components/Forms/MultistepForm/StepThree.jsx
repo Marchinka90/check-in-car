@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Checkbox } from 'primereact/checkbox';
-import { Dialog } from 'primereact/dialog';
+import PrivacyPolicy from '@/Components/Footer/PrivacyPolicy';
 
 export default function StepThree(props) {
   const [visible, setVisible] = useState(false);
-
+  // Specify the date format options
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  const dateObj = props.selectedDate;
+  // Convert the date to the specific format
+  const formattedDate = dateObj.toLocaleDateString('bg-BG', options);
   useEffect(() => {
     // reload google captcha
   }, []);
@@ -12,40 +16,23 @@ export default function StepThree(props) {
   return (
     <>
       <div className="flex justify-around">
-        <div className='w-1/3 flex justify-between'>
-          <div className='text-primary font-lato tracking-wide leading-relaxed'>
-            <p>Дата и час:</p>
-            <p>Регистрационен номер:</p>
-            <p>Категория на автомобила:</p>
-            <p>Име:</p>
-            <p>Фамилия:</p>
-            <p>Телефон:</p>
-            <p>Имейл:</p>
-          </div>
-          <div className='text-primary font-lato tracking-wide leading-relaxed'>
-            <p><strong>{props.selectedDate} {props.selectedHour}</strong></p>
-            <p><strong>{props.plateLicense}</strong></p>
-            <p><strong>{props.vehicleCategory}</strong></p>
-            <p><strong>{props.firstname}</strong></p>
-            <p><strong>{props.lastname}</strong></p>
-            <p><strong>{props.phone}</strong></p>
-            <p><strong>{props.email}</strong></p>
-          </div>
+        <div className='text-primary font-lato tracking-wide leading-relaxed'>
+          <p>Дата: <strong>{formattedDate}</strong></p>
+          <p>Час: <strong>{props.selectedHour}</strong></p>
+          <p>Регистрационен номер: <strong>{props.plateLicense}</strong></p>
+          <p>Категория на автомобила: <strong>{props.vehicleCategory}</strong></p>
+          <p>Име: <strong>{props.firstname}</strong></p>
+          <p>Фамилия: <strong>{props.lastname}</strong></p>
+          <p>Телефон: <strong>{props.phone}</strong></p>
+          <p>Имейл: <strong>{props.email}</strong></p>
         </div>
         <div className='text-primary font-lato tracking-wide leading-relaxed'>
           <p>Google Capcha!!!</p>
-          <p>
-            <Checkbox onChange={e => props.setAgreedTerms(e.checked)} checked={props.agreedTerms}></Checkbox> Съгласявам се с  
-            <span> <button onClick={() => setVisible(true)} className='underline'> Условия за ползване</button></span>
-            <Dialog header="Header" visible={visible} modal={false} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
-              <p className="m-0">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </p>
-            </Dialog>
-          </p>
+          <div>
+            <Checkbox onChange={e => props.setAgreedTerms(e.checked)} checked={props.agreedTerms}></Checkbox> Съгласявам се с
+            <span> <button type='button' onClick={() => setVisible(true)} className='underline'> Условия за ползване</button></span>
+            <PrivacyPolicy title='Условия за ползване' visible={visible} setVisible={setVisible} />
+          </div>
         </div>
       </div>
       <style>{`

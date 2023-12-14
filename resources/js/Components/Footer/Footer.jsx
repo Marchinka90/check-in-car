@@ -1,28 +1,23 @@
 import React, { useState } from "react";
-import { Dialog } from 'primereact/dialog';
 import { ScrollTop } from 'primereact/scrolltop';
+import PrivacyPolicy from '@/Components/Footer/PrivacyPolicy';
 
 export default function Footer() {
-  const [visible, setVisible] = useState(false);
+  const [showPrivacy, setShowPrivacy] = useState(false);
+  const [showTerms, setShowTerms] = useState(false);
   const year = new Date().getFullYear();
 
   return (
     <>
       <footer className="bg-primary w-full">
         <div className="container flex justify-between items-center px-10 h-20">
-          <p className="text-gray">© {year} Vita 21 Creative. All Rights Reserved.</p>
+          <p className="text-gray">© {year} ВИТА 21. All Rights Reserved.</p>
           <p className="flex justify-center text-gray mr-12">
-            <button onClick={() => setVisible(true)}>Правила на сайта</button>
+            <button onClick={() => setShowPrivacy(true)}>Политика за Поверителност</button>
             <span className="mx-2">|</span>
-            <button onClick={() => setVisible(true)}> Условия за ползване </button>
-            <Dialog header="Header" visible={visible} modal={false} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
-              <p className="m-0">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </p>
-            </Dialog>
+            <button onClick={() => setShowTerms(true)}>Условия за ползване</button>
+            <PrivacyPolicy title='Политика за Поверителност' visible={showPrivacy} setVisible={setShowPrivacy}/>
+            <PrivacyPolicy title='Условия за ползване' visible={showTerms} setVisible={setShowTerms}/>
           </p>
         </div>
         <ScrollTop id='back-to-top' />
