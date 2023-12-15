@@ -24,7 +24,8 @@ export default function Calendar(props) {
       selectDateHandler(date);
       let selectedDate = date.target.innerHTML;
       let dateObj = new Date(currentYear, currentMonth, selectedDate);
-      
+      // const formattedDate = dateObj.toLocaleDateString({ year: 'numeric', month: '2-digit', day: '2-digit' });
+      // console.log(formattedDate);
       props.setSelectedDate(dateObj);
     }
 

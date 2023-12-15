@@ -43,6 +43,15 @@ export default function StepOne(props) {
       data: 'Проверка на амортисьори (на ос)',
     },
   ];
+  
+  const setVehicleCategoryHandler = (e) => {
+    props.setVehicleCategory(e.value)
+    Object.entries(vehicleCategories).forEach(([key, category]) => {
+      if (category.key == e.value) {
+        props.formData.vehicleCategory = category.data;
+      }
+    });
+  }
 
   useEffect(() => {
     // set categories from server database - do not fetch them 
@@ -59,7 +68,7 @@ export default function StepOne(props) {
 
           <div className="card flex justify-content-center mt-10 w-full">
             <span className="p-float-label w-full">
-              <TreeSelect inputId="vehicle-category" value={props.vehicleCategory} onChange={(e) => props.setVehicleCategory(e.value)} options={vehicleCategories}
+              <TreeSelect inputId="vehicle-category" value={props.vehicleCategory} onChange={setVehicleCategoryHandler} options={vehicleCategories}
                 className="md:w-20rem w-full"></TreeSelect>
               <label htmlFor="vehicle-type">Категория на автомобила</label>
             </span>

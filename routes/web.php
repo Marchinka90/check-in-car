@@ -29,6 +29,15 @@ Route::get('/', function () {
 //     ]);
 // });
 
+// Captcha routes
+// use App\Http\Controllers\FormController;
+
+Route::get('/form', function () {
+    return Inertia::render('FormPage', []);
+});
+// Route::get('/refresh-captcha', [FormController::class, 'refreshCaptcha']);
+// Route::post('/submit-form', [FormController::class, 'submitForm'])->name('submitForm');
+
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

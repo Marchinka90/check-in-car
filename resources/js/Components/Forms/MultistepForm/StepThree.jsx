@@ -1,22 +1,38 @@
 import { useEffect, useState } from 'react';
 import { Checkbox } from 'primereact/checkbox';
 import PrivacyPolicy from '@/Components/Footer/PrivacyPolicy';
+import { InputText } from 'primereact/inputtext';
+import { Button } from 'primereact/button';
 
 export default function StepThree(props) {
   const [visible, setVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   // Specify the date format options
-  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  const options = { timeZone: 'Europe/Sofia', year: 'numeric', month: 'long', day: 'numeric' };
   const dateObj = props.selectedDate;
   // Convert the date to the specific format
   const formattedDate = dateObj.toLocaleDateString('bg-BG', options);
+
+  const refreshCaptcha = () => {
+    setLoading(true);
+    fetch('/captcha/api/default')
+      .then(res => res.json())
+      .then(data => {
+        props.setCaptchaImage(data.img);
+        props.setKey(data.key)
+        setLoading(false);
+      });
+  };
+
   useEffect(() => {
-    // reload google captcha
+    refreshCaptcha();
   }, []);
 
   return (
     <>
       <div className="flex justify-around">
-        <div className='text-primary font-lato tracking-wide leading-relaxed'>
+        <div className='text-primary font-lato tracking-wide leading-relaxed w-96'>
           <p>Дата: <strong>{formattedDate}</strong></p>
           <p>Час: <strong>{props.selectedHour}</strong></p>
           <p>Регистрационен номер: <strong>{props.plateLicense}</strong></p>
@@ -26,8 +42,20 @@ export default function StepThree(props) {
           <p>Телефон: <strong>{props.phone}</strong></p>
           <p>Имейл: <strong>{props.email}</strong></p>
         </div>
-        <div className='text-primary font-lato tracking-wide leading-relaxed'>
-          <p>Google Capcha!!!</p>
+        <div className='text-primary font-lato tracking-wide leading-relaxed w-96'>
+          <div className='bg-background-light p-2'>
+            <div className="flex justify-content-center mb-2 ">
+              <div className="w-48">
+                <img src={props.captchaImage} alt="captchaImage" />
+              </div>
+              <Button type="button" className="text-xs" label="Презареди" icon="pi pi-refresh" onClick={refreshCaptcha} loading={loading} />
+            </div>
+
+            <div className="p-float-label mt-8 mb-3 w-full ">
+              <InputText className='w-full' id="captcha" value={props.captcha} onChange={(e) => props.setCaptcha(e.target.value.trim())} />
+              <label htmlFor="captcha">Попълнете символите от картинката</label>
+            </div>
+          </div>
           <div>
             <Checkbox onChange={e => props.setAgreedTerms(e.checked)} checked={props.agreedTerms}></Checkbox> Съгласявам се с
             <span> <button type='button' onClick={() => setVisible(true)} className='underline'> Условия за ползване</button></span>

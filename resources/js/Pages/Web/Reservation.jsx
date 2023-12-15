@@ -1,6 +1,7 @@
-import { useState, useRef, useEffect } from 'react';
-import Section from '@/Components/Section';
+import { useState, useRef } from 'react';
+import axios from 'axios';
 
+import Section from '@/Components/Section';
 import StepOne from '@/Components/Forms/MultistepForm/StepOne';
 import StepTwo from '@/Components/Forms/MultistepForm/StepTwo';
 import StepThree from '@/Components/Forms/MultistepForm/StepThree';
@@ -9,29 +10,46 @@ import { Card } from 'primereact/card';
 import { Steps } from 'primereact/steps';
 import { Button } from 'primereact/button';
 
-import { Toast } from 'primereact/toast'; // попъп за съобщения
+import { Toast } from 'primereact/toast';
+
+let formData = {
+  vehicleCategory: '',
+  plateLicense: '',
+  selectedDate: '',
+  selectedHour: '',
+  firstname: '',
+  lastname: '',
+  email: '',
+  phone: '',
+  agreedTerms: '',
+  captcha: '',
+}
 
 export default function Reservation() {
   const toast = useRef(null);
 
   const [isValidFirstStep, setIsValidFirstStep] = useState(false);
   const [isValidSecondStep, setIsValidSecondStep] = useState(false);
-
-  // First step states
+  const [loading, setLoading] = useState(false);
   const [activeIndex, setActiveIndex] = useState(1);
+  
+  // First step states
   const [vehicleCategory, setVehicleCategory] = useState(null);
   const [plateLicense, setPlateLicense] = useState('');
   const [selectedDate, setSelectedDate] = useState(null);
-
+  
   // Second step states
   const [selectedHour, setSelectedHour] = useState('');
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-
+  
   // Third step states
   const [agreedTerms, setAgreedTerms] = useState(false);
+  const [captcha, setCaptcha ] = useState('');
+  const [captchaImage, setCaptchaImage] = useState();
+  const [key, setKey] = useState();
 
   const totalSteps = 3;
   const steps = [
@@ -47,7 +65,7 @@ export default function Reservation() {
     } else {
       isValid = checkSecondStepDataHandler();
     }
-
+    
     if (activeIndex < totalSteps && isValid) {
       setActiveIndex(activeIndex + 1);
     }
@@ -84,6 +102,8 @@ export default function Reservation() {
       showToast(toastData);
       return false;
     }
+    const formattedDate = selectedDate.toLocaleDateString({ year: 'numeric', month: '2-digit', day: '2-digit' });
+    formData = {...formData, plateLicense, selectedDate: formattedDate };
     setIsValidFirstStep(true);
     return true;
 
@@ -122,13 +142,16 @@ export default function Reservation() {
       showToast(toastData);
       return false;
     }
-
+    formData = {...formData, selectedHour, firstname, lastname, email, phone};
     setIsValidSecondStep(true);
     return true;
   }
 
   const handlePrevStep = () => {
     if (activeIndex > 1) {
+      if(activeIndex == 2) {
+        setSelectedDate(null);
+      }
       setActiveIndex(activeIndex - 1);
     }
   };
@@ -137,6 +160,7 @@ export default function Reservation() {
     switch (activeIndex) {
       case 1:
         return <StepOne
+          formData={formData}
           plateLicense={plateLicense}
           setPlateLicense={setPlateLicense}
           vehicleCategory={vehicleCategory}
@@ -161,8 +185,13 @@ export default function Reservation() {
         return <StepThree
           agreedTerms={agreedTerms}
           setAgreedTerms={setAgreedTerms}
+          captcha={captcha}
+          setCaptcha={setCaptcha}
+          setKey={setKey}
+          captchaImage={captchaImage}
+          setCaptchaImage={setCaptchaImage}
           plateLicense={plateLicense}
-          vehicleCategory={vehicleCategory}
+          vehicleCategory={formData.vehicleCategory}
           selectedDate={selectedDate}
           selectedHour={selectedHour}
           firstname={firstname}
@@ -183,15 +212,36 @@ export default function Reservation() {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    console.log('plateLicense: ' + plateLicense);
-    console.log('vehicleCategory: ' + vehicleCategory);
-    console.log('selectedDate: ' + selectedDate);
+    let toastData;
+    if (!captcha) {
+      toastData = { severity: 'error', summary: 'Грешка', detail: 'Моля попълнете символите от картинката' };
+      showToast(toastData);
+      return;
+    }
+    if (!agreedTerms) {
+      toastData = { severity: 'error', summary: 'Грешка', detail: 'За да изпратите вашите данни трябва да се съгласите с Условията за ползване' };
+      showToast(toastData);
+      return;
+    }
 
-    console.log('selectedHour: ' + selectedHour);
-    console.log('firstname: ' + firstname);
-    console.log('lastname: ' + lastname);
-    console.log('email: ' + email);
-    console.log('phone: ' + phone);
+    if (isValidFirstStep && isValidSecondStep) {
+      setLoading(true);  
+      formData = {...formData, agreedTerms, captcha, key };
+      console.log(formData);
+      axios.post('/api/book-appointment', formData)
+      .then(res => res.json())
+      .then(data => {
+        setLoading(false);  
+        console.log(data);
+      }).catch(er => {
+        setLoading(false);  
+        console.log(er);
+        // toastData = { severity: 'error', summary: 'Грешка', detail: '' };
+        // showToast(er);
+      })
+
+    }
+ 
   }
 
   return (
@@ -205,12 +255,12 @@ export default function Reservation() {
             <form onSubmit={onSubmitHandler}>
               {renderStepContent()}
               <div className='flex justify-end mt-5'>
-                <Button type="button" label="Назад" severity="secondary" className='mr-2' onClick={handlePrevStep} disabled={activeIndex === 1} />
+                <Button type="button" label="Назад" severity="secondary" className='mr-2' onClick={handlePrevStep} disabled={activeIndex === 1}/>
                 {activeIndex < totalSteps && (<>
-                  <Button type="button" label="Напред" onClick={handleNextStep} disabled={activeIndex === totalSteps} />
+                  <Button type="button" label="Напред" onClick={handleNextStep} disabled={activeIndex === totalSteps} loading={loading}/>
                 </>
                 )}
-                {activeIndex === totalSteps && <Button label="Изпрати" />}
+                {activeIndex === totalSteps && <Button label="Изпрати" loading={loading}/>}
               </div>
             </form>
           </Card>
