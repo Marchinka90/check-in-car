@@ -6,7 +6,7 @@ import { Button } from 'primereact/button';
 
 export default function StepThree(props) {
   const [visible, setVisible] = useState(false);
-
+  
   // Specify the date format options
   const options = { timeZone: 'Europe/Sofia', year: 'numeric', month: 'long', day: 'numeric' };
   const dateObj = props.selectedDate;
@@ -24,7 +24,7 @@ export default function StepThree(props) {
           <p>Дата: <strong>{formattedDate}</strong></p>
           <p>Час: <strong>{props.selectedHour}</strong></p>
           <p>Регистрационен номер: <strong>{props.plateLicense}</strong></p>
-          <p>Категория на автомобила: <strong>{props.vehicleCategory}</strong></p>
+          <p>Категория на автомобила: <strong>{props.vehicleCategoryLabel}</strong></p>
           <p>Име: <strong>{props.firstname}</strong></p>
           <p>Фамилия: <strong>{props.lastname}</strong></p>
           <p>Телефон: <strong>{props.phone}</strong></p>

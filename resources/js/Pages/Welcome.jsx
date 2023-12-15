@@ -7,13 +7,13 @@ import Documents from './Web/Documents';
 import AboutUs from './Web/AboutUs';
 import Contacts from './Web/Contacts';
 
-export default function Welcome() {
+export default function Welcome({categories}) {
   return (
     <>
       <Head title="Vita 21" />
       <WebLayout>        
         <Home />
-        <Reservation /> 
+        <Reservation  categories={categories}/> 
         <Services /> 
         <Documents /> 
         <AboutUs /> 

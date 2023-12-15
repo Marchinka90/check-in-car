@@ -22,7 +22,7 @@ class BookingRequest extends FormRequest
     public function rules()
     {
         return [
-            'vehicleCategory' => 'required|string',
+            'vehicleCategory' => 'required|numeric',
             'plateLicense' => 'required|string|min:6',
             'selectedDate' => 'required|date_format:m/d/Y',
             'selectedHour' => 'required|string',

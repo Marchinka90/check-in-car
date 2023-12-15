@@ -24,9 +24,10 @@ let formData = {
   agreedTerms: '',
   captcha: '',
 }
+
 let toastData;
 
-export default function Reservation() {
+export default function Reservation(props) {
   const toast = useRef(null);
 
   const [isValidFirstStep, setIsValidFirstStep] = useState(false);
@@ -36,6 +37,7 @@ export default function Reservation() {
 
   // First step states
   const [vehicleCategory, setVehicleCategory] = useState(null);
+  const [vehicleCategoryLabel, setVehicleCategoryLabel] = useState(null);
   const [plateLicense, setPlateLicense] = useState('');
   const [selectedDate, setSelectedDate] = useState(null);
 
@@ -85,6 +87,12 @@ export default function Reservation() {
       showToast(toastData);
       return false;
     }
+
+    Object.entries(props.categories).forEach(([key, category]) => {
+      if (category.key == vehicleCategory) {
+        setVehicleCategoryLabel(category.label);
+      }
+    });
 
     if (!selectedDate) {
       toastData = { severity: 'error', summary: 'Грешка', detail: 'Не сте избрали дата' };
@@ -173,6 +181,7 @@ export default function Reservation() {
           formData={formData}
           plateLicense={plateLicense}
           setPlateLicense={setPlateLicense}
+          categories={props.categories}
           vehicleCategory={vehicleCategory}
           setVehicleCategory={setVehicleCategory}
           setSelectedDate={setSelectedDate}
@@ -202,7 +211,7 @@ export default function Reservation() {
           refreshCaptcha={refreshCaptcha}
           loading={loading}
           plateLicense={plateLicense}
-          vehicleCategory={formData.vehicleCategory}
+          vehicleCategoryLabel={vehicleCategoryLabel}
           selectedDate={selectedDate}
           selectedHour={selectedHour}
           firstname={firstname}

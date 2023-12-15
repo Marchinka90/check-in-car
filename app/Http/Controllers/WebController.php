@@ -8,10 +8,31 @@ use Mews\Captcha\Captcha;
 use Inertia\Inertia;
 use Inertia\Response;
 use Validator;
+use App\Models\VehicleCategory;
 use App\Http\Requests\BookingRequest;
 
 class WebController extends Controller
 {
+  public function Welcome() {
+    $vehicleCategories = VehicleCategory::all();
+    $categories = [];
+
+    foreach ($vehicleCategories as $vehicleCategory) {
+      array_push($categories, (object)[
+        'key' => $vehicleCategory->id,
+        'label' => $vehicleCategory->label,
+        // Add more fields as needed
+        ]
+      );
+    }
+    
+    return Inertia::render('Welcome', [
+      'categories' => $categories,
+      // 'status' => session('status'),
+    ]);
+  }
+
+
     public function bookAppointment(BookingRequest $request)
     {
       return response()->json([
@@ -52,16 +73,6 @@ class WebController extends Controller
   //         'message' => 'АЙде веееее',
   //       ]);
   //   }
-
-
-
-
-
-
-
-
-
-
 
 
 

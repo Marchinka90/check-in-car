@@ -5,57 +5,15 @@ import Calendar from '@/Components/Calendar/Calendar';
 
 export default function StepOne(props) {
   const [vehicleCategories, setVehicleCategories] = useState([]);
-  const categories = [
-    {
-      key: '1',
-      label: 'Лек Автомобил',
-      
-    },
-    {
-      key: '2',
-      label: 'Лек Автомобил Джип /4x4/',
-      data: 'Лек Автомобил Джип /4x4/',
-
-    },
-    {
-      key: '3',
-      label: 'Таксиметров автомобил',
-      data: 'Таксиметров автомобил',
-    },
-    {
-      key: '4',
-      label: 'Мотоциклет',
-      data: 'Мотоциклет',
-    },
-    {
-      key: '5',
-      label: 'Ремаркета до 750 кг.',
-      data: 'Ремаркета до 750 кг.',
-    },
-    {
-      key: '6',
-      label: 'Товарен автомобил до 3.5 тона',
-      data: 'Товарен автомобил до 3.5 тона',
-    },
-    {
-      key: '7',
-      label: 'Проверка на амортисьори (на ос)',
-      data: 'Проверка на амортисьори (на ос)',
-    },
-  ];
   
   const setVehicleCategoryHandler = (e) => {
-    props.setVehicleCategory(e.value)
-    Object.entries(vehicleCategories).forEach(([key, category]) => {
-      if (category.key == e.value) {
-        props.formData.vehicleCategory = category.data;
-      }
-    });
+    props.setVehicleCategory(e.value);
+    props.formData.vehicleCategory = e.value;
   }
 
   useEffect(() => {
     // set categories from server database - do not fetch them 
-    setVehicleCategories(categories);
+    setVehicleCategories(props.categories);
   }, []);
 
   return (

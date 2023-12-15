@@ -3,6 +3,7 @@
 return [
     'required' => 'Полето :attribute е задължително.',
     'string' => ':attribute трябва да бъде текст.',
+    'numeric' => 'Полето :attribute трябва да е число.',
     'date' => ':attribute трябва да бъде валидна дата.',
     'email' => ':attribute трябва да бъде валиден имейл адрес.',
     'boolean' => 'Полето :attribute трябва да бъде отметнато.',
