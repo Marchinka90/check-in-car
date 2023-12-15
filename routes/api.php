@@ -19,5 +19,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/refresh-captcha', [WebController::class, 'refreshCaptcha']);
+// Web Routes
 Route::post('/book-appointment', [WebController::class, 'bookAppointment']);
+// Route::post('/newsletter', [WebController::class, 'Newsletter']);

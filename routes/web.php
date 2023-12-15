@@ -17,7 +17,9 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', []);
+    return Inertia::render('Welcome', [
+        'viea'
+    ]);
 });
 
 // Route::get('/welcome', function () {
@@ -35,8 +37,6 @@ Route::get('/', function () {
 Route::get('/form', function () {
     return Inertia::render('FormPage', []);
 });
-// Route::get('/refresh-captcha', [FormController::class, 'refreshCaptcha']);
-// Route::post('/submit-form', [FormController::class, 'submitForm'])->name('submitForm');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

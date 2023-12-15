@@ -9,7 +9,7 @@ export default function StepOne(props) {
     {
       key: '1',
       label: 'Лек Автомобил',
-      data: 'Лек Автомобил',
+      
     },
     {
       key: '2',

@@ -6,7 +6,6 @@ import { Button } from 'primereact/button';
 
 export default function StepThree(props) {
   const [visible, setVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   // Specify the date format options
   const options = { timeZone: 'Europe/Sofia', year: 'numeric', month: 'long', day: 'numeric' };
@@ -14,19 +13,8 @@ export default function StepThree(props) {
   // Convert the date to the specific format
   const formattedDate = dateObj.toLocaleDateString('bg-BG', options);
 
-  const refreshCaptcha = () => {
-    setLoading(true);
-    fetch('/captcha/api/default')
-      .then(res => res.json())
-      .then(data => {
-        props.setCaptchaImage(data.img);
-        props.setKey(data.key)
-        setLoading(false);
-      });
-  };
-
   useEffect(() => {
-    refreshCaptcha();
+    props.refreshCaptcha();
   }, []);
 
   return (
@@ -48,7 +36,7 @@ export default function StepThree(props) {
               <div className="w-48">
                 <img src={props.captchaImage} alt="captchaImage" />
               </div>
-              <Button type="button" className="text-xs" label="Презареди" icon="pi pi-refresh" onClick={refreshCaptcha} loading={loading} />
+              <Button type="button" className="text-xs" label="Презареди" icon="pi pi-refresh" onClick={props.refreshCaptcha} loading={props.loading} />
             </div>
 
             <div className="p-float-label mt-8 mb-3 w-full ">

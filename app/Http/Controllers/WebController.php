@@ -8,34 +8,50 @@ use Mews\Captcha\Captcha;
 use Inertia\Inertia;
 use Inertia\Response;
 use Validator;
+use App\Http\Requests\BookingRequest;
 
 class WebController extends Controller
 {
-    public function bookAppointment(Request $request)
+    public function bookAppointment(BookingRequest $request)
     {
-
-    //key is the one that you got from json response
-    // fix validator
-    $rules = ['captcha' => 'required|captcha_api:'. request('key')];
-    $date = date_create(request('selectedDate'));
-  //   $date = date_create('2023-12-15');
-    return response()->json([
-      'data' => $date,
-  ]);
-      // dd(request('key'));
-
-    // $rules = ['captcha' => 'required|captcha_api:'. request('key') . ',default'];
-    $validator = validator()->make(request()->all(), $rules);
-    if ($validator->fails()) {
-        return response()->json([
-            'message' => 'invalid captcha',
-        ]);
-
-    } else {
       return response()->json([
-          'message' => 'АЙде веееее',
-        ]);
-    }
+          'status' => "success",
+          'data' => [
+            "message" => "Success message"
+          ]
+      ], 200);
+
+
+      return response()->json([
+          'errors' => [
+            'hours' => [
+              'Няма свободни часове'
+            ]
+          ]
+      ], 404);
+
+
+      
+  //   $rules = ['captcha' => 'required|captcha_api:'. request('key')];
+  //   $date = date_create(request('selectedDate'));
+  // //   $date = date_create('2023-12-15');
+  //     return response()->json([
+  //       'data' => $date,
+  //   ]);
+  //     // dd(request('key'));
+
+  //   // $rules = ['captcha' => 'required|captcha_api:'. request('key') . ',default'];
+  //   $validator = validator()->make(request()->all(), $rules);
+  //   if ($validator->fails()) {
+  //       return response()->json([
+  //           'message' => 'invalid captcha',
+  //       ]);
+
+  //   } else {
+  //     return response()->json([
+  //         'message' => 'АЙде веееее',
+  //       ]);
+  //   }
 
 
 
