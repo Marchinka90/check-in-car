@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 
 export default function Calendar(props) {
+  const saturdayShiftOn = props.preferences.saturdayShiftOn;
+
   const [calendar, setCalendar] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -120,31 +122,36 @@ export default function Calendar(props) {
       const dayOfWeek = currentDayDate.getDay();
 
       counterDays++;
+      // Check what date will be printed and will be clicable or not
+      let staticDate = true;
       let classesForDays = 'day';
       let isToday = checkTodayDate(i, currentMonth, currentYear);
 
-      if (currentDayDate < today) {
-        if (isToday) {
+      if (dayOfWeek == 0) {
+        classesForDays += ' weekend';
+        if (isToday) { classesForDays += ' today'; }
+
+      } else if (dayOfWeek == 6 && saturdayShiftOn == '0') {
+        classesForDays += ' weekend';
+        if (isToday) { classesForDays += ' today'; }
+
+      } else if (currentDayDate < today) {
+        if  (isToday) {
           classesForDays += ' today';
-          days.push(<div key={key} className={classesForDays} onClick={combineClickHandler}>{i}</div>);
+          staticDate = false;
         } else {
           classesForDays += ' prev';
-          days.push(
-            <div key={key} className={classesForDays}>{i}</div>
-          );
         }
-      } else if (dayOfWeek == 0) {
-        classesForDays += ' sunday';
-        if (isToday) {
-          classesForDays += ' today';
-        }
-        days.push(
-          <div key={key} className={classesForDays}>{i}</div>
-        );
+
       } else {
-        days.push(
-          <div key={key} className={classesForDays} onClick={combineClickHandler}>{i}</div>
-        );
+        staticDate = false;
+      }
+
+
+      if (staticDate) {
+        days.push(<div key={key} className={classesForDays}>{i}</div>)
+      } else {
+        days.push(<div key={key} className={classesForDays} onClick={combineClickHandler}>{i}</div>)
       }
 
       key++;

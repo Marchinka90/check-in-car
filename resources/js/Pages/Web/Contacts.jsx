@@ -3,8 +3,8 @@ import OpenLayersMap from '@/Components/Map/Map';
 import ContactsForm from '@/Components/Forms/Contacts/ContactsForm';
 import { Card } from 'primereact/card';
 
-export default function Contacts() {
-
+export default function Contacts(props) {
+  const preferences = props.preferences;
   return (
     <>
       <Section id='contacts' className='bg-white py-32'>
@@ -14,8 +14,8 @@ export default function Contacts() {
             <Card className='absolute bottom-12 left-12 w-[36%] flex justify-center flex-wrap'>
               <div className="text-primary text-center w-full w-[350px] flex justify-between flex-wrap tracking-wide leading-relaxed">
                 <h1 className="w-full font-montserrat">Работно време:</h1>
-                <p className="w-full flex justify-between font-lato"><span className="text-secondary">8:00 - 18:00</span> Понеделник - Петък</p>
-                <p className="w-full flex justify-between font-lato"><span className="text-secondary">8:00 - 16:00</span> Събота</p>
+                <p className="w-full flex justify-between font-lato"><span className="text-secondary">{preferences.regularDaysShiftStart} - {preferences.regularDaysShiftEnd}</span> Понеделник - Петък</p>
+                {preferences.saturdayShiftOn == 1 && <p className="w-full flex justify-between font-lato"><span className="text-secondary">{preferences.saturdayShiftStart} - {preferences.saturdayShiftEnd}</span> Събота</p> }
               </div>
               <div className="flex justify-between pt-5">
                 <div className="text-primary text-center tracking-wide leading-relaxed">

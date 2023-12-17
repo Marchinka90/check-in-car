@@ -9,11 +9,22 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Validator;
 use App\Models\VehicleCategory;
+use App\Models\Preference;
 use App\Http\Requests\BookingRequest;
 
 class WebController extends Controller
 {
   public function Welcome() {
+    $preferencesData = Preference::select('name', 'value')->get();
+    $preferences = [];
+    foreach ($preferencesData as $preference) {
+      array_push($preferences, (object)[
+        'name' => $preference->name, 
+        'value' => $preference->value
+        ]
+      );
+    }
+  
     $vehicleCategories = VehicleCategory::all();
     $categories = [];
 
@@ -21,14 +32,13 @@ class WebController extends Controller
       array_push($categories, (object)[
         'key' => $vehicleCategory->id,
         'label' => $vehicleCategory->label,
-        // Add more fields as needed
         ]
       );
     }
     
     return Inertia::render('Welcome', [
       'categories' => $categories,
-      // 'status' => session('status'),
+      'preferencesData' => $preferences,
     ]);
   }
 

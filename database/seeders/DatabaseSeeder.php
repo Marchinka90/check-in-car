@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
         // ]);
         $this->call([
             VehicleCategoriesSeeder::class,
+            PreferencesSeeder::class,
         ]);
     }
 }

@@ -7,17 +7,22 @@ import Documents from './Web/Documents';
 import AboutUs from './Web/AboutUs';
 import Contacts from './Web/Contacts';
 
-export default function Welcome({categories}) {
+export default function Welcome({categories, preferencesData}) {
+  let preferences = {};
+  preferencesData.map((item) => {
+    preferences[item.name] = item.value;
+  });
+
   return (
     <>
       <Head title="Vita 21" />
       <WebLayout>        
         <Home />
-        <Reservation  categories={categories}/> 
+        <Reservation  categories={categories} preferences={preferences}/> 
         <Services /> 
         <Documents /> 
         <AboutUs /> 
-        <Contacts /> 
+        <Contacts preferences={preferences}/> 
       </WebLayout>
     </>
   );
