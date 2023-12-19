@@ -17,18 +17,12 @@ return new class extends Migration
             $table->time('booking_hour');
             $table->string('status');
             $table->unsignedBigInteger('customer_id'); // Foreign key
-            $table->unsignedBigInteger('vehicle_category_id'); // Foreign key
             $table->timestamps();
         });
 
         // Define foreign key constraint
         Schema::table('booking_slots', function (Blueprint $table) {
             $table->foreign('customer_id')->references('id')->on('customers');
-        });
-
-        // Define foreign key constraint
-        Schema::table('booking_slots', function (Blueprint $table) {
-            $table->foreign('vehicle_category_id')->references('id')->on('vehicle_categories');
         });
     }
 

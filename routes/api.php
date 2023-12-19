@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WebController;
+use App\Http\Controllers\BookingSlotController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,5 +21,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // Web Routes
-Route::post('/book-appointment', [WebController::class, 'bookAppointment']);
+Route::post('/free-booking-slots', [BookingSlotController::class, 'freeBookingSlots']);
+Route::post('/book-appointment', [BookingSlotController::class, 'bookAppointment']);
 // Route::post('/newsletter', [WebController::class, 'Newsletter']);

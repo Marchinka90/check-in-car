@@ -20,7 +20,7 @@ export default function Contacts(props) {
               <div className="flex justify-between pt-5">
                 <div className="text-primary text-center tracking-wide leading-relaxed">
                   <h1 className="font-montserrat">Контакти:</h1>
-                  <p className="font-lato">+359 894 843 555</p>
+                  <p className="font-lato">+359 877 720 321</p>
                   <p className="font-lato"><span className="text-secondary">vita21.bg</span>@gmail.com</p>
                 </div>
                 <div className="text-primary text-center tracking-wide leading-relaxed">

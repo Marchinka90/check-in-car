@@ -14,19 +14,41 @@ class VehicleCategoriesSeeder extends Seeder
     public function run()
     {
         $data = [
-            'Лек Автомобил',
-            'Лек Автомобил Джип /4x4/',
-            'Таксиметров автомобил',
-            'Мотоциклет',
-            'Ремаркета до 750 кг.',
-            'Товарен автомобил до 3.5 тона',
-            'Проверка на амортисьори (на ос)',
+            [
+                'name' => 'Лек Автомобил',
+                'price' => '49.00'
+            ],
+            [
+                'name' => 'Лек Автомобил Джип /4x4/',
+                'price' => '49.00'
+            ],
+            [
+                'name' => 'Таксиметров автомобил',
+                'price' => '49.00'
+            ],
+            [
+                'name' => 'Мотоциклет',
+                'price' => '40.00'
+            ],
+            [
+                'name' => 'Ремаркета до 750 кг.',
+                'price' => '49.00'
+            ],
+            [
+                'name' => 'Товарен автомобил до 3.5 тона',
+                'price' => '55.00'
+            ],
+            [
+                'name' => 'Проверка на амортисьори (на ос)',
+                'price' => '49.00'
+            ]
         ];
 
         // Insert data into the 'vehicle_categories' table
         foreach ($data as $categoryData) {
             VehicleCategory::create([
-                'label' => $categoryData
+                'name' => $categoryData['name'],
+                'price' => $categoryData['price'],
             ]);
         }
     }

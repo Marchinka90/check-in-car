@@ -22,6 +22,7 @@ class VehicleCategory extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'label',
+        'name',
+        'price',
     ];
 }

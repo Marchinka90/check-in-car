@@ -9,7 +9,6 @@ import StepThree from '@/Components/Forms/MultistepForm/StepThree';
 import { Card } from 'primereact/card';
 import { Steps } from 'primereact/steps';
 import { Button } from 'primereact/button';
-
 import { Toast } from 'primereact/toast';
 
 let formData = {
@@ -189,6 +188,10 @@ export default function Reservation(props) {
         />;
       case 2:
         return <StepTwo
+          loading={loading}
+          setLoading={setLoading}
+          showToast={showToast}
+          setActiveIndex={setActiveIndex}
           selectedDate={selectedDate}
           selectedHour={selectedHour}
           setSelectedHour={setSelectedHour}

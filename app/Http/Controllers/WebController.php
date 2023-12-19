@@ -15,15 +15,7 @@ use App\Http\Requests\BookingRequest;
 class WebController extends Controller
 {
   public function Welcome() {
-    $preferencesData = Preference::select('name', 'value')->get();
-    $preferences = [];
-    foreach ($preferencesData as $preference) {
-      array_push($preferences, (object)[
-        'name' => $preference->name, 
-        'value' => $preference->value
-        ]
-      );
-    }
+    $preferences = Preference::select('name', 'value')->pluck('value', 'name');
   
     $vehicleCategories = VehicleCategory::all();
     $categories = [];
@@ -31,20 +23,21 @@ class WebController extends Controller
     foreach ($vehicleCategories as $vehicleCategory) {
       array_push($categories, (object)[
         'key' => $vehicleCategory->id,
-        'label' => $vehicleCategory->label,
+        'label' => $vehicleCategory->name . ' - ' . $vehicleCategory->price . '.лв'
         ]
       );
     }
     
     return Inertia::render('Welcome', [
       'categories' => $categories,
-      'preferencesData' => $preferences,
+      'preferences' => $preferences,
     ]);
   }
 
 
-    public function bookAppointment(BookingRequest $request)
+    public function Test(Request $request)
     {
+      
       return response()->json([
           'status' => "success",
           'data' => [
@@ -83,12 +76,6 @@ class WebController extends Controller
   //         'message' => 'АЙде веееее',
   //       ]);
   //   }
-
-
-
-
-
-
         $data = $request->all();
         
         $rules = [
@@ -110,7 +97,6 @@ class WebController extends Controller
       // return response()->json([
       //   'message' => 'cabuum baybe',
       // ]);
-
       
         $rules = ['captcha' => 'required|captcha'];
         $validator = validator()->make(request()->all(), $rules);
@@ -124,7 +110,6 @@ class WebController extends Controller
             ]);
           
         }
-    
 
         // Handle form submission
     }

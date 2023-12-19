@@ -7,11 +7,7 @@ import Documents from './Web/Documents';
 import AboutUs from './Web/AboutUs';
 import Contacts from './Web/Contacts';
 
-export default function Welcome({categories, preferencesData}) {
-  let preferences = {};
-  preferencesData.map((item) => {
-    preferences[item.name] = item.value;
-  });
+export default function Welcome({categories, preferences}) {
 
   return (
     <>

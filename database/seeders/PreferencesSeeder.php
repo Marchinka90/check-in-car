@@ -15,7 +15,7 @@ class PreferencesSeeder extends Seeder
     {
         $data = [
             [
-                'name' => 'reviewDuration',
+                'name' => 'reviewTime',
                 'value' => '30',
                 'description' => 'Продължителност на преглед на кола в минути'
             ],

@@ -27,7 +27,15 @@ class BookingSlot extends Model
         'booking_hour',
         'status',
         'customer_id',
-        'vehicle_category_id',
+    ];
+
+    /**
+     * The model's default values for attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'status' => 'booked', // booked(reserved), missed(not show up), canceled, failed(didn't passed), completed(passed)
     ];
 
     /**
@@ -36,13 +44,5 @@ class BookingSlot extends Model
     public function customer(): HasOne
     {
         return $this->hasOne(Customer::class);
-    }
-
-    /**
-     * Get the customer associated with the user.
-     */
-    public function vehicle_category(): HasOne
-    {
-        return $this->hasOne(VehicleCategory::class);
     }
 }

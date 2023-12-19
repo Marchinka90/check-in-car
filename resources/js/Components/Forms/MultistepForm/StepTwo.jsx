@@ -1,10 +1,39 @@
-import { useEffect } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { InputText } from 'primereact/inputtext';
 
-export default function StepTwo(props) {
+let toastData;
 
+export default function StepTwo(props) {
+  const [ freeHoursData, setFreeHoursData] = useState([]);
+
+  const formattedDate = props.selectedDate.toLocaleDateString({ year: 'numeric', month: '2-digit', day: '2-digit' });
+  let formData = {
+    selectedDate: formattedDate
+  }
+  
   useEffect(() => {
-    // fetche hours that are free
+    props.setLoading(true);
+
+    axios.post('/api/free-booking-slots', formData)
+        .then(res => {
+          props.setLoading(false);
+          const data = res.data;
+          console.log(data);
+          if (data.status === 'success') {
+            setFreeHoursData(data.data.freeSlots);
+          } 
+        })
+        .catch(er => {
+          props.setLoading(false);
+          let errorsObj = er.response.data.errors;
+
+          Object.entries(errorsObj).forEach(([key, message]) => {
+            toastData = { severity: 'error', summary: 'Грешка', detail: message[0] };
+            props.showToast(toastData);
+            props.setActiveIndex(1);
+          });
+        });
+        
   }, [props.selectedDate]);
 
   const selectHourHandler = (hour) => {
@@ -16,16 +45,17 @@ export default function StepTwo(props) {
     hour.target.id = 'selected-hour';
   }
 
-  const freeHoursData = ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30'];
   let freeHoursHtml = [];
-  if (freeHoursData.length > 0) {
-    for (let x = 0; x < freeHoursData.length; x++) {
-      freeHoursHtml.push(<span
-        key={x}
-        onClick={selectHourHandler}
-        className="cursor-pointer text-lg m-2 text-primary bg-white p-2 border-none text-xl rounded-2xl hover:text-white hover:bg-primary"
-      >{freeHoursData[x]}
-      </span>);
+  if (!props.loading) {
+    if (freeHoursData.length > 0) {
+      for (let x = 0; x < freeHoursData.length; x++) {
+        freeHoursHtml.push(<span
+          key={x}
+          onClick={selectHourHandler}
+          className="cursor-pointer text-lg m-2 text-primary bg-white p-2 border-none text-xl rounded-2xl hover:text-white hover:bg-primary"
+        >{freeHoursData[x]}
+        </span>);
+      }
     }
   }
 
