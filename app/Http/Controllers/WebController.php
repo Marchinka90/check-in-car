@@ -11,6 +11,7 @@ use Validator;
 use App\Models\VehicleCategory;
 use App\Models\Preference;
 use App\Http\Requests\ContactUsRequest;
+use App\Http\Controllers\MailController;
 
 class WebController extends Controller
 {
@@ -39,22 +40,12 @@ class WebController extends Controller
     {
       $data = $request->all();
 
-      return response()->json([
-          'status' => "success",
-          'data' => [
-            "data" => $data
-          ]
-      ], 200);
-
-
-      return response()->json([
-          'errors' => [
-            'hours' => [
-              'Няма свободни часове'
-            ]
-          ]
-      ], 404);
-
-        
+      $mailController = new MailController();
+      $result = $mailController->sendEmailFromContactUs($data);
+      
+      if (!$result) {
+        return response()->json(['errors' => ['message' => ['Неуспешно изпращане на съобщението. Моля, опитайте по-късно']]], 404);
+      }
+      return response()->json(['status' => "success", 'data' => ['message' => 'Съобщението е изпратено успешно.']], 200);
     }
 }

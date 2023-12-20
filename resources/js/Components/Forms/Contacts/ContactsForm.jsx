@@ -69,7 +69,6 @@ export default function ContactsForm() {
     setShowConfirmation(true);
   }
 
-
   const onConfirmationHandler = (e) => {
     e.preventDefault();
 

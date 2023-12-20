@@ -309,6 +309,7 @@ export default function Reservation(props) {
     setPhone('');
 
     setAgreedTerms(false);
+    setCaptcha('');
 
     setActiveIndex(1);
   }

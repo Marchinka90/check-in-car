@@ -20,12 +20,12 @@ class BookingSlotController extends Controller
     {
       $data = $request->all();      
       $bookingSlotService = new BookingSlotService();
-      // $isSlotFree = $bookingSlotService->isSlotFree($data);
+      $isSlotFree = $bookingSlotService->isSlotFree($request->get('selectedDate'), $request->get('selectedHour'));
 
-      // if (!$isSlotFree) {
-      //   return response()->json(['errors' => ['hours' => ['Този час вече е запазен, моля изберете друг час.']]], 404);
-      // }
-
+      if (!$isSlotFree) {
+        return response()->json(['errors' => ['hours' => ['Този час вече е запазен, моля изберете друг час.']]], 404);
+      }
+      
       $customerService = new CustomerService();
       $isCustomerExist = $customerService->checkCustomer($data);
       
@@ -46,6 +46,9 @@ class BookingSlotController extends Controller
 
       DB::commit();
 
+      $mailController = new MailController();
+      $sendMail = $mailController->sendEmailForBookingSlot($data);
+
       return response()->json(['status' => 'success', 'data' => ['bookSlot' => $bookFreeSlot]], 200);
 
     }
@@ -60,10 +63,8 @@ class BookingSlotController extends Controller
         return response()->json(['errors' => ['date' => ['Не може да запзвате часове в събота.']]], 404);
       }
       
-      $bookingDate = date('Y-m-d', strtotime($selectedDate));
-      $bookedSlots = BookingSlot::where('booking_date', $bookingDate)->get();
       $bookingSlotService = new BookingSlotService();
-      $result = $bookingSlotService->getAllFreeSlotsForDate($selectedDate, $bookedSlots, $preferences);  
+      $result = $bookingSlotService->getAllFreeSlotsForDate($selectedDate, $preferences);  
       
       if (empty($result)) {
         return response()->json(['errors' => ['hours' => ['Няма свободни часове за тази дата. Моля, изберете друга дата.']]], 404);

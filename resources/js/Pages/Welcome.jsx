@@ -11,7 +11,7 @@ export default function Welcome({categories, preferences}) {
 
   return (
     <>
-      <Head title="Vita 21" />
+      <Head title="ВИТА 21" />
       <WebLayout>        
         <Home />
         <Reservation  categories={categories} preferences={preferences}/> 

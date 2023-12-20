@@ -3,12 +3,12 @@
 namespace App\Http\Services;
 
 use App\Models\BookingSlot;
-
+use App\Models\Preference;
 use Carbon\Carbon;
 
 class BookingSlotService
 {
-  public function getAllFreeSlotsForDate($selectedDate, $takenSlots, $preferences) {
+  public function getAllFreeSlotsForDate($selectedDate, $preferences) {
     $time = $preferences['reviewTime'];
     $selectedDateCarbon = Carbon::createFromTimestamp(strtotime($selectedDate));
 
@@ -30,6 +30,9 @@ class BookingSlotService
     
     $freeSlots = [];
     $now = Carbon::now();
+
+    $bookingDate = date('Y-m-d', strtotime($selectedDate));
+    $takenSlots = BookingSlot::where('booking_date', $bookingDate)->get();
 
     while ($shiftStarts->lt($shiftEnds)) {
 
@@ -63,6 +66,21 @@ class BookingSlotService
   }
 
   public function isSlotFree($date, $hour) {
+    $bookingDate = date('Y-m-d', strtotime($date));
+    $takenSlot = BookingSlot::where('booking_date', $bookingDate)->where('booking_hour', $hour)->first();
     
+    // dd($takenSlot);
+    if (!empty($takenSlot)) {
+      return false;
+    }
+    
+    $preferences = Preference::select('name', 'value')->where('name', 'saturdayShiftOn')->pluck('value', 'name');
+    $selectedDateCarbon = Carbon::createFromTimestamp(strtotime($date));                
+      
+    if ($selectedDateCarbon->dayOfWeek == 6 && $preferences['saturdayShiftOn'] === '0') {
+      return false;
+    }
+
+    return true;
   }
 }
