@@ -7,8 +7,8 @@ return [
     'date' => ':attribute трябва да бъде валидна дата.',
     'email' => ':attribute трябва да бъде валиден имейл адрес.',
     'boolean' => 'Полето :attribute трябва да бъде отметнато.',
-    'date_format' => ':attribute трябва да бъде в правилния формат',
-    'captcha_api' => 'Полето :attribute трябва да бъде попълнено.', 
+    'date_format' => ':attribute трябва да бъде в правилния формат.',
+    'captcha_api' => 'Полето :attribute трябва да бъде попълнено правилно.', 
 
     // Add more custom error messages as needed
     /*
@@ -52,6 +52,8 @@ return [
         'agreedTerms' => 'Условия за ползване',
         'plateLicense' => 'Регистрационен номер',
         'vehicleCategory' => 'Категория на автомобила',
-        'captcha' => 'Символи от картинката'
+        'captcha' => 'Символи от картинката',
+        'title' => 'Заглавие',
+        'description' => 'Съобщение',
     ],
 ];

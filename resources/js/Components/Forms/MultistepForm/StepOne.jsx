@@ -20,7 +20,7 @@ export default function StepOne(props) {
       <div  className='flex'>
         <div className='w-1/2 mr-5'>
           <div className="p-float-label w-full">
-            <InputText className='w-full' id="car-license-plate" value={props.plateLicense} onChange={(e) => props.setPlateLicense(e.target.value.trim())} required/>
+            <InputText className='w-full' id="car-license-plate" value={props.plateLicense} onChange={(e) => props.setPlateLicense(e.target.value)} required/>
             <label htmlFor="car-license-plate">Регистрационен номер на латиница (пр: В2345РА)</label>
           </div>
 

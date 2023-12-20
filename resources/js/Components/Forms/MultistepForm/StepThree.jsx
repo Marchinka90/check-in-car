@@ -36,11 +36,11 @@ export default function StepThree(props) {
               <div className="w-48">
                 <img src={props.captchaImage} alt="captchaImage" />
               </div>
-              <Button type="button" className="text-xs" label="Презареди" icon="pi pi-refresh" onClick={props.refreshCaptcha} loading={props.loading} />
+              <Button type="button" className="text-xs" label="Презареди" icon="pi pi-refresh" onClick={props.refreshCaptcha} loading={props.loadingCaptcha} />
             </div>
 
             <div className="p-float-label mt-8 mb-3 w-full ">
-              <InputText className='w-full' id="captcha" value={props.captcha} onChange={(e) => props.setCaptcha(e.target.value.trim())} />
+              <InputText className='w-full' id="captcha" value={props.captcha} onChange={(e) => props.setCaptcha(e.target.value)} />
               <label htmlFor="captcha">Попълнете символите от картинката</label>
             </div>
           </div>

@@ -18,7 +18,6 @@ class CustomerService
       'lastname' => $data['lastname'],
       'phone' => $data['phone'],
       'email' => $data['email'],
-      'plate_license' => $data['plateLicense'],
     ]);
 
     return $customer;

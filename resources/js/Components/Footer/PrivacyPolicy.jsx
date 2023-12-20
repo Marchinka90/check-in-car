@@ -1,5 +1,4 @@
 import { Dialog } from 'primereact/dialog';
-import { useState } from 'react';
 
 export default function PrivacyPolicy(props) {
   let contentPolocy;

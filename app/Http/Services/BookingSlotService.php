@@ -19,7 +19,7 @@ class BookingSlotService
       $start = $preferences['regularDaysShiftStart'];
       $end = $preferences['regularDaysShiftEnd'];
     }
-
+    
     $shiftStarts = Carbon::createFromTimestamp(strtotime($selectedDate));
     list($startHour, $startMinutes) = explode(":", $start);
     $shiftStarts = $shiftStarts->setTime($startHour, $startMinutes);
@@ -29,8 +29,10 @@ class BookingSlotService
     $shiftEnds = $shiftEnds->setTime($endHour, $endMinutes);
     
     $freeSlots = [];
+    $now = Carbon::now();
 
     while ($shiftStarts->lt($shiftEnds)) {
+
       $timeString = $shiftStarts->hour . ':' . ($shiftStarts->minute == '0'? '00' : $shiftStarts->minute);
       $isSlotFree = true;
 
@@ -49,15 +51,12 @@ class BookingSlotService
   }
 
   public function bookFreeSlot($data, $customer_id) {
-    // this is format form UI = 12/18/2023 -> Y-m-d
-   
-    // dd(date('Y-m-d', strtotime($data['selectedDate'])));
 
     $bookSlot = BookingSlot::create([
       'booking_date' => date('Y-m-d', strtotime($data['selectedDate'])),
       'booking_hour' => $data['selectedHour'],
+      'plate_license' => $data['plateLicense'],
       'customer_id' => $customer_id,
-      'vehicle_category_id' => $data['vehicleCategory']
     ]);
 
     return $bookSlot;

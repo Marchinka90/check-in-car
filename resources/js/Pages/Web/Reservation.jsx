@@ -5,6 +5,7 @@ import Section from '@/Components/Section';
 import StepOne from '@/Components/Forms/MultistepForm/StepOne';
 import StepTwo from '@/Components/Forms/MultistepForm/StepTwo';
 import StepThree from '@/Components/Forms/MultistepForm/StepThree';
+import BookingSlotSuccess from '@/Components/Forms/BookingSlotSuccess';
 
 import { Card } from 'primereact/card';
 import { Steps } from 'primereact/steps';
@@ -49,9 +50,14 @@ export default function Reservation(props) {
 
   // Third step states
   const [agreedTerms, setAgreedTerms] = useState(false);
+  const [loadingCaptcha, setLoadingCaptcha] = useState(false);
   const [captcha, setCaptcha] = useState('');
   const [captchaImage, setCaptchaImage] = useState();
   const [key, setKey] = useState();
+
+
+  // Show success message 
+  const [successMessage, setSuccessMessage] = useState(false);
 
   const totalSteps = 3;
   const steps = [
@@ -163,13 +169,13 @@ export default function Reservation(props) {
   };
 
   const refreshCaptcha = () => {
-    setLoading(true);
+    setLoadingCaptcha(true);
     fetch('/captcha/api/default')
       .then(res => res.json())
       .then(data => {
         setCaptchaImage(data.img);
         setKey(data.key)
-        setLoading(false);
+        setLoadingCaptcha(false);
       });
   };
 
@@ -213,7 +219,7 @@ export default function Reservation(props) {
           setKey={setKey}
           captchaImage={captchaImage}
           refreshCaptcha={refreshCaptcha}
-          loading={loading}
+          loadingCaptcha={loadingCaptcha}
           plateLicense={plateLicense}
           vehicleCategoryLabel={vehicleCategoryLabel}
           selectedDate={selectedDate}
@@ -250,31 +256,61 @@ export default function Reservation(props) {
     if (isValidFirstStep && isValidSecondStep) {
       setLoading(true);
       formData = { ...formData, agreedTerms, captcha, key };
-      
+
       axios.post('/api/book-appointment', formData)
-        .then(res => {
-          const data = res.data;
-          setLoading(false);
-          if (data.status === 'success') {
-            
-          } 
-        }).catch(er => {
-          setLoading(false);
-          refreshCaptcha();
-          console.log(er)
-          let errorsObj = er.response.data.errors;
-          console.log(er.response)
-          console.log( er.response.data)
-          console.log(er.response.data.errors)
-          
-          
-          Object.entries(errorsObj).forEach(([key, message]) => {
-            console.log(message[0])
-            toastData = { severity: 'error', summary: 'Грешка', detail: message[0] };
-            showToast(toastData);
-          });
-        })
+      .then(res => {
+        const data = res.data;
+        setLoading(false);
+        if (data.status === 'success') {
+          setSuccessMessage(true);
+        }
+      })
+      .catch(er => {
+        setLoading(false);
+        refreshCaptcha();
+        let errorsObj = er.response.data.errors;
+
+        Object.entries(errorsObj).forEach(([key, message]) => {
+          console.log(message[0])
+          toastData = { severity: 'error', summary: 'Грешка', detail: message[0] };
+          showToast(toastData);
+        });
+      });
     }
+  }
+
+  const resetFormAndStepsDataHandler = () => {
+    setSuccessMessage(false);
+
+    formData = {
+      vehicleCategory: '',
+      plateLicense: '',
+      selectedDate: '',
+      selectedHour: '',
+      firstname: '',
+      lastname: '',
+      email: '',
+      phone: '',
+      agreedTerms: '',
+      captcha: '',
+    }
+
+    setIsValidFirstStep(false);
+    setIsValidSecondStep(false);
+
+    setVehicleCategory(null);
+    setPlateLicense('');
+    setSelectedDate(null);
+
+    setSelectedHour('');
+    setFirstname('');
+    setLastname('');
+    setEmail('');
+    setPhone('');
+
+    setAgreedTerms(false);
+
+    setActiveIndex(1);
   }
 
   return (
@@ -284,18 +320,21 @@ export default function Reservation(props) {
         <h1 className="text-primary text-4xl text-center font-montserrat py-14">Запази час</h1>
         <div className="container">
           <Card>
-            <Steps model={steps} activeIndex={activeIndex - 1} readOnly={true} className='mb-16' />
-            <form onSubmit={onSubmitHandler}>
-              {renderStepContent()}
-              <div className='flex justify-end mt-5'>
-                <Button type="button" label="Назад" severity="secondary" className='mr-2' onClick={handlePrevStep} disabled={activeIndex === 1} />
-                {activeIndex < totalSteps && (<>
-                  <Button type="button" label="Напред" onClick={handleNextStep} disabled={activeIndex === totalSteps} loading={loading} />
-                </>
-                )}
-                {activeIndex === totalSteps && <Button label="Изпрати" loading={loading} />}
-              </div>
-            </form>
+            {!successMessage && <> <Steps model={steps} activeIndex={activeIndex - 1} readOnly={true} className='mb-16' />
+              <form onSubmit={onSubmitHandler}>
+                {renderStepContent()}
+                <div className='flex justify-end mt-5'>
+                  <Button type="button" label="Назад" severity="secondary" className='mr-2' onClick={handlePrevStep} disabled={activeIndex === 1} />
+                  {activeIndex < totalSteps && (<>
+                    <Button type="button" label="Напред" onClick={handleNextStep} disabled={activeIndex === totalSteps} loading={loading} />
+                  </>
+                  )}
+                  {activeIndex === totalSteps && <Button label="Изпрати" loading={loading} />}
+                </div>
+              </form>
+            </>
+            }
+            {successMessage && <BookingSlotSuccess resetReservationForm={resetFormAndStepsDataHandler} />}
           </Card>
         </div>
       </Section>

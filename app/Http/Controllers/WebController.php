@@ -10,7 +10,7 @@ use Inertia\Response;
 use Validator;
 use App\Models\VehicleCategory;
 use App\Models\Preference;
-use App\Http\Requests\BookingRequest;
+use App\Http\Requests\ContactUsRequest;
 
 class WebController extends Controller
 {
@@ -35,13 +35,14 @@ class WebController extends Controller
   }
 
 
-    public function Test(Request $request)
+    public function contactUs(ContactUsRequest $request)
     {
-      
+      $data = $request->all();
+
       return response()->json([
           'status' => "success",
           'data' => [
-            "message" => "Success message"
+            "data" => $data
           ]
       ], 200);
 
@@ -54,63 +55,6 @@ class WebController extends Controller
           ]
       ], 404);
 
-
-      
-  //   $rules = ['captcha' => 'required|captcha_api:'. request('key')];
-  //   $date = date_create(request('selectedDate'));
-  // //   $date = date_create('2023-12-15');
-  //     return response()->json([
-  //       'data' => $date,
-  //   ]);
-  //     // dd(request('key'));
-
-  //   // $rules = ['captcha' => 'required|captcha_api:'. request('key') . ',default'];
-  //   $validator = validator()->make(request()->all(), $rules);
-  //   if ($validator->fails()) {
-  //       return response()->json([
-  //           'message' => 'invalid captcha',
-  //       ]);
-
-  //   } else {
-  //     return response()->json([
-  //         'message' => 'АЙде веееее',
-  //       ]);
-  //   }
-        $data = $request->all();
         
-        $rules = [
-          'captcha' => 'required|captcha',
-        ];
-      
-    $validator = Validator::make($data, $rules);
-    if ($validator->passes()) {
-        //TODO Handle your data
-        dd('goood');
-    } else {
-        //TODO Handle your error
-        dd($validator->errors()->all());
-    }
-      // $request->all()->validate([
-      //   // Your validation rules, including captcha validation
-      //   'captcha' => 'required|captcha',
-      // ]);
-      // return response()->json([
-      //   'message' => 'cabuum baybe',
-      // ]);
-      
-        $rules = ['captcha' => 'required|captcha'];
-        $validator = validator()->make(request()->all(), $rules);
-        if ($validator->fails()) {
-          return response()->json([
-            'message' => 'noooooo',
-          ]);
-        } else {
-          return response()->json([
-              'message' => 'cabuum baybe',
-            ]);
-          
-        }
-
-        // Handle form submission
     }
 }

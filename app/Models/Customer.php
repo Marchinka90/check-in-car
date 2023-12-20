@@ -27,7 +27,6 @@ class Customer extends Model
         'lastname',
         'email',
         'phone',
-        'plate_license',
     ];
 
     /**

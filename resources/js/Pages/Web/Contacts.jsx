@@ -25,7 +25,7 @@ export default function Contacts(props) {
                 </div>
                 <div className="text-primary text-center tracking-wide leading-relaxed">
                   <h1 className="font-montserrat">Адрес:</h1>
-                  <p className="font-lato"> <span className="text-secondary">ул. Атанас Москов 2A</span> <br />гр. Варна</p>
+                  <p className="font-lato"> <span className="text-secondary">ул. Атанас Москов 2A <br /> (кръговото на Филбо)</span>  <br />гр. Варна</p>
                 </div>
               </div>
             </Card>

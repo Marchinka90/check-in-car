@@ -23,4 +23,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Web Routes
 Route::post('/free-booking-slots', [BookingSlotController::class, 'freeBookingSlots']);
 Route::post('/book-appointment', [BookingSlotController::class, 'bookAppointment']);
+Route::post('/contact-us', [WebController::class, 'contactUs']);
 // Route::post('/newsletter', [WebController::class, 'Newsletter']);
