@@ -17,8 +17,8 @@ export default function StepOne(props) {
   }, []);
 
   return (
-      <div  className='flex'>
-        <div className='w-1/2 mr-5'>
+      <div  className='flex sm:flex-col-reverse	lg:flex-row'>
+        <div className='w-full mt-8 lg:w-1/2 lg:mr-5'>
           <div className="p-float-label w-full">
             <InputText className='w-full' id="car-license-plate" value={props.plateLicense} onChange={(e) => props.setPlateLicense(e.target.value)} required/>
             <label htmlFor="car-license-plate">Регистрационен номер на латиница (пр: В2345РА)</label>

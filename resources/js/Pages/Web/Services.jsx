@@ -70,7 +70,7 @@ export default function Services() {
     <>
       <Section id='services' className='bg-white pt-16'>
         <div className="container">
-          <h1 className="text-primary text-4xl text-center font-montserrat">Видове технически прегледи</h1>
+          <h1 className="text-primary text-center font-montserrat sm:text-3xl lg:py-14 lg:text-4xl">Видове технически прегледи</h1>
           <div className="card pt-12">
             <Carousel value={products} numVisible={3} numScroll={1} responsiveOptions={responsiveOptions} className="custom-carousel" circular itemTemplate={productTemplate} />
         </div>

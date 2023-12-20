@@ -10,8 +10,8 @@ export default function Contacts(props) {
       <Section id='contacts' className='bg-white py-32'>
         <div className='bg-background-light'>
           <OpenLayersMap />
-          <div className="container relative">
-            <Card className='absolute bottom-12 left-12 w-[36%] flex justify-center flex-wrap'>
+          <div className="container lg:relative">
+            <Card className='absolute w-full lg:bottom-12 lg:left-12 lg:w-[36%] flex justify-center flex-wrap'>
               <div className="text-primary text-center w-full w-[350px] flex justify-between flex-wrap tracking-wide leading-relaxed">
                 <h1 className="w-full font-montserrat">Работно време:</h1>
                 <p className="w-full flex justify-between font-lato"><span className="text-secondary">{preferences.regularDaysShiftStart} - {preferences.regularDaysShiftEnd}</span> Понеделник - Петък</p>
@@ -31,12 +31,17 @@ export default function Contacts(props) {
             </Card>
           </div>
         </div>
-        <div className="container">
-          <h1 className="text-primary text-4xl text-center font-montserrat mt-20">Пишете ни</h1>
+        <div className="container sm:pt-64 sm:pb-5 sm:bg-background-light lg:bg-white lg:pt-0">
+          <h1 className="text-primary text-center font-montserrat sm:text-3xl sm:mt-10 lg:py-14 lg:text-4xl lg:mt-20">Пишете ни</h1>
           <ContactsForm />
         </div>
       </Section>
       <style>{`
+      @media (max-width: 975px) {
+        .p-card {
+          box-shadow: none;
+        }
+      }
       `}</style>
     </>
   );

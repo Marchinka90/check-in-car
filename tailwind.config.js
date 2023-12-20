@@ -11,9 +11,9 @@ export default {
     ],
     theme: {
         screens: {
-            // sm: '480px',
-            // md: '768px',
-            // lg: '976px',
+            sm: '480px',
+            md: '768px',
+            lg: '976px',
             // xl: '1440px'
             xl: '1300px'
         },

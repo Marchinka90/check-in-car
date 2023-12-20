@@ -23,6 +23,8 @@
         @inertiaHead
     </head>
     <body class="font-sans antialiased">
+        <div id="backdrop-hook"></div>
+        <div id="drawer-hook"></div>
         @inertia
     </body>
 </html>

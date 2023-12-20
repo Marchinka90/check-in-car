@@ -19,8 +19,8 @@ export default function StepThree(props) {
 
   return (
     <>
-      <div className="flex justify-around">
-        <div className='text-primary font-lato tracking-wide leading-relaxed w-96'>
+      <div className="flex justify-center items-center w-full sm:flex-col lg:flex-row lg:justify-around">
+        <div className='text-primary font-lato tracking-wide leading-relaxed mb-5 w-96 md:w-128'>
           <p>Дата: <strong>{formattedDate}</strong></p>
           <p>Час: <strong>{props.selectedHour}</strong></p>
           <p>Регистрационен номер: <strong>{props.plateLicense}</strong></p>
@@ -30,7 +30,7 @@ export default function StepThree(props) {
           <p>Телефон: <strong>{props.phone}</strong></p>
           <p>Имейл: <strong>{props.email}</strong></p>
         </div>
-        <div className='text-primary font-lato tracking-wide leading-relaxed w-96'>
+        <div className='text-primary font-lato tracking-wide leading-relaxed w-96 md:w-128'>
           <div className='bg-background-light p-2'>
             <div className="flex justify-content-center mb-2 ">
               <div className="w-48">
