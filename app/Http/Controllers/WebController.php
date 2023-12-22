@@ -17,7 +17,13 @@ class WebController extends Controller
 {
   public function Welcome() {
     $preferences = Preference::select('name', 'value')->pluck('value', 'name');
-  
+
+    if ($preferences['saturdayShiftOn'] == 'Включен') {
+        $preferences['saturdayShiftOn'] = 1;
+    } else {
+        $preferences['saturdayShiftOn'] = 0;
+    }
+
     $vehicleCategories = VehicleCategory::all();
     $categories = [];
 

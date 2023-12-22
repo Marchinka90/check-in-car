@@ -31,7 +31,7 @@ class PreferencesSeeder extends Seeder
             ],
             [
                 'name' => 'saturdayShiftOn',
-                'value' => false,
+                'value' => 'Включен',
                 'description' => 'Работен ден в събота'
             ],
             [

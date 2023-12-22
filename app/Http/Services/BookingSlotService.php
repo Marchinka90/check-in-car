@@ -69,7 +69,6 @@ class BookingSlotService
     $bookingDate = date('Y-m-d', strtotime($date));
     $takenSlot = BookingSlot::where('booking_date', $bookingDate)->where('booking_hour', $hour)->first();
     
-    // dd($takenSlot);
     if (!empty($takenSlot)) {
       return false;
     }

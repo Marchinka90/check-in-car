@@ -20,8 +20,8 @@ export default function ForgotPassword({ status }) {
             <Head title="Forgot Password" />
 
             <div className="mb-4 text-sm text-gray-600">
-                Forgot your password? No problem. Just let us know your email address and we will email you a password
-                reset link that will allow you to choose a new one.
+                Забравена парола? Няма проблем. Просто въведете вашия имейл адрес и ние ще ви изпратим имейл с парола и
+                връзка за нулиране, която ще ви позволи да изберете нова парола.
             </div>
 
             {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
@@ -41,7 +41,7 @@ export default function ForgotPassword({ status }) {
 
                 <div className="flex items-center justify-end mt-4">
                     <PrimaryButton className="ms-4" disabled={processing}>
-                        Email Password Reset Link
+                        Изпратете имейл за нова парола
                     </PrimaryButton>
                 </div>
             </form>
