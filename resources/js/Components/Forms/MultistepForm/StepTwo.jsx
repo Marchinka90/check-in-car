@@ -90,12 +90,6 @@ export default function StepTwo(props) {
           </div>
         </div>
       </div>
-      <style>{`
-        #selected-hour {
-          color: white;
-          background: #FFA000;
-        }
-      `}</style>
     </>
   );
 }

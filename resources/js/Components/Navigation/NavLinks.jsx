@@ -19,7 +19,7 @@ export default function NavLinks(props) {
 
   return (
     <>
-      <ul className='flex items-center sm:flex-col lg:flex-row '>
+      <ul className='flex items-center flex-col lg:flex-row '>
         <li className={classes.listItem}>
           <ScrollLink
             to='home'
@@ -86,7 +86,7 @@ export default function NavLinks(props) {
           </ScrollLink>
         </li>
 
-        <li className={`${classes.listItem} sm:inline-block lg:hidden`}>
+        <li className={`${classes.listItem} inline-block lg:hidden`}>
           <ScrollLink
             to='reservation'
             smooth={true}
@@ -99,7 +99,7 @@ export default function NavLinks(props) {
           >ЗАПАЗИ ЧАС
           </ScrollLink>
         </li>
-        <li className={`${classes.listItem} sm:hidden lg:inline-block`}>
+        <li className={`${classes.listItem} hidden lg:inline-block`}>
           <ScrollLink
             to='reservation'
             smooth={true}

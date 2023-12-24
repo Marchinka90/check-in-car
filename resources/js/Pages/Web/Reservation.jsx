@@ -318,8 +318,8 @@ export default function Reservation(props) {
     <>
       <Toast ref={toast} />
       <Section id='reservation' className='bg-background-light pb-20'>
-        <h1 className="text-primary text-center font-montserrat sm:text-3xl sm:py-10 lg:py-14 lg:text-4xl">Запази час</h1>
-        <div className="container">
+        <h1 className="text-primary text-center font-montserrat text-3xl py-10 lg:py-14 lg:text-4xl">Запази час</h1>
+        <div className="lg:container">
           <Card>
             {!successMessage && <> <Steps model={steps} activeIndex={activeIndex - 1} readOnly={true} className='mb-16' />
               <form onSubmit={onSubmitHandler}>

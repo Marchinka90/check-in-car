@@ -1,6 +1,6 @@
 export default function Guest({ children }) {
     return (
-        <div className="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-background-light text-primary">
+        <div className="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-admin-background-light text-primary">
             <div>
                 <h1 className='text-4xl text-primary'>ВИТА 21</h1>
             </div>

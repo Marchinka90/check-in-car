@@ -7,6 +7,8 @@ use Inertia\Inertia;
 
 use App\Http\Controllers\WebController;
 use App\Http\Controllers\PreferencesController;
+use App\Http\Controllers\ServicesController;
+use App\Http\Controllers\BookingSlotController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +49,19 @@ Route::middleware('auth')->group(function () {
     */
     Route::get('/preferences', [PreferencesController::class, 'index'])->name('preferences');
     Route::put('/preferences/update/{id}', [PreferencesController::class, 'update'])->name('preferences.update');
+    /*
+    | Services Routes
+    */
+    Route::get('/services', [ServicesController::class, 'index'])->name('services');
+    Route::put('/services/update/{id}', [ServicesController::class, 'update'])->name('services.update');
+    /*
+    | Booking Slot Routes
+    */
+    Route::get('/booking-slot', [BookingSlotController::class, 'showAdminBookingForm'])->name('booking-slot');
+    // Route::put('/services/update/{id}', [ServicesController::class, 'update'])->name('services.update');
+
+
+    
 });
 
 require __DIR__.'/auth.php';

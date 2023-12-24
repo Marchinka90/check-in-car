@@ -12,10 +12,46 @@ use App\Http\Requests\FreeBookingSlotsRequest;
 use App\Http\Requests\BookingRequest;
 use App\Models\Preference;
 use App\Models\BookingSlot;
+use App\Models\VehicleCategory;
+use Inertia\Inertia;
+use Inertia\Response;
 use Carbon\Carbon;
 
 class BookingSlotController extends Controller
 {
+    public function showAdminBookingForm()
+    {
+      $preferences = Preference::select('name', 'value')->pluck('value', 'name');
+
+      if ($preferences['saturdayShiftOn'] == 'Включен') {
+          $preferences['saturdayShiftOn'] = 1;
+      } else {
+          $preferences['saturdayShiftOn'] = 0;
+      }
+
+      $vehicleCategories = VehicleCategory::all();
+      $services = [
+        (object)[
+          'key' => 0,
+          'label' => '',
+          'data' => '',
+      ]];
+
+      foreach ($vehicleCategories as $vehicleCategory) {
+        array_push($services, (object)[
+          'key' => $vehicleCategory->id,
+          'label' => $vehicleCategory->name . ' - ' . $vehicleCategory->price . '.лв',
+          'data' => $vehicleCategory->id
+          ]
+        );
+      }
+        return Inertia::render('Admin/BookingSlot', [
+          'services' => $services,
+          'preferences' => $preferences,
+          'status' => session('status'),
+      ]);
+    }
+
     public function bookAppointment(BookingRequest $request)
     {
       $data = $request->all();      

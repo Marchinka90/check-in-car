@@ -10,12 +10,12 @@ export default function Footer() {
   return (
     <>
       <footer className="bg-primary w-full">
-        <div className="container flex sm:flex-col lg:flex-row lg:justify-between items-center px-10 sm:h-30 lg:h-20">
-          <p className="text-gray sm:my-2">© {year} ВИТА 21. All Rights Reserved.</p>
-          <p className="flex sm:flex-col lg:flex-row justify-center text-gray mr-12">
-            <button className="sm:my-2 lg:my-0" onClick={() => setShowPrivacy(true)}>Политика за Поверителност</button>
-            <span className="mx-2 sm:hidden lg:inline-block">|</span>
-            <button className="sm:my-2 lg:my-0" onClick={() => setShowTerms(true)}>Условия за ползване</button>
+        <div className="container flex flex-col items-center h-30 lg:flex-row lg:justify-between  lg:px-10 lg:h-20">
+          <p className="text-gray my-2 lg:my-0">© {year} ВИТА 21. All Rights Reserved.</p>
+          <p className="flex flex-col lg:flex-row justify-center text-gray mr-12">
+            <button className="my-2 lg:my-0 lg:my-0" onClick={() => setShowPrivacy(true)}>Политика за Поверителност</button>
+            <span className="mx-2 hidden lg:inline-block">|</span>
+            <button className="my-2 lg:my-0" onClick={() => setShowTerms(true)}>Условия за ползване</button>
             <PrivacyPolicy title='Политика за Поверителност' visible={showPrivacy} setVisible={setShowPrivacy}/>
             <PrivacyPolicy title='Условия за ползване' visible={showTerms} setVisible={setShowTerms}/>
           </p>

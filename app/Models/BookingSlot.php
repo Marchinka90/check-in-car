@@ -27,6 +27,7 @@ class BookingSlot extends Model
         'booking_hour',
         'status',
         'plate_license',
+        'service',
         'customer_id',
     ];
 

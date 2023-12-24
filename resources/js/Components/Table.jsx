@@ -1,4 +1,4 @@
-export default function Table({ items, columns, primary, action }) {
+export default function Table({ items, columns, primary, action, index }) {
     return (
         <div className="relative overflow-x-auto border shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -6,7 +6,11 @@ export default function Table({ items, columns, primary, action }) {
                 <tr>
                     <th scope="col" className="px-2 py-4">{primary}</th>
                     {columns.map((column) =>
-                        <th key={column} scope="col" className="px-2 py-2">{column == 'description' ? 'Настройка' : 'Стойност'}</th>
+                        <th key={column} scope="col" className="px-2 py-2">{
+
+                            column == 'description' ? 'Настройка' : column == 'value' ? 'Стойност' : column == 'name' ? 'Име' : 'Цена'
+                            
+                            }</th>
                     )}
                     <th scope="col" className="px-6 py-3"></th>
                 </tr>
@@ -15,7 +19,7 @@ export default function Table({ items, columns, primary, action }) {
                 {items.map((item) =>
                     <tr key={item.id} className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
                         <th scope="row" className="px-2 py-4 font-medium  whitespace-nowrap dark:text-white">
-                            #{item.id -1}
+                            #{item.id - index}
                         </th>
                         {columns.map((column) =>
                             <td key={column} className="px-2 py-4">

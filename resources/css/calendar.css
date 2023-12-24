@@ -122,8 +122,11 @@
 .credits span {
   color: var(--primary-color);
 }
-
 #selected-date {
+  color: white;
+  background: var(--secondary-color);
+}
+#selected-hour {
   color: white;
   background: var(--secondary-color);
 }

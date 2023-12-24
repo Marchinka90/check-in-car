@@ -9,57 +9,36 @@ import SecondaryButton from '@/Components/SecondaryButton';
 import TextInput from '@/Components/TextInput';
 import { useForm } from '@inertiajs/react';
 import PrimaryButton from '@/Components/PrimaryButton';
-import Select from '@/Components/Select';
 
 const columns = [
-  'description',
-  'value'
+  'name',
+  'price'
 ];
 
-export default function Preferences({ auth, preferences, status }) {
-  const [confirmingPreferenceChange, setConfirmingPreferenceChange] = useState(false);
+export default function Services({ auth, services, status }) {
+  const [confirmingServiceChange, setConfirmingServiceChange] = useState(false);
   const [inputLabelValue, setInputLabelValue] = useState();
   const [preferenceId, setPreferenceId] = useState();
-  const [showSelect, setShowSelect] = useState(false);
   const valueInput = useRef();
 
   const { data, setData, put: update, processing, reset, errors } = useForm({
-    preferance_value: '',
+    service_price: '',
   });
 
-  const options = [
-    {
-      key: 1,
-      label: "Включен",
-      value: "Включен",
-    },
-    {
-      key: 2,
-      label: "Изключен",
-      value: "Изключен",
-    },
-  ];
-
-  const confirmPreferenceChangeHandler = (id) => {
-    setConfirmingPreferenceChange(true);
-    preferences.map((item) => {
+  const confirmServiceChangeHandler = (id) => {
+    setConfirmingServiceChange(true);
+    services.map((item) => {
       if (item.id === id) {
-        if (item.name == 'saturdayShiftOn') {
-          setShowSelect(true);
-        } else {
-          setShowSelect(false);
-        }
-        
-        setInputLabelValue(item.description);
+        setInputLabelValue(item.name);
         setPreferenceId(item.id);
-        setData('preferance_value', item.value);
+        setData('service_price', item.price);
       }
     });
   };
 
-  const changePreferenceHandler = (e) => {
+  const changeServiceHandler = (e) => {
     e.preventDefault();
-    update(route('preferences.update', preferenceId), {
+    update(route('services.update', preferenceId), {
       preserveScroll: true,
       onSuccess: () => closeModal(),
       onError: () => valueInput.current.focus(),
@@ -70,14 +49,14 @@ export default function Preferences({ auth, preferences, status }) {
   };
 
   const closeModal = () => {
-    setConfirmingPreferenceChange(false);
+    setConfirmingServiceChange(false);
     reset();
   };
 
   return (
     <AuthenticatedLayout
       user={auth.user}
-      header={<h2 className="font-semibold text-xl leading-tight">Настройки на системата</h2>}
+      header={<h2 className="font-semibold text-xl leading-tight">Видове категории МПС</h2>}
     >
       <Head title="Настройки" />
 
@@ -86,12 +65,12 @@ export default function Preferences({ auth, preferences, status }) {
           <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             {status === 'success' && (
               <div className="mt-2 py-3 ml-6 font-medium text-base text-green-600">
-                Успешно променена настройка.
+                Успешно променена цена на категория МПС.
               </div>
             )}
             {status === 'error' && (
               <div className="mt-2 py-3 ml-6 font-medium text-base text-red-600">
-                Няма такава настройка.
+                Няма такава категория МПС.
               </div>
             )}
           </div>
@@ -101,35 +80,25 @@ export default function Preferences({ auth, preferences, status }) {
       <div className="py-6">
         <div className="max-w-7xl mx-auto sm:px-2 lg:px-8">
           <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <Table items={preferences} columns={columns} primary="Номер" action={confirmPreferenceChangeHandler} index={1}></Table>
-            <Modal show={confirmingPreferenceChange} onClose={closeModal}>
-              <form onSubmit={changePreferenceHandler} className="p-6">
+            <Table items={services} columns={columns} primary="Номер" action={confirmServiceChangeHandler} index={0}></Table>
+            <Modal show={confirmingServiceChange} onClose={closeModal}>
+              <form onSubmit={changeServiceHandler} className="p-6">
                 <h2 className="text-lg font-medium">
-                  Промяна на настройка
+                  Промяна на цена на категория МПС
                 </h2>
 
                 <div className='mt-6'>
-                  <InputLabel htmlFor="preferance_value" value={inputLabelValue} />
+                  <InputLabel htmlFor="service_price" value={inputLabelValue} />
 
-                  {!showSelect && <TextInput
-                    id="preferance_value"
+                  <TextInput
+                    id="service_price"
                     ref={valueInput}
-                    value={data.preferance_value}
-                    onChange={(e) => setData('preferance_value', e.target.value)}
+                    value={data.service_price}
+                    onChange={(e) => setData('service_price', e.target.value)}
                     type="text"
                     className="mt-1 block w-full"
-                    autoComplete="preferance_value"
-                  />}
-
-                  {showSelect && <Select
-                    id="preferance_value"
-                    options={options}
-                    value={data.preferance_value}
-                    onChange={(e) => setData('preferance_value', e.target.value)}
-                    type="text"
-                    className="mt-1 block w-full"
-                    autoComplete="preferance_value"
-                  />}
+                    autoComplete="service_price"
+                  />
 
                   <InputError message={errors.password} className="mt-2" />
                 </div>

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->date('booking_date');
             $table->time('booking_hour');
             $table->string('plate_license');
+            $table->string('service');
             $table->string('status');
             $table->unsignedBigInteger('customer_id'); // Foreign key
             $table->timestamps();

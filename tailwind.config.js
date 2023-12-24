@@ -29,6 +29,7 @@ export default {
                 'gray': '#f2efe9',
                 'background-dark': '#575471',
                 'background-light': '#f2efe9',
+                'admin-background-light': '#f3f4f6',
                 'backgrount-dark-transperant': 'rgba(87, 84, 113, 0.6)'
             },
             backgroundImage: {

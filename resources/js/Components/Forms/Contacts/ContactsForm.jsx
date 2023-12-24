@@ -110,8 +110,8 @@ export default function ContactsForm() {
       {successMessage && <ContactUsSuccess />}
       {!successMessage && <form className='mx-5'>
         <div className='flex flex-col mt-5'>
-          <div className='w-full flex my-10 sm:flex-col lg:flex-row'>
-            <div className="p-float-label w-full sm:mb-10 lg:mb-0 lg:mr-2 ">
+          <div className='w-full flex my-10 flex-col lg:flex-row'>
+            <div className="p-float-label w-full mb-10 lg:mb-0 lg:mr-2 ">
               <InputText className='w-full' id="contact-us-title" value={contactUsTitle} onChange={(e) => setContactUsTitle(e.target.value)} />
               <label htmlFor="contact-us-title">Заглавие</label>
             </div>

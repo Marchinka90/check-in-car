@@ -19,7 +19,7 @@ export default function StepThree(props) {
 
   return (
     <>
-      <div className="flex justify-center items-center w-full sm:flex-col lg:flex-row lg:justify-around">
+      <div className="flex justify-center items-center w-full flex-col lg:flex-row lg:justify-around">
         <div className='text-primary font-lato tracking-wide leading-relaxed mb-5 w-96 md:w-128'>
           <p>Дата: <strong>{formattedDate}</strong></p>
           <p>Час: <strong>{props.selectedHour}</strong></p>

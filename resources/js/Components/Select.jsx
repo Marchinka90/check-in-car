@@ -18,7 +18,7 @@ export default forwardRef(function TextInput({ label, options, value, className 
         className
       } 
     >
-      {options.map((option) => (<option key={option.value} value={option.value}>{option.label}</option>))}
+      {options.map((option) => (<option key={option.key} value={option.data}>{option.label}</option>))}
     </select>
   );
 });

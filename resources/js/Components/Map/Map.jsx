@@ -1,15 +1,3 @@
-// import React, { useEffect } from 'react';
-// import 'ol/ol.css'; // Import OpenLayers styles
-// import { Map, View } from 'ol';
-// import TileLayer from 'ol/layer/Tile';
-// import OSM from 'ol/source/OSM';
-
-// import { fromLonLat } from 'ol/proj';
-// import { Point } from 'ol/geom';
-// import VectorLayer from 'ol/layer/Vector';
-// import VectorSource from 'ol/source/Vector';
-// import { Icon, Style } from 'ol/style';
-
 import React, { useEffect } from 'react';
 import 'ol/ol.css';
 import { Map, View } from 'ol';

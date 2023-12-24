@@ -8,7 +8,7 @@ export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
     return (
-        <div className="min-h-screen bg-background-light text-primary">
+        <div className="min-h-screen bg-admin-background-light text-primary">
             <nav className="bg-white border-b border-gray-100">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
@@ -20,16 +20,15 @@ export default function Authenticated({ user, header, children }) {
                             </div>
 
                             <div className="hidden space-x-2 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink href={route('dashboard')} active={route().current('dashboard')}>
-                                Контролен панел
-                                </NavLink>
-                                {/* <NavLink href={route('')} active={route().current('dashboard')}>
+                                {/* <NavLink href={route('reservation')} active={route().current('reservation')}>
+                                Резервации
+                                </NavLink> */}
+                                <NavLink href={route('booking-slot')} active={route().current('booking-slot')}>
                                 Запази час
-                                </NavLink>
-                                <NavLink href={route('vechi')} active={route().current('dashboard')}>
+                                </NavLink> 
+                                <NavLink href={route('services')} active={route().current('services')}>
                                 Категории МПС
                                 </NavLink>
-                                */}
                                 <NavLink href={route('preferences')} active={route().current('preferences')}>
                                 Настройки
                                 </NavLink>

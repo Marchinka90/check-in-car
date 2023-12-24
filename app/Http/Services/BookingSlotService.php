@@ -3,6 +3,7 @@
 namespace App\Http\Services;
 
 use App\Models\BookingSlot;
+use App\Models\VehicleCategory;
 use App\Models\Preference;
 use Carbon\Carbon;
 
@@ -33,32 +34,36 @@ class BookingSlotService
 
     $bookingDate = date('Y-m-d', strtotime($selectedDate));
     $takenSlots = BookingSlot::where('booking_date', $bookingDate)->get();
-
+  
     while ($shiftStarts->lt($shiftEnds)) {
 
-      $timeString = $shiftStarts->hour . ':' . ($shiftStarts->minute == '0'? '00' : $shiftStarts->minute);
+      $timeString = ($shiftStarts->hour < '10'? '0'. $shiftStarts->hour : $shiftStarts->hour) . ':' . ($shiftStarts->minute == '0'? '00' : $shiftStarts->minute);
       $isSlotFree = true;
 
       foreach ($takenSlots as $takenSlot) {
         list($takenHour, $takenMinutes, $takenSeconds) = explode(":", $takenSlot->booking_hour);
         $takenSlotTime = $takenHour . ':' . $takenMinutes;
       
-        if ($takenSlotTime == $timeString) { $isSlotFree = false; }
+        if ($takenSlotTime == $timeString) { 
+          $isSlotFree = false; 
+        }
       }
 
       if ($isSlotFree) { array_push($freeSlots, $timeString); }
       
       $shiftStarts->addMinutes($time);
     }
+    
     return $freeSlots;
   }
 
   public function bookFreeSlot($data, $customer_id) {
-
+    $service = VehicleCategory::where('id', $data['vehicleCategory'])->first();
     $bookSlot = BookingSlot::create([
       'booking_date' => date('Y-m-d', strtotime($data['selectedDate'])),
       'booking_hour' => $data['selectedHour'],
       'plate_license' => $data['plateLicense'],
+      'service' => $service->name,
       'customer_id' => $customer_id,
     ]);
 
