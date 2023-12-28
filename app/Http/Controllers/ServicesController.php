@@ -64,13 +64,17 @@ class ServicesController extends Controller
         $service = VehicleCategory::find($id);
         
         if (empty($service)) {
-            return back()->with('status', 'error');
+            return back()->withErrors('Няма такава категория МПС.');
+        }
+        
+        if ($service->price == $request->get('service_price')) {
+            return back()->withErrors('Новата цена трябва да бъде различна от старата');
         }
 
         $service->price = $request->get('service_price');
         $service->save();
         
-        return redirect()->back()->with('status', 'success');
+        return back();
     }
 
     /**

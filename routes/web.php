@@ -58,6 +58,7 @@ Route::middleware('auth')->group(function () {
     | Booking Slot Routes
     */
     Route::get('/booking-slot', [BookingSlotController::class, 'showAdminBookingForm'])->name('booking-slot');
+    Route::post('/booking-slot', [BookingSlotController::class, 'adminBookingAppointment'])->name('booking-slot.store');
     // Route::put('/services/update/{id}', [ServicesController::class, 'update'])->name('services.update');
 
 

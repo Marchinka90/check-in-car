@@ -10,6 +10,7 @@ use App\Http\Services\CustomerService;
 use App\Http\Services\BookingSlotService;
 use App\Http\Requests\FreeBookingSlotsRequest;
 use App\Http\Requests\BookingRequest;
+use App\Http\Requests\AdminBookingRequest;
 use App\Models\Preference;
 use App\Models\BookingSlot;
 use App\Models\VehicleCategory;
@@ -67,15 +68,22 @@ class BookingSlotController extends Controller
       
       DB::beginTransaction();
 
-      if (!empty($isCustomerExist)) {
-        $customer = $isCustomerExist;
-      } else {
-        $customer = $customerService->createCustomer($data);
+      try {
+        if (!empty($isCustomerExist)) {
+          $customer = $isCustomerExist;
+        } else {
+          $customer = $customerService->createCustomer($data, false);
+        }
+        
+        $bookFreeSlot = $bookingSlotService->bookFreeSlot($data, $customer->id);
+
+      } catch (\Throwable $th) {
+        DB::rollBack();
+        return response()->json(['errors' => ['hours' => ['Този час не може да бъде запазен в момента. Моля, опитайте по-късно.']]], 404);
       }
 
-      $bookFreeSlot = $bookingSlotService->bookFreeSlot($data, $customer->id);
       
-      if (empty($bookFreeSlot)) {
+      if (!$bookFreeSlot) {
         DB::rollBack();
         return response()->json(['errors' => ['hours' => ['Този час не може да бъде запазен в момента. Моля, опитайте по-късно.']]], 404);
       }
@@ -85,11 +93,12 @@ class BookingSlotController extends Controller
       $mailController = new MailController();
       $sendMail = $mailController->sendEmailForBookingSlot($data);
 
-      return response()->json(['status' => 'success', 'data' => ['bookSlot' => $bookFreeSlot]], 200);
+      return response()->json(['status' => 'success', 'hours' => ['Успешно запазен час' ]], 200);
 
     }
 
-    public function freeBookingSlots(FreeBookingSlotsRequest $request) {
+    public function freeBookingSlots(FreeBookingSlotsRequest $request) 
+    {
       $selectedDate = $request->get('selectedDate');
       $preferences = Preference::select('name', 'value')->pluck('value', 'name');
                                   
@@ -107,5 +116,44 @@ class BookingSlotController extends Controller
       }
 
       return response()->json(['status' => 'success', 'data' => ['freeSlots' => $result]], 200);
+    }
+
+    public function adminBookingAppointment(AdminBookingRequest $request) 
+    {
+      $data = $request->all();      
+      $bookingSlotService = new BookingSlotService();
+      $isSlotFree = $bookingSlotService->isSlotFree($request->get('selectedDate'), $request->get('selectedHour'));
+
+      if (!$isSlotFree) {
+        return back()->withErrors('Този час вече е запазен, моля изберете друг час.');
+      }
+      
+      $customerService = new CustomerService();
+      $isCustomerExist = $customerService->adminCheckCustomer($data);
+
+      DB::beginTransaction();
+
+      try {
+        if (!empty($isCustomerExist)) {
+          $customer = $isCustomerExist;
+        } else {
+          $customer = $customerService->createCustomer($data, true);
+        }
+        
+        $bookFreeSlot = $bookingSlotService->bookFreeSlot($data, $customer->id);
+
+      } catch (\Throwable $th) {
+        DB::rollBack();
+        return back()->withErrors('Този час не може да бъде запазен в момента. Моля, опитайте по-късно.');
+      }
+
+      
+      if (!$bookFreeSlot) {
+        DB::rollBack();
+        return back()->withErrors('Този час не може да бъде запазен в момента. Моля, опитайте по-късно.');
+      }
+
+      DB::commit();
+      return back();
     }
 }

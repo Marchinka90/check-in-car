@@ -149,7 +149,7 @@ export default function Reservation(props) {
       return false;
     }
     if (phone === '' || phone.length < 9 || phone.length > 9) {
-      toastData = { severity: 'error', summary: 'Грешка', detail: 'Полето за Телефон не може да бъде празно и трябва да е дължина 9 символа' };
+      toastData = { severity: 'error', summary: 'Грешка', detail: 'Полето за Телефон не може да бъде празно и трябва да е с дължина 9 цифри' };
       setIsValidSecondStep(false);
       showToast(toastData);
       return false;

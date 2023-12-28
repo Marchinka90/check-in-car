@@ -10,13 +10,17 @@ import TextInput from '@/Components/TextInput';
 import { useForm } from '@inertiajs/react';
 import PrimaryButton from '@/Components/PrimaryButton';
 import Select from '@/Components/Select';
+import { Toast } from 'primereact/toast';
 
 const columns = [
   'description',
   'value'
 ];
 
+let toastData;
+
 export default function Preferences({ auth, preferences, status }) {
+  const toast = useRef(null);
   const [confirmingPreferenceChange, setConfirmingPreferenceChange] = useState(false);
   const [inputLabelValue, setInputLabelValue] = useState();
   const [preferenceId, setPreferenceId] = useState();
@@ -49,7 +53,7 @@ export default function Preferences({ auth, preferences, status }) {
         } else {
           setShowSelect(false);
         }
-        
+
         setInputLabelValue(item.description);
         setPreferenceId(item.id);
         setData('preferance_value', item.value);
@@ -57,14 +61,28 @@ export default function Preferences({ auth, preferences, status }) {
     });
   };
 
+  const showToast = (data) => {
+    if (toast.current) {
+      toast.current.show({ severity: data.severity, summary: data.summary, detail: data.detail });
+    }
+  };
+
   const changePreferenceHandler = (e) => {
     e.preventDefault();
     update(route('preferences.update', preferenceId), {
       preserveScroll: true,
-      onSuccess: () => closeModal(),
-      onError: () => valueInput.current.focus(),
+      onSuccess: () => {
+        toastData = { severity: 'success', summary: 'Успех', detail: 'Успешно променена настройка.' };
+        showToast(toastData);
+      },
+      onError: (er) => {
+        Object.entries(er).forEach(([key, message]) => {
+          toastData = { severity: 'error', summary: 'Грешка', detail: message };
+          showToast(toastData);
+        });
+      },
       onFinish: () => {
-        reset()
+        closeModal()
       },
     });
   };
@@ -81,23 +99,7 @@ export default function Preferences({ auth, preferences, status }) {
     >
       <Head title="Настройки" />
 
-      <div className='py-1 mt-2'>
-        <div className="max-w-7xl mx-auto sm:px-2 lg:px-8">
-          <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            {status === 'success' && (
-              <div className="mt-2 py-3 ml-6 font-medium text-base text-green-600">
-                Успешно променена настройка.
-              </div>
-            )}
-            {status === 'error' && (
-              <div className="mt-2 py-3 ml-6 font-medium text-base text-red-600">
-                Няма такава настройка.
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
+      <Toast ref={toast} />
       <div className="py-6">
         <div className="max-w-7xl mx-auto sm:px-2 lg:px-8">
           <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">

@@ -21,21 +21,17 @@ export default function BookingSlot({ auth, services, preferences, status }) {
 
     const { data, setData, post, processing, errors, reset } = useForm({
         vehicleCategory: '',
-        plateLicense: '',
         selectedDateObj: '',
         selectedDate: '',
         selectedHour: '',
         firstname: '',
         lastname: '',
         phone: '',
+        plateLicense: '',
     });
     useEffect(() => {
-        console.log(data.selectedDateObj);
         let formData = { selectedDate: '' }
-        let oldSelectedDate = document.getElementById('selected-hour');
-        if (oldSelectedDate) {
-            oldSelectedDate.id = '';
-        }
+        deselectHour();
         if (data.selectedDateObj) {
             const formattedDate = data.selectedDateObj.toLocaleDateString({ year: 'numeric', month: '2-digit', day: '2-digit' });
             setData({ ...data, selectedDate: formattedDate })
@@ -43,7 +39,6 @@ export default function BookingSlot({ auth, services, preferences, status }) {
 
             axios.post('/api/free-booking-slots', formData)
                 .then(res => {
-
                     const data = res.data;
                     if (data.status === 'success') {
                         setHeddingLabel('Изберете свободен час');
@@ -52,11 +47,13 @@ export default function BookingSlot({ auth, services, preferences, status }) {
                 })
                 .catch(er => {
                     let errorsObj = er.response.data.errors;
-
                     Object.entries(errorsObj).forEach(([key, message]) => {
                         toastData = { severity: 'error', summary: 'Грешка', detail: message[0] };
                         showToast(toastData);
                     });
+                    setHeddingLabel('Изберете дата от календара');
+                    setFreeHoursData([]);
+                    deselectDate();
                 });
         }
 
@@ -68,11 +65,22 @@ export default function BookingSlot({ auth, services, preferences, status }) {
         }
     };
 
-    const selectHourHandler = (hour) => {
-        let oldSelectedDate = document.getElementById('selected-hour');
+    const deselectHour = () => {
+        let oldSelectedHour = document.getElementById('selected-hour');
+        if (oldSelectedHour) {
+            oldSelectedHour.id = '';
+        }
+    }
+
+    const deselectDate = () => {
+        let oldSelectedDate = document.getElementById('selected-date');
         if (oldSelectedDate) {
             oldSelectedDate.id = '';
         }
+    }
+
+    const selectHourHandler = (hour) => {
+        deselectHour();
         setData({ ...data, selectedHour: hour.target.innerHTML })
         hour.target.id = 'selected-hour';
     }
@@ -93,27 +101,31 @@ export default function BookingSlot({ auth, services, preferences, status }) {
 
     const submit = (e) => {
         e.preventDefault();
-        if(isValidForm()) {
-
-            // post(route('login'));
+        if (isValidForm()) {
+            post(route('booking-slot.store', data), {
+                preserveScroll: true,
+                onSuccess: () => {
+                    toastData = { severity: 'success', summary: 'Успех', detail: 'Запазването е успешно' };
+                    showToast(toastData);
+                    setHeddingLabel('Изберете дата от календара');
+                    setFreeHoursData([]);
+                    deselectDate();
+                    reset();
+                },
+                onError: (er) => {
+                    Object.entries(er).forEach(([key, message]) => {
+                        toastData = { severity: 'error', summary: 'Грешка', detail: message };
+                        showToast(toastData);
+                    });
+                    return;
+                },
+            });
         }
-
-
     };
 
     const isValidForm = () => {
-        if (data.plateLicense === '' || data.plateLicense.length < 6) {
-            toastData = { severity: 'error', summary: 'Грешка', detail: 'Полето за Регистрационен номер не може да бъде празно или по-малко от 6 символа' };
-            showToast(toastData);
-            return false;
-        }
-        if (!data.vehicleCategory || data.vehicleCategory < 1 || data.vehicleCategory > 7) {
-            toastData = { severity: 'error', summary: 'Грешка', detail: 'Не сте избрали Категория на автомобила' };
-            showToast(toastData);
-            return false;
-        }
         if (!data.selectedDate) {
-            toastData = { severity: 'error', summary: 'Грешка', detail: 'Не сте избрали дата' };
+            toastData = { severity: 'error', summary: 'Грешка', detail: 'Не сте избрали дата от календара' };
             showToast(toastData);
             return false;
         }
@@ -122,16 +134,41 @@ export default function BookingSlot({ auth, services, preferences, status }) {
         data.selectedDateObj.setHours(0, 0, 0, 0);
 
         if (data.selectedDateObj.getTime() < today.getTime()) {
-        toastData = { severity: 'error', summary: 'Грешка', detail: 'Датата не може да бъде по-малка от днешната' };
-        showToast(toastData);
-        return false;
+            toastData = { severity: 'error', summary: 'Грешка', detail: 'Датата не може да бъде по-малка от днешната' };
+            showToast(toastData);
+            return false;
         }
-
         if (data.selectedHour === '') {
             toastData = { severity: 'error', summary: 'Грешка', detail: 'Не сте избрали свободен час' };
             showToast(toastData);
             return false;
         }
+        if (!data.vehicleCategory || data.vehicleCategory < 1 || data.vehicleCategory > 7) {
+            toastData = { severity: 'error', summary: 'Грешка', detail: 'Не сте избрали Категория на автомобила' };
+            showToast(toastData);
+            return false;
+        }
+        if (firstname === '' || firstname.length < 3) {
+            toastData = { severity: 'error', summary: 'Грешка', detail: 'Полето за Име не може да бъде празно или по-малко от 3 символа' };
+            showToast(toastData);
+            return false;
+        }
+        if (lastname === '' || lastname.length < 3) {
+            toastData = { severity: 'error', summary: 'Грешка', detail: 'Полето за Фамилия не може да бъде празно или по-малко от 3 символа' };
+            showToast(toastData);
+            return false;
+        }
+        if (phone === '' || phone.length < 9 || phone.length > 9) {
+            toastData = { severity: 'error', summary: 'Грешка', detail: 'Полето за Телефон не може да бъде празно и трябва да е дължина 9 символа' };
+            showToast(toastData);
+            return false;
+        }
+        if (data.plateLicense === '' || data.plateLicense.length < 6) {
+            toastData = { severity: 'error', summary: 'Грешка', detail: 'Полето за Регистрационен номер не може да бъде празно или по-малко от 6 символа' };
+            showToast(toastData);
+            return false;
+        }
+        return true;
     }
 
 
@@ -148,15 +185,13 @@ export default function BookingSlot({ auth, services, preferences, status }) {
                     <div className="bg-white w-full overflow-hidden shadow-sm sm:rounded-lg">
                         <Head title="Запази час" />
 
-                        {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
-
                         <form onSubmit={submit}>
 
-                            <div className='flex flex-col lg:flex-row max-w-7xl'>
+                            <div className='flex flex-col items-center lg:items-start lg:flex-row max-w-7xl'>
                                 <Calendar setSelectedDate={(e) => setData('selectedDateObj', e)} preferences={preferences} />
-                                <div className='sm:max-w-2xl ml-2 mt-2 lg:ml:0 lg:w-2/3 '>
+                                <div className='w-full sm:max-w-lg overflow-hidden pt-2 lg:max-w-2xl lg:p-2 lg:ml:0 lg:w-2/3 '>
                                     <div className='w-full sm:max-w-2xl bg-background-light flex flex-wrap justify-center'>
-                                        <h2 className='w-full block text-center text-2xl my-5 font-montserrat text-primary'>
+                                        <h2 className='w-full block text-center text-xl lg:text-2xl my-5 font-montserrat text-primary'>
                                             {heddingLabel}
                                         </h2>
                                         {freeHoursHtml}
@@ -177,7 +212,7 @@ export default function BookingSlot({ auth, services, preferences, status }) {
                                 </div>
                             </div>
 
-                            <div className='flex flex-col lg:flex-row w-full'>
+                            <div className='flex flex-col items-center lg:justify-center lg:flex-row w-full '>
                                 <div className="w-full sm:max-w-lg mt-6 p-2 overflow-hidden">
                                     <InputLabel htmlFor="firstname" value="Име" />
 
@@ -209,7 +244,7 @@ export default function BookingSlot({ auth, services, preferences, status }) {
                                     <InputError message={errors.password} className="mt-2" />
                                 </div>
                             </div>
-                            <div className='flex flex-col lg:flex-row w-full'>
+                            <div className='flex flex-col w-full items-center lg:justify-center lg:flex-row'>
                                 <div className="w-full sm:max-w-lg mt-6 p-2 overflow-hidden">
                                     <InputLabel htmlFor="phone" value="Телефон" />
 
@@ -238,7 +273,7 @@ export default function BookingSlot({ auth, services, preferences, status }) {
                                         name="plateLicense"
                                         value={data.plateLicense}
                                         className="mt-1 block w-full"
-                                        onChange={(e) => setData('plateLicense', e.target.value)}
+                                        onChange={(e) => setData('plateLicense', e.target.value.toUpperCase())}
                                     />
 
                                     <InputError message={errors.password} className="mt-2" />

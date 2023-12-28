@@ -9,13 +9,17 @@ import SecondaryButton from '@/Components/SecondaryButton';
 import TextInput from '@/Components/TextInput';
 import { useForm } from '@inertiajs/react';
 import PrimaryButton from '@/Components/PrimaryButton';
+import { Toast } from 'primereact/toast';
 
 const columns = [
   'name',
   'price'
 ];
 
+let toastData;
+
 export default function Services({ auth, services, status }) {
+  const toast = useRef(null);
   const [confirmingServiceChange, setConfirmingServiceChange] = useState(false);
   const [inputLabelValue, setInputLabelValue] = useState();
   const [preferenceId, setPreferenceId] = useState();
@@ -40,12 +44,26 @@ export default function Services({ auth, services, status }) {
     e.preventDefault();
     update(route('services.update', preferenceId), {
       preserveScroll: true,
-      onSuccess: () => closeModal(),
-      onError: () => valueInput.current.focus(),
+      onSuccess: () => {
+        toastData = { severity: 'success', summary: 'Успех', detail: 'Успешно променена цена на категория МПС.' };
+        showToast(toastData);
+      },
+      onError: (er) => {
+        Object.entries(er).forEach(([key, message]) => {
+          toastData = { severity: 'error', summary: 'Грешка', detail: message };
+          showToast(toastData);
+        });
+      },
       onFinish: () => {
-        reset()
+        closeModal()
       },
     });
+  };
+
+  const showToast = (data) => {
+    if (toast.current) {
+      toast.current.show({ severity: data.severity, summary: data.summary, detail: data.detail });
+    }
   };
 
   const closeModal = () => {
@@ -59,24 +77,8 @@ export default function Services({ auth, services, status }) {
       header={<h2 className="font-semibold text-xl leading-tight">Видове категории МПС</h2>}
     >
       <Head title="Настройки" />
-
-      <div className='py-1 mt-2'>
-        <div className="max-w-7xl mx-auto sm:px-2 lg:px-8">
-          <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            {status === 'success' && (
-              <div className="mt-2 py-3 ml-6 font-medium text-base text-green-600">
-                Успешно променена цена на категория МПС.
-              </div>
-            )}
-            {status === 'error' && (
-              <div className="mt-2 py-3 ml-6 font-medium text-base text-red-600">
-                Няма такава категория МПС.
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
+      
+      <Toast ref={toast} />
       <div className="py-6">
         <div className="max-w-7xl mx-auto sm:px-2 lg:px-8">
           <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">

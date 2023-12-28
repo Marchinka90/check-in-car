@@ -9,6 +9,19 @@ return [
     'boolean' => 'Полето :attribute трябва да бъде отметнато.',
     'date_format' => ':attribute трябва да бъде в правилния формат.',
     'captcha_api' => 'Полето :attribute трябва да бъде попълнено правилно.', 
+    'size' => [
+        'numeric' => 'Полето :attribute трябва да бъде :size.',
+        'file' => 'Полето :attribute трябва да бъде :size килобайта.',
+        'string' => 'Полето :attribute трябва да бъде :size символа.',
+        'array' => 'Полето :attribute трябва да съдържа :size елемента.',
+    ],
+    'min' => [
+        'numeric' => 'Полето :attribute трябва да бъде :min.',
+        'file' => 'Полето :attribute трябва да бъде :min килобайта.',
+        'string' => 'Полето :attribute трябва да бъде :min символа.',
+        'array' => 'Полето :attribute трябва да съдържа :min елемента.',
+    ],
+    
 
     // Add more custom error messages as needed
     /*

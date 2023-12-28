@@ -12,13 +12,27 @@ class CustomerService
     return Customer::where('email', $emal)->first();
   }
 
-  public function createCustomer($data) {
-    $customer = Customer::create([
-      'firstname' => $data['firstname'],
-      'lastname' => $data['lastname'],
-      'phone' => $data['phone'],
-      'email' => $data['email'],
-    ]);
+  public function adminCheckCustomer($data) {
+    $phone = $data['phone'];
+
+    return Customer::where('phone', $phone)->first();
+  }
+
+  public function createCustomer($data, $isAdmin) {
+    if ($isAdmin) {
+      $customer = Customer::create([
+        'firstname' => $data['firstname'],
+        'lastname' => $data['lastname'],
+        'phone' => $data['phone'],
+      ]);
+    } else {
+      $customer = Customer::create([
+        'firstname' => $data['firstname'],
+        'lastname' => $data['lastname'],
+        'phone' => $data['phone'],
+        'email' => $data['email'],
+      ]);
+    }
 
     return $customer;
   }

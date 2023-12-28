@@ -59,6 +59,9 @@ class BookingSlotService
 
   public function bookFreeSlot($data, $customer_id) {
     $service = VehicleCategory::where('id', $data['vehicleCategory'])->first();
+    if (empty($service)) {
+      return false;
+    }
     $bookSlot = BookingSlot::create([
       'booking_date' => date('Y-m-d', strtotime($data['selectedDate'])),
       'booking_hour' => $data['selectedHour'],
@@ -67,7 +70,11 @@ class BookingSlotService
       'customer_id' => $customer_id,
     ]);
 
-    return $bookSlot;
+    if (empty($bookSlot)) {
+      return false;
+    }
+
+    return true;
   }
 
   public function isSlotFree($date, $hour) {
