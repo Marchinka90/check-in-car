@@ -17,6 +17,13 @@ class VehicleCategory extends Model
     protected $table = 'vehicle_categories';
 
     /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = ['created_at', 'updated_at'];
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>

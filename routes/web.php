@@ -9,6 +9,7 @@ use App\Http\Controllers\WebController;
 use App\Http\Controllers\PreferencesController;
 use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\BookingSlotController;
+use App\Http\Controllers\TimetableController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,7 +60,13 @@ Route::middleware('auth')->group(function () {
     */
     Route::get('/booking-slot', [BookingSlotController::class, 'showAdminBookingForm'])->name('booking-slot');
     Route::post('/booking-slot', [BookingSlotController::class, 'adminBookingAppointment'])->name('booking-slot.store');
-    // Route::put('/services/update/{id}', [ServicesController::class, 'update'])->name('services.update');
+    /*
+    | Timetable Routes
+    */
+    Route::get('/timetable', [TimetableController::class, 'index'])->name('timetable');
+    Route::post('/timetable', [TimetableController::class, 'index'])->name('timetable');
+    // Route::post('/booking-slot', [BookingSlotController::class, 'adminBookingAppointment'])->name('booking-slot.store');
+    
 
 
     

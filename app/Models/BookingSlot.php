@@ -18,6 +18,13 @@ class BookingSlot extends Model
     protected $table = 'booking_slots';
 
     /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = ['created_at', 'updated_at'];
+    
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
@@ -37,14 +44,14 @@ class BookingSlot extends Model
      * @var array
      */
     protected $attributes = [
-        'status' => 'booked', // booked(reserved), missed(not show up), canceled, failed(didn't passed), completed(passed)
+        'status' => 'запазен', // booked(reserved), missed(not show up), canceled, failed(didn't passed), completed(passed)
     ];
 
     /**
-     * Get the customer associated with the user.
+     * Get the customer associated with the booking slot.
      */
-    public function customer(): HasOne
+    public function customer()
     {
-        return $this->hasOne(Customer::class);
+        return $this->belongsTo(Customer::class);
     }
 }
