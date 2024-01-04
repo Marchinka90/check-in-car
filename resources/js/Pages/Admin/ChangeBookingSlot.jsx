@@ -24,11 +24,13 @@ export default function ChangeBookingSlot({ auth, services, preferences, takenSl
   const [dateInBGFormat, setDateInBGFormat] = useState('');
   const [confirmingTakenSlotDeletion, setConfirmingTakenSlotDeletion] = useState(false);
 
-  const [takenSlotData, setTakenSlotData] = useState({
+  const { data, setData, get, post, delete: destroy, processing, errors, reset } = useForm({
+    key: takenSlot.key,
     vehicleCategory: takenSlot.service,
     selectedDateObj: '',
     selectedDate: takenSlot.booking_date,
     selectedHour: takenSlot.booking_hour,
+    customerKey: takenSlot.customer.key,
     firstname: takenSlot.customer.firstname,
     lastname: takenSlot.customer.lastname,
     phone: takenSlot.customer.phone,
@@ -36,8 +38,6 @@ export default function ChangeBookingSlot({ auth, services, preferences, takenSl
     plateLicense: takenSlot.plate_license,
     status: takenSlot.status
   });
-
-  const { data, setData, get, post, delete: destroy, processing, errors, reset } = useForm({});
 
   const statuses = [
     {
@@ -80,9 +80,9 @@ export default function ChangeBookingSlot({ auth, services, preferences, takenSl
 
     let formData = { selectedDate: '' }
     deselectHour();
-    if (takenSlotData.selectedDateObj) {
-      const formattedDate = takenSlotData.selectedDateObj.toLocaleDateString('en', { year: 'numeric', month: '2-digit', day: '2-digit' });
-      setTakenSlotData({ ...takenSlotData, selectedDate: formattedDate })
+    if (data.selectedDateObj) {
+      const formattedDate = data.selectedDateObj.toLocaleDateString('en', { year: 'numeric', month: '2-digit', day: '2-digit' });
+      setData({ ...data, selectedDate: formattedDate })
       formData.selectedDate = formattedDate;
 
       axios.post('/api/free-booking-slots', formData)
@@ -107,10 +107,10 @@ export default function ChangeBookingSlot({ auth, services, preferences, takenSl
 
     if (!isCalendarVisible) {
       deselectDate();
-      setTakenSlotData({ ...takenSlotData, selectedDate: oldSelectedDate, selectedDateObj: '', selectedHour: oldSelectedHour });
+      setData({ ...data, selectedDate: oldSelectedDate, selectedDateObj: '', selectedHour: oldSelectedHour });
     }
 
-  }, [takenSlotData.selectedDateObj, isCalendarVisible]);
+  }, [data.selectedDateObj, isCalendarVisible]);
 
   const showToast = (data) => {
     if (toast.current) {
@@ -134,7 +134,7 @@ export default function ChangeBookingSlot({ auth, services, preferences, takenSl
 
   const selectHourHandler = (hour) => {
     deselectHour();
-    setTakenSlotData({ ...takenSlotData, selectedHour: hour.target.innerHTML })
+    setData({ ...data, selectedHour: hour.target.innerHTML });
     hour.target.id = 'selected-hour';
   }
 
@@ -154,77 +154,76 @@ export default function ChangeBookingSlot({ auth, services, preferences, takenSl
 
   const submit = (e) => {
     e.preventDefault();
-    console.log(takenSlotData);
     if (isValidForm()) {
-    //   post(route('booking-slot.store', data), {
-    //     preserveScroll: true,
-    //     onSuccess: () => {
-    //       toastData = { severity: 'success', summary: 'Успех', detail: 'Запазването е успешно' };
-    //       showToast(toastData);
-    //       setHeddingLabel('Изберете дата от календара');
-    //       setFreeHoursData([]);
-    //       deselectDate();
-    //       reset();
-    //     },
-    //     onError: (er) => {
-    //       Object.entries(er).forEach(([key, message]) => {
-    //         toastData = { severity: 'error', summary: 'Грешка', detail: message };
-    //         showToast(toastData);
-    //       });
-    //       return;
-    //     },
-    //   });
+      post(route('booking-slot.update'), {
+        preserveScroll: true,
+        onSuccess: () => {
+          toastData = { severity: 'success', summary: 'Успех', detail: 'Запазеният час беше успешно редактиран.' };
+          showToast(toastData);
+          setHeddingLabel('Изберете дата от календара');
+          setFreeHoursData([]);
+          deselectDate();
+          reset();
+        },
+        onError: (er) => {
+          Object.entries(er).forEach(([key, message]) => {
+            toastData = { severity: 'error', summary: 'Грешка', detail: message };
+            showToast(toastData);
+          });
+          return;
+        },
+      });
     }
   };
 
   const isValidForm = () => {
-    if (!takenSlotData.selectedDate) {
+    if (!data.selectedDate) {
       toastData = { severity: 'error', summary: 'Грешка', detail: 'Не сте избрали дата от календара' };
       showToast(toastData);
       return false;
     }
-    if (takenSlotData.selectedDateObj) {
+    if (data.selectedDateObj) {
       let today = new Date();
       today.setHours(0, 0, 0, 0);
-      takenSlotData.selectedDateObj.setHours(0, 0, 0, 0);
+      data.selectedDateObj.setHours(0, 0, 0, 0);
 
-      if (takenSlotData.selectedDateObj.getTime() < today.getTime()) {
+      if (data.selectedDateObj.getTime() < today.getTime()) {
         toastData = { severity: 'error', summary: 'Грешка', detail: 'Датата не може да бъде по-малка от днешната' };
         showToast(toastData);
         return false;
       }
     }
-    if (takenSlotData.selectedHour === '') {
+    if (data.selectedHour === '') {
       toastData = { severity: 'error', summary: 'Грешка', detail: 'Не сте избрали свободен час' };
       showToast(toastData);
       return false;
     }
-    if (!takenSlotData.vehicleCategory || data.vehicleCategory < 1 || data.vehicleCategory > 7) {
+    if (!data.vehicleCategory || data.vehicleCategory < 1 || data.vehicleCategory > 7) {
       toastData = { severity: 'error', summary: 'Грешка', detail: 'Не сте избрали Категория на автомобила' };
       showToast(toastData);
       return false;
     }
-    if (takenSlotData.firstname === '' || takenSlotData.firstname.length < 3) {
+    if (data.firstname === '' || data.firstname.length < 3) {
       toastData = { severity: 'error', summary: 'Грешка', detail: 'Полето за Име не може да бъде празно или по-малко от 3 символа' };
       showToast(toastData);
       return false;
     }
-    if (takenSlotData.lastname === '' || takenSlotData.lastname.length < 3) {
+    if (data.lastname === '' || data.lastname.length < 3) {
       toastData = { severity: 'error', summary: 'Грешка', detail: 'Полето за Фамилия не може да бъде празно или по-малко от 3 символа' };
       showToast(toastData);
       return false;
     }
-    if (takenSlotData.phone === '' || takenSlotData.phone.length < 9 || takenSlotData.phone.length > 9) {
+    if (data.phone === '' || data.phone.length < 9 || data.phone.length > 9) {
       toastData = { severity: 'error', summary: 'Грешка', detail: 'Полето за Телефон не може да бъде празно и трябва да е дължина 9 символа' };
       showToast(toastData);
       return false;
     }
-    if (takenSlotData.email !== '' && !takenSlotData.email.includes('@')) {
-      toastData = { severity: 'error', summary: 'Грешка', detail: 'Попълнете валиден емайл адрес' };
+    if (data.email !== '' && !data.email.includes('@')) {
+      toastData = { severity: 'error', summary: 'Грешка', detail: 'Попълнете валиден имейл адрес' };
       showToast(toastData);
       return false;
     }
-    if (takenSlotData.plateLicense === '' || takenSlotData.plateLicense.length < 6) {
+    if (data.plateLicense === '' || data.plateLicense.length < 6) {
       toastData = { severity: 'error', summary: 'Грешка', detail: 'Полето за Регистрационен номер не може да бъде празно или по-малко от 6 символа' };
       showToast(toastData);
       return false;
@@ -241,10 +240,7 @@ export default function ChangeBookingSlot({ auth, services, preferences, takenSl
 
     destroy(route('booking-slot.destroy', takenSlot.key), {
       preserveScroll: true,
-      onSuccess: (data) => {
-        console.log(data);
-        closeModal()
-      },
+      onSuccess: () => {},
       onError: (er) => {
         Object.entries(er).forEach(([key, message]) => {
           toastData = { severity: 'error', summary: 'Грешка', detail: message };
@@ -259,7 +255,6 @@ export default function ChangeBookingSlot({ auth, services, preferences, takenSl
   const closeModal = () => {
     setConfirmingTakenSlotDeletion(false);
   };
-
 
   return (
     <AuthenticatedLayout
@@ -280,7 +275,7 @@ export default function ChangeBookingSlot({ auth, services, preferences, takenSl
                 {isCalendarVisible ? 'Остави старата дата и час' : 'Промени дата и час'}
               </h2>
               <div className={`flex flex-col items-center lg:items-start lg:flex-row max-w-7xl transition-all duration-500 ${isCalendarVisible ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
-                <Calendar setSelectedDate={(e) => setTakenSlotData({ ...takenSlotData, selectedDateObj: e })} preferences={preferences} />
+                <Calendar setSelectedDate={(e) => setData('selectedDateObj', e )} preferences={preferences} />
                 <div className='w-full sm:max-w-lg overflow-hidden pt-2 lg:max-w-2xl lg:p-2 lg:ml:0 lg:w-2/3 '>
                   <div className='w-full sm:max-w-2xl bg-background-light flex flex-wrap justify-center'>
                     <h2 className='w-full block text-center text-xl lg:text-2xl my-5 font-montserrat text-primary'>
@@ -304,9 +299,9 @@ export default function ChangeBookingSlot({ auth, services, preferences, takenSl
                     id="plateLicense"
                     type="text"
                     name="plateLicense"
-                    value={takenSlotData.plateLicense}
+                    value={data.plateLicense}
                     className="mt-1 block w-full"
-                    onChange={(e) => setTakenSlotData({ ...takenSlotData, plateLicense: e.target.value.toUpperCase() })}
+                    onChange={(e) => setData('plateLicense', e.target.value.toUpperCase() )}
                   />
                 </div>
 
@@ -315,8 +310,8 @@ export default function ChangeBookingSlot({ auth, services, preferences, takenSl
                   <Select
                     id="vehicleCategory"
                     options={services}
-                    value={takenSlotData.vehicleCategory}
-                    onChange={(e) => setTakenSlotData({ ...takenSlotData, vehicleCategory: e.target.value })}
+                    value={data.vehicleCategory}
+                    onChange={(e) => setData('vehicleCategory', e.target.value )}
                     type="text"
                     className="mt-1 block w-full"
                     autoComplete="vehicleCategory"
@@ -332,9 +327,9 @@ export default function ChangeBookingSlot({ auth, services, preferences, takenSl
                     id="firstname"
                     type="text"
                     name="firstname"
-                    value={takenSlotData.firstname}
+                    value={data.firstname}
                     className="mt-1 block w-full"
-                    onChange={(e) => setTakenSlotData({ ...takenSlotData, firstname: e.target.value })}
+                    onChange={(e) => setData('firstname', e.target.value )}
                   />
                 </div>
 
@@ -345,10 +340,10 @@ export default function ChangeBookingSlot({ auth, services, preferences, takenSl
                     id="lastname"
                     type="text"
                     name="lastname"
-                    value={takenSlotData.lastname}
+                    value={data.lastname}
                     className="mt-1 block w-full"
 
-                    onChange={(e) => setTakenSlotData({ ...takenSlotData, lastname: e.target.value })}
+                    onChange={(e) => setData('lastname', e.target.value )}
                   />
                 </div>
               </div>
@@ -363,24 +358,24 @@ export default function ChangeBookingSlot({ auth, services, preferences, takenSl
                       id="phone"
                       type="text"
                       name="phone"
-                      value={takenSlotData.phone}
+                      value={data.phone}
                       className="mt-1 block w-full border-left: none"
                       autoComplete="phone"
-                      onChange={(e) => setTakenSlotData({ ...takenSlotData, phone: e.target.value })}
+                      onChange={(e) => setData('phone', e.target.value )}
                     />
                   </span>
                 </div>
 
                 <div className="w-full sm:max-w-lg mt-6 p-2 overflow-hidden">
-                  <InputLabel htmlFor="email" value="Емайл" />
+                  <InputLabel htmlFor="email" value="Имейл" />
                   <TextInput
                     id="email"
                     type="email"
                     name="email"
-                    value={takenSlotData.email}
+                    value={data.email}
                     className="mt-1 block w-full border-left: none"
                     autoComplete="email"
-                    onChange={(e) => setTakenSlotData({ ...takenSlotData, email: e.target.value })}
+                    onChange={(e) => setData('email', e.target.value)}
                   />
                 </div>
               </div>
@@ -391,8 +386,8 @@ export default function ChangeBookingSlot({ auth, services, preferences, takenSl
                   <Select
                     id="status"
                     options={statuses}
-                    value={takenSlotData.status}
-                    onChange={(e) => setTakenSlotData({ ...takenSlotData, status: e.target.value })}
+                    value={data.status}
+                    onChange={(e) => setData('status', e.target.value )}
                     type="text"
                     className="mt-1 block w-full"
                     autoComplete="status"

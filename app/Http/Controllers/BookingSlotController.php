@@ -60,7 +60,7 @@ class BookingSlotController extends Controller
     {
       $data = $request->all();      
       $bookingSlotService = new BookingSlotService();
-      $isSlotFree = $bookingSlotService->isSlotFree($request->get('selectedDate'), $request->get('selectedHour'));
+      $isSlotFree = $bookingSlotService->isSlotFree($data['selectedDate'], $data['selectedHour'], null);
 
       if (!$isSlotFree) {
         return response()->json(['errors' => ['hours' => ['Този час вече е запазен, моля изберете друг час.']]], 404);
@@ -125,7 +125,7 @@ class BookingSlotController extends Controller
     {
       $data = $request->all();      
       $bookingSlotService = new BookingSlotService();
-      $isSlotFree = $bookingSlotService->isSlotFree($request->get('selectedDate'), $request->get('selectedHour'));
+      $isSlotFree = $bookingSlotService->isSlotFree($data['selectedDate'], $data['selectedHour'], null);
 
       if (!$isSlotFree) {
         return back()->withErrors('Този час вече е запазен, моля изберете друг час.');
@@ -216,9 +216,6 @@ class BookingSlotController extends Controller
         try {
 
           DB::transaction(function () use ($customerId) {
-            // DB::listen(function ($query) {
-            //   Log::info('Query: ' . $query->sql . ' | Parameters: ' . json_encode($query->bindings));
-            // });
             $customer = Customer::where('id', $customerId)->first();
 
             if (!empty($customer)){
@@ -242,7 +239,35 @@ class BookingSlotController extends Controller
 
     public function adminUpdateBookingAppointment (AdminBookingRequest $request) 
     {
+      $data = $request->all(); 
 
+      $bookingSlotService = new BookingSlotService();
+      $isSlotFree = $bookingSlotService->isSlotFree($data['selectedDate'], $data['selectedHour'], $data['key']);
+
+      if (!$isSlotFree) {
+        return back()->withErrors('Този час вече е запазен, моля изберете друг час.');
+      }
+
+      DB::beginTransaction();
+      
+      try {
+        $takenSlot = $bookingSlotService->updateBookingSlot($data);
+        $customerService = new CustomerService();
+        $customer = $customerService->updateCustomer($data);
+
+      } catch (\Throwable $th) {
+        DB::rollBack();
+        return back()->withErrors('Този час не може да бъде редактиран в момента. Моля, опитайте по-късно.');
+      }
+      
+      if (!$takenSlot || !$customer) {
+        DB::rollBack();
+        return back()->withErrors('Този час не може да бъде редактиран в момента. Моля, опитайте по-късно.');
+      }
+
+      DB::commit();
+      Session::flash('success', 'Запазеният час беше успешно редактиран.');
+      return redirect()->route('timetable');
     }
 
     private function formatBookingSlot($slot, $sevices) 
@@ -261,6 +286,7 @@ class BookingSlotController extends Controller
           'service' => $serviceKey,
           'status' => $slot->status,
           'customer' => (object)[
+              'key' => $slot->customer->id,
               'firstname' => $slot->customer->firstname,
               'lastname' => $slot->customer->lastname,
               'email' => $slot->customer->email,
@@ -269,5 +295,11 @@ class BookingSlotController extends Controller
           ];
 
         return $data;
+    }
+
+    private function LogTransaction() {
+      DB::listen(function ($query) {
+        Log::info('Query: ' . $query->sql . ' | Parameters: ' . json_encode($query->bindings));
+      });
     }
 }

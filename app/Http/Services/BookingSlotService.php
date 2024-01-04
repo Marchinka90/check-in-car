@@ -9,7 +9,8 @@ use Carbon\Carbon;
 
 class BookingSlotService
 {
-  public function getAllFreeSlotsForDate($selectedDate, $preferences) {
+  public function getAllFreeSlotsForDate($selectedDate, $preferences) 
+  {
     $time = $preferences['reviewTime'];
     $selectedDateCarbon = Carbon::createFromTimestamp(strtotime($selectedDate));
 
@@ -57,11 +58,13 @@ class BookingSlotService
     return $freeSlots;
   }
 
-  public function bookFreeSlot($data, $customer_id) {
+  public function bookFreeSlot($data, $customer_id) 
+  {
     $service = VehicleCategory::where('id', $data['vehicleCategory'])->first();
     if (empty($service)) {
       return false;
     }
+
     $bookSlot = BookingSlot::create([
       'booking_date' => date('Y-m-d', strtotime($data['selectedDate'])),
       'booking_hour' => $data['selectedHour'],
@@ -77,9 +80,17 @@ class BookingSlotService
     return true;
   }
 
-  public function isSlotFree($date, $hour) {
+  public function isSlotFree($date, $hour, $id) 
+  {
     $bookingDate = date('Y-m-d', strtotime($date));
-    $takenSlot = BookingSlot::where('booking_date', $bookingDate)->where('booking_hour', $hour)->first();
+    if (empty($id)){
+      $takenSlot = BookingSlot::where('booking_date', $bookingDate)->where('booking_hour', $hour)->first();
+    } else {
+      $takenSlot = BookingSlot::where('booking_date', $bookingDate)
+      ->where('booking_hour', $hour)
+      ->whereNotIn('id', [$id])
+      ->first();
+    }
     
     if (!empty($takenSlot)) {
       return false;
@@ -91,6 +102,29 @@ class BookingSlotService
     if ($selectedDateCarbon->dayOfWeek == 6 && $preferences['saturdayShiftOn'] === '0') {
       return false;
     }
+
+    return true;
+  }
+
+  public function updateBookingSlot($data) 
+  {
+    $service = VehicleCategory::where('id', $data['vehicleCategory'])->first();
+    if (empty($service)) {
+      return false;
+    }
+
+    $takenSlot = BookingSlot::where('id', $data['key'])->first();
+    if(empty($takenSlot)) {
+      return false;
+    }
+
+    $takenSlot->update([
+      'booking_date' => date('Y-m-d', strtotime($data['selectedDate'])),
+      'booking_hour' => $data['selectedHour'],
+      'plate_license' => $data['plateLicense'],
+      'service' => $service->name,
+      'status' => $data['status'],
+    ]);
 
     return true;
   }

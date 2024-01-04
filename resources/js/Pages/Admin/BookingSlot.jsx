@@ -102,7 +102,7 @@ export default function BookingSlot({ auth, services, preferences, status }) {
     const submit = (e) => {
         e.preventDefault();
         if (isValidForm()) {
-            post(route('booking-slot.store', data), {
+            post(route('booking-slot.store'), {
                 preserveScroll: true,
                 onSuccess: () => {
                     toastData = { severity: 'success', summary: 'Успех', detail: 'Запазването е успешно' };

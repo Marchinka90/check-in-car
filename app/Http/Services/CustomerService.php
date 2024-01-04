@@ -6,13 +6,15 @@ use App\Models\Customer;
 
 class CustomerService
 {
-  public function checkCustomer($data) {
+  public function checkCustomer($data) 
+  {
     $emal = $data['email'];
 
     return Customer::where('email', $emal)->first();
   }
 
-  public function adminCheckCustomer($data) {
+  public function adminCheckCustomer($data) 
+  {
     $phone = $data['phone'];
     $firstname = $data['firstname'];
     $lastname = $data['lastname'];
@@ -23,7 +25,8 @@ class CustomerService
                     ->first();
   }
 
-  public function createCustomer($data, $isAdmin) {
+  public function createCustomer($data, $isAdmin) 
+  {
     if ($isAdmin) {
       $customer = Customer::create([
         'firstname' => $data['firstname'],
@@ -40,5 +43,22 @@ class CustomerService
     }
 
     return $customer;
+  }
+
+  public function updateCustomer($data) 
+  {
+    $customer = Customer::where('id', $data['customerKey'])->first();
+    if(empty($customer)) {
+      return false;
+    }
+  
+    $customer->update([
+      'firstname' => $data['firstname'],
+      'lastname' => $data['lastname'],
+      'phone' => $data['phone'],
+      'email' => $data['email'],
+    ]);
+    
+    return true;
   }
 }

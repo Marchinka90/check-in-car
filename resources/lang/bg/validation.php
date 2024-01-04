@@ -2,13 +2,14 @@
 
 return [
     'required' => 'Полето :attribute е задължително.',
-    'string' => ':attribute трябва да бъде текст.',
+    'string' => 'Полето :attribute трябва да бъде текст.',
     'numeric' => 'Полето :attribute трябва да е число.',
-    'date' => ':attribute трябва да бъде валидна дата.',
-    'email' => ':attribute трябва да бъде валиден имейл адрес.',
+    'date' => 'Полето :attribute трябва да бъде валидна дата.',
+    'email' => 'Полето :attribute трябва да бъде валиден имейл адрес.',
     'boolean' => 'Полето :attribute трябва да бъде отметнато.',
-    'date_format' => ':attribute трябва да бъде в правилния формат.',
+    'date_format' => 'Полето :attribute трябва да бъде в правилния формат.',
     'captcha_api' => 'Полето :attribute трябва да бъде попълнено правилно.', 
+    'in' => 'Полето :attribute трябва да бъде избрано от списъка със статуси.',
     'size' => [
         'numeric' => 'Полето :attribute трябва да бъде :size.',
         'file' => 'Полето :attribute трябва да бъде :size килобайта.',
@@ -59,7 +60,7 @@ return [
         'surname' => 'Презиме',
         'lastname' => 'Фамилия',
         'phone' => 'Телефон',
-        'email' => 'И-мейл',
+        'email' => 'Имейл',
         'selectedDate' => 'Датата',
         'selectedHour' => 'Часът',
         'agreedTerms' => 'Условия за ползване',
@@ -68,5 +69,6 @@ return [
         'captcha' => 'Символи от картинката',
         'title' => 'Заглавие',
         'description' => 'Съобщение',
+        'status' => 'Статус'
     ],
 ];

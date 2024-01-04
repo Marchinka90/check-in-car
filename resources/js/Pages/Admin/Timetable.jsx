@@ -1,20 +1,14 @@
 import { useRef, useState, useEffect } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
-import Table from "@/Components/Table.jsx";
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
 import Modal from '@/Components/Modal';
 import SecondaryButton from '@/Components/SecondaryButton';
-import TextInput from '@/Components/TextInput';
 import { useForm } from '@inertiajs/react';
 import PrimaryButton from '@/Components/PrimaryButton';
-import Select from '@/Components/Select';
 import { Toast } from 'primereact/toast';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { TabMenu } from 'primereact/tabmenu';
-import { Tag } from 'primereact/tag';
 
 let toastData;
 
@@ -178,7 +172,6 @@ export default function Timetable({ auth, date, dateSlots, startOfWeek, endOfWee
 
   const closeModal = () => {
     setShowModal(false);
-    // reset();
   };
 
   return (
@@ -201,8 +194,8 @@ export default function Timetable({ auth, date, dateSlots, startOfWeek, endOfWee
                 <div className="text-2xl">{days[dayOfWeek]}</div>
                 <div className="text-2xl">
                   <span className='ml-2'>{monthDate} {month}</span>
-                  <button className='mx-2 px-2 border text-secondary' onClick={onPrevDateHandler}><i className="pi pi-angle-double-left"></i></button>
-                  <button className='ml-2 px-2 border text-secondary' onClick={onNextDateHandler}><i className="pi pi-angle-double-right"></i></button>
+                  <button className='mx-2 px-2 border text-secondary hover:bg-secondary hover:text-white' onClick={onPrevDateHandler}><i className="pi pi-angle-double-left"></i></button>
+                  <button className='ml-2 px-2 border text-secondary hover:bg-secondary hover:text-white' onClick={onNextDateHandler}><i className="pi pi-angle-double-right"></i></button>
                 </div>
               </div>
               {dateSlots.length > 0 &&
@@ -225,16 +218,16 @@ export default function Timetable({ auth, date, dateSlots, startOfWeek, endOfWee
 
           {activeIndex == 0 && (
             <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-              <div className='flex justify-end pb-5'>
+              <div className='flex justify-end pb-5 text-2xl'>
                 <div className="text-2xl">{startOfWeek.slice(-2)} - {endOfWeek.slice(-2)} {month}</div>
-                <button className='mx-2 px-2 border text-secondary' onClick={onPrevWeekHandler}><i className="pi pi-angle-double-left"></i></button>
-                <button className='ml-2 px-2 border text-secondary' onClick={onNextWeekHandler}><i className="pi pi-angle-double-right"></i></button>
+                <button className='mx-2 px-2 border text-secondary hover:bg-secondary hover:text-white' onClick={onPrevWeekHandler}><i className="pi pi-angle-double-left"></i></button>
+                <button className='ml-2 px-2 border text-secondary hover:bg-secondary hover:text-white' onClick={onNextWeekHandler}><i className="pi pi-angle-double-right"></i></button>
               </div>
               {weekSlots.length > 0 &&
                 <div className="card">
                   <DataTable value={weekSlots} selectionMode="single" onSelectionChange={(e) => onSelectHandler(e.value)} dataKey="key"
                     rowGroupMode="subheader" groupRowsBy="booking_date" sortMode="single" sortField="booking_date"
-                    sortOrder={1} scrollable scrollHeight="400px" rowGroupHeaderTemplate={headerTemplate} >
+                    sortOrder={1} scrollable scrollHeight="40rem" rowGroupHeaderTemplate={headerTemplate} >
                     <Column header="Дата" headerStyle={{ width: '6rem' }}></Column>
                     <Column field="booking_hour" header="Час"></Column>
                     <Column field="service" header="Услуга"></Column>

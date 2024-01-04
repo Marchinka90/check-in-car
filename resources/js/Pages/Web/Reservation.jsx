@@ -143,7 +143,7 @@ export default function Reservation(props) {
       return false;
     }
     if (email === '' || !email.includes('@')) {
-      toastData = { severity: 'error', summary: 'Грешка', detail: 'Попълнете валиден емайл адрес' };
+      toastData = { severity: 'error', summary: 'Грешка', detail: 'Попълнете валиден имейл адрес' };
       setIsValidSecondStep(false);
       showToast(toastData);
       return false;

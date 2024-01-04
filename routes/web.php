@@ -59,9 +59,9 @@ Route::middleware('auth')->group(function () {
     | Booking Slot Routes
     */
     Route::get('/booking-slot', [BookingSlotController::class, 'showAdminBookingForm'])->name('booking-slot');
-    Route::post('/booking-slot', [BookingSlotController::class, 'adminBookingAppointment'])->name('booking-slot.store');
+    Route::post('/booking-slot/store', [BookingSlotController::class, 'adminBookingAppointment'])->name('booking-slot.store');
     Route::get('/booking-slot/edit/{id}', [BookingSlotController::class, 'adminEditBookingAppointment'])->name('booking-slot.edit');
-    Route::get('/booking-slot/update', [BookingSlotController::class, 'adminUpdateBookingAppointment'])->name('booking-slot.update');
+    Route::post('/booking-slot/update', [BookingSlotController::class, 'adminUpdateBookingAppointment'])->name('booking-slot.update');
     Route::delete('/booking-slot/delete/{id}', [BookingSlotController::class, 'deleteBookingAppointment'])->name('booking-slot.destroy');
     /*
     | Timetable Routes
