@@ -14,8 +14,13 @@ class CustomerService
 
   public function adminCheckCustomer($data) {
     $phone = $data['phone'];
+    $firstname = $data['firstname'];
+    $lastname = $data['lastname'];
 
-    return Customer::where('phone', $phone)->first();
+    return Customer::where('phone', $phone)
+                    ->where('firstname', $firstname)
+                    ->where('lastname', $lastname)
+                    ->first();
   }
 
   public function createCustomer($data, $isAdmin) {

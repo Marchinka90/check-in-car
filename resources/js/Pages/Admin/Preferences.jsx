@@ -105,7 +105,7 @@ export default function Preferences({ auth, preferences, status }) {
           <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <Table items={preferences} columns={columns} primary="Номер" action={confirmPreferenceChangeHandler} index={1}></Table>
             <Modal show={confirmingPreferenceChange} onClose={closeModal}>
-              <form onSubmit={changePreferenceHandler} className="p-6">
+              <form onSubmit={changePreferenceHandler} className="p-6 bg-background-light">
                 <h2 className="text-lg font-medium">
                   Промяна на настройка
                 </h2>

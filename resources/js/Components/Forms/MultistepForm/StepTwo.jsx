@@ -6,7 +6,7 @@ let toastData;
 export default function StepTwo(props) {
   const [ freeHoursData, setFreeHoursData] = useState([]);
 
-  const formattedDate = props.selectedDate.toLocaleDateString({ year: 'numeric', month: '2-digit', day: '2-digit' });
+  const formattedDate = props.selectedDate.toLocaleDateString('en', { year: 'numeric', month: '2-digit', day: '2-digit' });
   let formData = {
     selectedDate: formattedDate
   }

@@ -29,6 +29,8 @@ class AdminBookingRequest extends FormRequest
             'firstname' => 'required|string|min:3',
             'lastname' => 'required|string|min:3',
             'phone' => 'required|string|size:9',
+            'email' => 'nullable|email',
+            'status' => 'nullable|in:Запазен,Пропуснат,Отменен,Неуспешен,Завършен',
         ];
     }
 }

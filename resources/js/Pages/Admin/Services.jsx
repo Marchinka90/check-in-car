@@ -84,7 +84,7 @@ export default function Services({ auth, services, status }) {
           <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <Table items={services} columns={columns} primary="Номер" action={confirmServiceChangeHandler} index={0}></Table>
             <Modal show={confirmingServiceChange} onClose={closeModal}>
-              <form onSubmit={changeServiceHandler} className="p-6">
+              <form onSubmit={changeServiceHandler} className="p-6 bg-background-light">
                 <h2 className="text-lg font-medium">
                   Промяна на цена на категория МПС
                 </h2>

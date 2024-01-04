@@ -62,12 +62,13 @@ class TimetableController extends Controller
         
         $weekSlots = $this->formatBookingSlots($takenSlotsWeek);
         
-        return Inertia::render('Admin/Timetable/Timetable', [
+        return Inertia::render('Admin/Timetable', [
             'date' => $searchDate,
             'dateSlots' => $dateSlots,
             'startOfWeek' => $startOfWeek,
             'endOfWeek' => $endOfWeek,
-            'weekSlots' => $weekSlots
+            'weekSlots' => $weekSlots,
+            'success' => session()->get('success')
         ]);
     }
 
@@ -135,8 +136,8 @@ class TimetableController extends Controller
     {
         $data = [];
         foreach ($slots as $slot) {
-            $phoneNumber = preg_replace('/[^0-9]/', '', $slot->customer->phone);
-            $formattedPhoneNumber = number_format($phoneNumber, 0, '', ' ');
+            // $phoneNumber = preg_replace('/[^0-9]/', '', $slot->customer->phone);
+            // $formattedPhoneNumber = number_format($phoneNumber, 0, '', ' ');
             
             array_push($data, (object)[
                 'key' => $slot->id,
@@ -146,9 +147,10 @@ class TimetableController extends Controller
                 'service' => $slot->service,
                 'status' => $slot->status,
                 'customer' => (object)[
-                    'name' => $slot->customer->firstname . ' ' . $slot->customer->lastname,
+                    'firstname' => $slot->customer->firstname,
+                    'lastname' => $slot->customer->lastname,
                     'email' => $slot->customer->email,
-                    'phone' => '+359 ' . $formattedPhoneNumber,
+                    'phone' => $slot->customer->phone,
                     ]
                 ]
             );

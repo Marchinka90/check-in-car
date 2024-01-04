@@ -115,7 +115,7 @@ export default function Reservation(props) {
       showToast(toastData);
       return false;
     }
-    const formattedDate = selectedDate.toLocaleDateString({ year: 'numeric', month: '2-digit', day: '2-digit' });
+    const formattedDate = selectedDate.toLocaleDateString('en', { year: 'numeric', month: '2-digit', day: '2-digit' });
     formData = { ...formData, plateLicense, selectedDate: formattedDate };
     setIsValidFirstStep(true);
     return true;

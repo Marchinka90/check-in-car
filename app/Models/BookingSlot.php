@@ -44,7 +44,7 @@ class BookingSlot extends Model
      * @var array
      */
     protected $attributes = [
-        'status' => 'запазен', // booked(reserved), missed(not show up), canceled, failed(didn't passed), completed(passed)
+        'status' => 'Запазен', // booked(reserved), missed(not show up), canceled, failed(didn't passed), completed(passed)
     ];
 
     /**

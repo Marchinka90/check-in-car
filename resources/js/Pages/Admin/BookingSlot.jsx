@@ -33,7 +33,7 @@ export default function BookingSlot({ auth, services, preferences, status }) {
         let formData = { selectedDate: '' }
         deselectHour();
         if (data.selectedDateObj) {
-            const formattedDate = data.selectedDateObj.toLocaleDateString({ year: 'numeric', month: '2-digit', day: '2-digit' });
+            const formattedDate = data.selectedDateObj.toLocaleDateString('en', { year: 'numeric', month: '2-digit', day: '2-digit' });
             setData({ ...data, selectedDate: formattedDate })
             formData.selectedDate = formattedDate;
 
@@ -148,17 +148,17 @@ export default function BookingSlot({ auth, services, preferences, status }) {
             showToast(toastData);
             return false;
         }
-        if (firstname === '' || firstname.length < 3) {
+        if (data.firstname === '' || data.firstname.length < 3) {
             toastData = { severity: 'error', summary: 'Грешка', detail: 'Полето за Име не може да бъде празно или по-малко от 3 символа' };
             showToast(toastData);
             return false;
         }
-        if (lastname === '' || lastname.length < 3) {
+        if (data.lastname === '' || data.lastname.length < 3) {
             toastData = { severity: 'error', summary: 'Грешка', detail: 'Полето за Фамилия не може да бъде празно или по-малко от 3 символа' };
             showToast(toastData);
             return false;
         }
-        if (phone === '' || phone.length < 9 || phone.length > 9) {
+        if (data.phone === '' || data.phone.length < 9 || data.phone.length > 9) {
             toastData = { severity: 'error', summary: 'Грешка', detail: 'Полето за Телефон не може да бъде празно и трябва да е дължина 9 символа' };
             showToast(toastData);
             return false;

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->time('booking_hour');
             $table->string('plate_license');
             $table->string('service');
-            $table->string('status');
+            $table->enum('status', ['Запазен', 'Пропуснат', 'Отменен', 'Неуспешен', 'Завършен'])->default('Запазен');
             $table->unsignedBigInteger('customer_id'); // Foreign key
             $table->timestamps();
         });
