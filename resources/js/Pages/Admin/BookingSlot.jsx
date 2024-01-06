@@ -14,7 +14,7 @@ import { Toast } from 'primereact/toast';
 
 let toastData;
 
-export default function BookingSlot({ auth, services, preferences, status }) {
+export default function BookingSlot({ auth, services, preferences, holidays }) {
     const toast = useRef(null);
     const [freeHoursData, setFreeHoursData] = useState([]);
     const [heddingLabel, setHeddingLabel] = useState('Изберете дата от календара');
@@ -29,12 +29,14 @@ export default function BookingSlot({ auth, services, preferences, status }) {
         phone: '',
         plateLicense: '',
     });
+    
     useEffect(() => {
         let formData = { selectedDate: '' }
         deselectHour();
         if (data.selectedDateObj) {
             const formattedDate = data.selectedDateObj.toLocaleDateString('en', { year: 'numeric', month: '2-digit', day: '2-digit' });
-            setData({ ...data, selectedDate: formattedDate })
+            setData('selectedDate', formattedDate);
+            // setData({ ...data, selectedDate: formattedDate })
             formData.selectedDate = formattedDate;
 
             axios.post('/api/free-booking-slots', formData)
@@ -101,6 +103,7 @@ export default function BookingSlot({ auth, services, preferences, status }) {
 
     const submit = (e) => {
         e.preventDefault();
+        console.log(data)
         if (isValidForm()) {
             post(route('booking-slot.store'), {
                 preserveScroll: true,
@@ -188,7 +191,7 @@ export default function BookingSlot({ auth, services, preferences, status }) {
                         <form onSubmit={submit}>
 
                             <div className='flex flex-col items-center lg:items-start lg:flex-row max-w-7xl'>
-                                <Calendar setSelectedDate={(e) => setData('selectedDateObj', e)} preferences={preferences} />
+                                <Calendar setSelectedDate={(e) => setData('selectedDateObj', e)} preferences={preferences} holidays={holidays} />
                                 <div className='w-full sm:max-w-lg overflow-hidden pt-2 lg:max-w-2xl lg:p-2 lg:ml:0 lg:w-2/3 '>
                                     <div className='w-full sm:max-w-2xl bg-background-light flex flex-wrap justify-center'>
                                         <h2 className='w-full block text-center text-xl lg:text-2xl my-5 font-montserrat text-primary'>

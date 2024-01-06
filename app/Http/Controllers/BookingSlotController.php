@@ -17,6 +17,7 @@ use App\Models\Preference;
 use App\Models\BookingSlot;
 use App\Models\Customer;
 use App\Models\VehicleCategory;
+use App\Models\Holiday;
 use Inertia\Inertia;
 use Inertia\Response;
 use Carbon\Carbon;
@@ -41,6 +42,9 @@ class BookingSlotController extends Controller
           'data' => '',
       ]];
 
+      $today = date('Y-m-d');
+      $holidays = Holiday::select('id', 'holiday_date')->where('holiday_date', '>=', $today)->orderBy('holiday_date')->get();
+
       foreach ($vehicleCategories as $vehicleCategory) {
         array_push($services, (object)[
           'key' => $vehicleCategory->id,
@@ -52,7 +56,7 @@ class BookingSlotController extends Controller
         return Inertia::render('Admin/BookingSlot', [
           'services' => $services,
           'preferences' => $preferences,
-          'status' => session('status'),
+          'holidays' => $holidays
       ]);
     }
 
@@ -104,10 +108,10 @@ class BookingSlotController extends Controller
     {
       $selectedDate = $request->get('selectedDate');
       $preferences = Preference::select('name', 'value')->pluck('value', 'name');
-                                  
+
       $selectedDateCarbon = Carbon::createFromTimestamp(strtotime($selectedDate));
       
-      if ($selectedDateCarbon->dayOfWeek == 6 && $preferences['saturdayShiftOn'] === '0') {
+      if ($selectedDateCarbon->dayOfWeek == 6 && $preferences['saturdayShiftOn'] === 'Изключен') {
         return response()->json(['errors' => ['date' => ['Не може да запзвате часове в събота.']]], 404);
       }
       
@@ -182,6 +186,9 @@ class BookingSlotController extends Controller
           );
         }
 
+        $today = date('Y-m-d');
+        $holidays = Holiday::select('id', 'holiday_date')->where('holiday_date', '>=', $today)->orderBy('holiday_date')->get();
+
         $takenSlot = BookingSlot::select('id', 'booking_date', 'booking_hour', 'plate_license', 'service', 'status', 'customer_id')
                                 ->with(['customer:id,firstname,lastname,email,phone'])
                                 ->where('id', $id)
@@ -192,6 +199,7 @@ class BookingSlotController extends Controller
         return Inertia::render('Admin/ChangeBookingSlot', [
           'services' => $services,
           'preferences' => $preferences,
+          'holidays' => $holidays,
           'takenSlot' => $dateSlot
       ]);
     }

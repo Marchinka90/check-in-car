@@ -1,24 +1,22 @@
 import { useRef, useState } from 'react';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
-import Table from "@/Components/Table.jsx";
+import { useForm } from '@inertiajs/react';
+
+import { Toast } from 'primereact/toast';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import Modal from '@/Components/Modal';
 import SecondaryButton from '@/Components/SecondaryButton';
 import TextInput from '@/Components/TextInput';
-import { useForm } from '@inertiajs/react';
 import PrimaryButton from '@/Components/PrimaryButton';
-import { Toast } from 'primereact/toast';
-
-const columns = [
-  'name',
-  'price'
-];
 
 let toastData;
 
-export default function Services({ auth, services, status }) {
+export default function Services({ auth, services, }) {
   const toast = useRef(null);
   const [confirmingServiceChange, setConfirmingServiceChange] = useState(false);
   const [inputLabelValue, setInputLabelValue] = useState();
@@ -29,7 +27,8 @@ export default function Services({ auth, services, status }) {
     service_price: '',
   });
 
-  const confirmServiceChangeHandler = (id) => {
+  const onSelectHandler = (row) => {
+    let id = row.id;
     setConfirmingServiceChange(true);
     services.map((item) => {
       if (item.id === id) {
@@ -82,7 +81,13 @@ export default function Services({ auth, services, status }) {
       <div className="py-6">
         <div className="max-w-7xl mx-auto sm:px-2 lg:px-8">
           <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <Table items={services} columns={columns} primary="Номер" action={confirmServiceChangeHandler} index={0}></Table>
+            <div className="card">
+              <DataTable value={services} selectionMode="single" onSelectionChange={(e) => onSelectHandler(e.value)} dataKey="id">
+                <Column header="#" body={(data, options) => options.rowIndex + 1}></Column>
+                <Column field="name" header="ИМЕ"></Column>
+                <Column field="price" header="ЦЕНА"></Column>
+              </DataTable>
+            </div>
             <Modal show={confirmingServiceChange} onClose={closeModal}>
               <form onSubmit={changeServiceHandler} className="p-6 bg-background-light">
                 <h2 className="text-lg font-medium">

@@ -1,10 +1,11 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Calendar(props) {
-  const saturdayShiftOn = props.preferences.saturdayShiftOn;
-
   const [calendar, setCalendar] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  
+  const saturdayShiftOn = props.preferences.saturdayShiftOn;
+  const holidays = props.holidays;
 
   const months = ['Януари', 'Февруари', 'Март', 'Април', 'Май', 'Юни', 'Юли', 'Август', 'Септември', 'Октомври', 'Ноември', 'Декември']
   // const days = ['Нед', 'Пон', 'Вт', 'Ср', 'Чет', 'Пет', 'Съб'];
@@ -26,8 +27,6 @@ export default function Calendar(props) {
       selectDateHandler(date);
       let selectedDate = date.target.innerHTML;
       let dateObj = new Date(currentYear, currentMonth, selectedDate);
-      // const formattedDate = dateObj.toLocaleDateString({ year: 'numeric', month: '2-digit', day: '2-digit' });
-      // console.log(formattedDate);
       props.setSelectedDate(dateObj);
     }
 
@@ -84,7 +83,24 @@ export default function Calendar(props) {
       ) {
         return true;
       }
-      return false;      
+      return false;
+    }
+
+    const isHoliday = (date) => {
+      date.setHours(0, 0, 0, 0);
+      
+      for (let i = 0; i < holidays.length; i++) {
+        let [year, month, day] = holidays[i].holiday_date.split('-');
+        let currentHoliday = new Date(`${month}/${day}/${year}`);
+
+        currentHoliday.setHours(0, 0, 0, 0);
+        if (currentHoliday < date || currentHoliday > date) {
+          continue;
+        } else {
+          return true;
+        }
+      }
+      return false;
     }
 
     date.setDate(1);
@@ -135,14 +151,22 @@ export default function Calendar(props) {
         classesForDays += ' weekend';
         if (isToday) { classesForDays += ' today'; }
 
+      } else if (isHoliday(currentDayDate)) {
+        if (isToday) {
+          classesForDays += ' today';
+          classesForDays += ' weekend';
+        } else {
+          classesForDays += ' weekend';
+        }
+  
       } else if (currentDayDate < today) {
-        if  (isToday) {
+        if (isToday) {
           classesForDays += ' today';
           staticDate = false;
         } else {
           classesForDays += ' prev';
         }
-
+      
       } else {
         staticDate = false;
       }
@@ -177,13 +201,13 @@ export default function Calendar(props) {
             <div className="month">{month}</div>
             <div className="btns">
               {!isTodayBtnHide && <div className="btn today" onClick={currentMonthButtonHandler}>
-                <span className="material-symbols-outlined">calendar_today</span>
+                <i className="pi pi-calendar pi-fw"></i>
               </div>}
               <div className="btn prev" onClick={prevMonthButtonHandler}>
-                <span className="material-symbols-outlined">chevron_left</span>
+                <i className="pi pi-angle-left"></i>
               </div>
               <div className="btn next" onClick={nextMonthButtonHandler}>
-                <span className="material-symbols-outlined">chevron_right</span>
+                <i className="pi pi-angle-right"></i>
               </div>
             </div>
           </div>
@@ -208,7 +232,7 @@ export default function Calendar(props) {
     renderCalendar();
     setIsLoading(false);
 
-  }, [])
+  }, [holidays]);
 
   if (isLoading) {
     return <p>Loading...</p>

@@ -125,7 +125,7 @@ export default function Timetable({ auth, date, dateSlots, startOfWeek, endOfWee
   }
 
   const submitData = () => {
-    post(route('timetable', timetableData), {
+    post(route('timetable.dates', timetableData), {
       preserveScroll: true,
       onSuccess: () => { },
       onError: (er) => {

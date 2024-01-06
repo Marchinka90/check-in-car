@@ -16,7 +16,7 @@ import { Toast } from 'primereact/toast';
 
 let toastData;
 
-export default function ChangeBookingSlot({ auth, services, preferences, takenSlot }) {
+export default function ChangeBookingSlot({ auth, services, preferences, holidays, takenSlot }) {
   const toast = useRef(null);
   const [isCalendarVisible, setCalendarVisible] = useState(false);
   const [freeHoursData, setFreeHoursData] = useState([]);
@@ -123,6 +123,7 @@ export default function ChangeBookingSlot({ auth, services, preferences, takenSl
     if (oldSelectedHour) {
       oldSelectedHour.id = '';
     }
+    setData({ ...data, selectedHour: '' });
   }
 
   const deselectDate = () => {
@@ -130,6 +131,7 @@ export default function ChangeBookingSlot({ auth, services, preferences, takenSl
     if (oldSelectedDate) {
       oldSelectedDate.id = '';
     }
+    setData({ ...data, selectedDate: '', selectedDateObj: '' });
   }
 
   const selectHourHandler = (hour) => {
@@ -275,7 +277,7 @@ export default function ChangeBookingSlot({ auth, services, preferences, takenSl
                 {isCalendarVisible ? 'Остави старата дата и час' : 'Промени дата и час'}
               </h2>
               <div className={`flex flex-col items-center lg:items-start lg:flex-row max-w-7xl transition-all duration-500 ${isCalendarVisible ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
-                <Calendar setSelectedDate={(e) => setData('selectedDateObj', e )} preferences={preferences} />
+                <Calendar setSelectedDate={(e) => setData('selectedDateObj', e )} preferences={preferences} holidays={holidays} />
                 <div className='w-full sm:max-w-lg overflow-hidden pt-2 lg:max-w-2xl lg:p-2 lg:ml:0 lg:w-2/3 '>
                   <div className='w-full sm:max-w-2xl bg-background-light flex flex-wrap justify-center'>
                     <h2 className='w-full block text-center text-xl lg:text-2xl my-5 font-montserrat text-primary'>

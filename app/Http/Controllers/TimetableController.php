@@ -41,7 +41,6 @@ class TimetableController extends Controller
                 $startOfWeek = date('Y-m-d', Carbon::createFromTimestamp(strtotime($data['startOfWeek']))->startOfWeek()->timestamp);
                 $endOfWeek = date('Y-m-d', Carbon::createFromTimestamp(strtotime($data['startOfWeek']))->endOfWeek()->timestamp);
             } 
-
         } 
 
         $takenSlots = BookingSlot::select('id', 'booking_date', 'booking_hour', 'plate_license', 'service', 'status', 'customer_id')

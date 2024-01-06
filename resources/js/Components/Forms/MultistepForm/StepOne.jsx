@@ -33,7 +33,7 @@ export default function StepOne(props) {
           </div>
         </div>
 
-        <Calendar setSelectedDate={props.setSelectedDate} preferences={props.preferences}/>
+        <Calendar setSelectedDate={props.setSelectedDate} preferences={props.preferences} holidays={props.holidays} />
       </div>
   );
 }

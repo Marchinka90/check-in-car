@@ -10,6 +10,7 @@ use Inertia\Response;
 use Validator;
 use App\Models\VehicleCategory;
 use App\Models\Preference;
+use App\Models\Holiday;
 use App\Http\Requests\ContactUsRequest;
 use App\Http\Controllers\MailController;
 
@@ -34,10 +35,14 @@ class WebController extends Controller
         ]
       );
     }
+
+    $today = date('Y-m-d');
+    $holidays = Holiday::select('id', 'holiday_date')->where('holiday_date', '>=', $today)->orderBy('holiday_date')->get();
     
     return Inertia::render('Welcome', [
       'categories' => $categories,
       'preferences' => $preferences,
+      'holidays' => $holidays,
     ]);
   }
 

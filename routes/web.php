@@ -10,6 +10,7 @@ use App\Http\Controllers\PreferencesController;
 use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\BookingSlotController;
 use App\Http\Controllers\TimetableController;
+use App\Http\Controllers\HolidaysController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,11 +33,6 @@ Route::get('/', [WebController::class, 'Welcome']);
 //         'phpVersion' => PHP_VERSION,
 //     ]);
 // });
-
-
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     /*
@@ -67,9 +63,13 @@ Route::middleware('auth')->group(function () {
     | Timetable Routes
     */
     Route::get('/timetable', [TimetableController::class, 'index'])->name('timetable');
-    Route::post('/timetable', [TimetableController::class, 'index'])->name('timetable');
-    
-
+    Route::post('/timetable', [TimetableController::class, 'index'])->name('timetable.dates');
+    /*
+    | Timetable Routes
+    */
+    Route::get('/holidays', [HolidaysController::class, 'index'])->name('holidays');
+    Route::post('/holidays/store', [HolidaysController::class, 'store'])->name('holidays.store');
+    Route::delete('/holidays/delete/{id}', [HolidaysController::class, 'destroy'])->name('holidays.destroy');
 
     
 });

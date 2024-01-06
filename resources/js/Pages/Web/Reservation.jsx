@@ -185,6 +185,7 @@ export default function Reservation(props) {
         return <StepOne
           formData={formData}
           preferences={props.preferences}
+          holidays={props.holidays}
           plateLicense={plateLicense}
           setPlateLicense={setPlateLicense}
           categories={props.categories}

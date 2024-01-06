@@ -14,7 +14,7 @@ class BookingSlotService
     $time = $preferences['reviewTime'];
     $selectedDateCarbon = Carbon::createFromTimestamp(strtotime($selectedDate));
 
-    if ($selectedDateCarbon->dayOfWeek == 6 && $preferences['saturdayShiftOn'] === '1') {
+    if ($selectedDateCarbon->dayOfWeek == 6 && $preferences['saturdayShiftOn'] === 'Включен') {
       $start = $preferences['saturdayShiftStart'];
       $end = $preferences['saturdayShiftEnd'];
     } else {

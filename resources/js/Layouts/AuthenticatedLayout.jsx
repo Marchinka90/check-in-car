@@ -14,12 +14,12 @@ export default function Authenticated({ user, header, children }) {
                     <div className="flex justify-between h-16">
                         <div className="flex">
                             <div className="shrink-0 flex items-center">
-                                <Link href={route('dashboard')}>
+                                <Link href={route('timetable')}>
                                     <span className='text-2xl sm:mr-10 lg:mr-0'>ВИТА 21</span>
                                 </Link>
                             </div>
 
-                            <div className="hidden space-x-2 sm:-my-px sm:ms-10 sm:flex">
+                            <div className="hidden space-x-2 sm:-my-px sm:ms-10 md:flex">
                                 <NavLink href={route('timetable')} active={route().current('timetable')}>
                                 График
                                 </NavLink>
@@ -32,11 +32,13 @@ export default function Authenticated({ user, header, children }) {
                                 <NavLink href={route('preferences')} active={route().current('preferences')}>
                                 Настройки
                                 </NavLink>
-                                
+                                <NavLink href={route('holidays')} active={route().current('holidays')}>
+                                Почивни дни
+                                </NavLink>
                             </div>
                         </div>
 
-                        <div className="hidden sm:flex sm:items-center sm:ms-6">
+                        <div className="hidden md:flex sm:items-center sm:ms-6">
                             <div className="ms-3 relative">
                                 <Dropdown>
                                     <Dropdown.Trigger>
@@ -64,7 +66,7 @@ export default function Authenticated({ user, header, children }) {
                                     </Dropdown.Trigger>
 
                                     <Dropdown.Content>
-                                        <Dropdown.Link href={route('profile.edit')}>Профил</Dropdown.Link>
+                                        {/* <Dropdown.Link href={route('profile.edit')}>Профил</Dropdown.Link> */}
                                         <Dropdown.Link href={route('logout')} method="post" as="button">
                                             Изход
                                         </Dropdown.Link>
@@ -73,7 +75,7 @@ export default function Authenticated({ user, header, children }) {
                             </div>
                         </div>
 
-                        <div className="-me-2 flex items-center sm:hidden">
+                        <div className="-me-2 flex items-center md:hidden">
                             <button
                                 onClick={() => setShowingNavigationDropdown((previousState) => !previousState)}
                                 className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
@@ -99,21 +101,32 @@ export default function Authenticated({ user, header, children }) {
                     </div>
                 </div>
 
-                <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
+                <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' md:hidden'}>
                     <div className="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
-                        Контролен панел
+                        <ResponsiveNavLink href={route('timetable')} active={route().current('timetable')}>
+                            График
+                        </ResponsiveNavLink> 
+                        <ResponsiveNavLink href={route('booking-slot')} active={route().current('booking-slot')}>
+                            Запази час
+                        </ResponsiveNavLink> 
+                        <ResponsiveNavLink href={route('services')} active={route().current('services')}>
+                            Категории МПС
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('preferences')} active={route().current('preferences')}>
+                            Настройки
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('holidays')} active={route().current('holidays')}>
+                            Почивни дни
                         </ResponsiveNavLink>
                     </div>
 
                     <div className="pt-4 pb-1 border-t border-gray-200">
                         <div className="px-4">
                             <div className="font-medium text-base text-gray-800">{user.name}</div>
-                            <div className="font-medium text-sm text-gray-500">{user.email}</div>
                         </div>
 
                         <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('profile.edit')}>Профил</ResponsiveNavLink>
+                            {/* <ResponsiveNavLink href={route('profile.edit')}>Профил</ResponsiveNavLink> */}
                             <ResponsiveNavLink method="post" href={route('logout')} as="button">
                                 Изход
                             </ResponsiveNavLink>

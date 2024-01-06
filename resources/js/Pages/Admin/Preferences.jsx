@@ -1,25 +1,23 @@
 import { useRef, useState } from 'react';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
-import Table from "@/Components/Table.jsx";
+import { useForm } from '@inertiajs/react';
+
+import { Toast } from 'primereact/toast';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import Modal from '@/Components/Modal';
 import SecondaryButton from '@/Components/SecondaryButton';
 import TextInput from '@/Components/TextInput';
-import { useForm } from '@inertiajs/react';
 import PrimaryButton from '@/Components/PrimaryButton';
 import Select from '@/Components/Select';
-import { Toast } from 'primereact/toast';
-
-const columns = [
-  'description',
-  'value'
-];
 
 let toastData;
 
-export default function Preferences({ auth, preferences, status }) {
+export default function Preferences({ auth, preferences }) {
   const toast = useRef(null);
   const [confirmingPreferenceChange, setConfirmingPreferenceChange] = useState(false);
   const [inputLabelValue, setInputLabelValue] = useState();
@@ -44,7 +42,8 @@ export default function Preferences({ auth, preferences, status }) {
     },
   ];
 
-  const confirmPreferenceChangeHandler = (id) => {
+  const onSelectHandler = (row) => {
+    let id = row.id;
     setConfirmingPreferenceChange(true);
     preferences.map((item) => {
       if (item.id === id) {
@@ -103,7 +102,14 @@ export default function Preferences({ auth, preferences, status }) {
       <div className="py-6">
         <div className="max-w-7xl mx-auto sm:px-2 lg:px-8">
           <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <Table items={preferences} columns={columns} primary="Номер" action={confirmPreferenceChangeHandler} index={1}></Table>
+            <div className="card">
+              <DataTable value={preferences} selectionMode="single" onSelectionChange={(e) => onSelectHandler(e.value)} dataKey="id">
+                <Column header="#" body={(data, options) => options.rowIndex + 1}></Column>
+                <Column field="description" header="НАСТРОЙКА"></Column>
+                <Column field="value" header="СТОЙНОСТ"></Column>
+              </DataTable>
+            </div>
+            
             <Modal show={confirmingPreferenceChange} onClose={closeModal}>
               <form onSubmit={changePreferenceHandler} className="p-6 bg-background-light">
                 <h2 className="text-lg font-medium">
