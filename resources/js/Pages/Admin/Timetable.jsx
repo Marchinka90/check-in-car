@@ -17,6 +17,7 @@ export default function Timetable({ auth, date, dateSlots, startOfWeek, endOfWee
   const [activeIndex, setActiveIndex] = useState(1);
   const [currentDate, setCurrentDate] = useState(new Date(date));
   const [currentStartOfWeek, setCurrentStartOfWeek] = useState(startOfWeek);
+  const [weekData, setWeekData] = useState([]);
 
   const [showSuccess, setShowSuccess] = useState(success);
   const [showModal, setShowModal] = useState(false);
@@ -34,16 +35,19 @@ export default function Timetable({ auth, date, dateSlots, startOfWeek, endOfWee
     },
   });
 
-  const [timetableData, setTimetableData] = useState({
-    date: '',
-    startOfWeek: '',
-  });
-
   const [month, setMonth] = useState();
   const [dayOfWeek, setDayOfWeek] = useState();
   const [monthDate, setMonthDate] = useState();
 
-  const { data, setData, get, post, processing, errors, reset } = useForm({});
+  const [sendNextDate, setSendNextDate] = useState(false);
+  const [sendPrevDate, setSendPrevDate] = useState(false);
+  const [sendNextWeek, setSendNextWeek] = useState(false);
+  const [sendPrevWeek, setSendPrevWeek] = useState(false);
+
+  const { data, setData, get, post, processing, errors, reset } = useForm({
+    date: '',
+    startOfWeek: '',
+  });
 
   const items = [
     { label: 'Седмица' },
@@ -56,7 +60,8 @@ export default function Timetable({ auth, date, dateSlots, startOfWeek, endOfWee
   const currentMonth = currentDate.getMonth();
   const currentYear = currentDate.getFullYear();
 
-  
+  // Specify the date format options
+  const options = { timeZone: 'Europe/Sofia', year: 'numeric', month: 'long', day: 'numeric' };
 
   useEffect(() => {
     if (showSuccess) {
@@ -65,15 +70,37 @@ export default function Timetable({ auth, date, dateSlots, startOfWeek, endOfWee
       setShowSuccess(false);
     }
 
+    console.log('reload');
+
+    setWeekData([]);
+    if (weekSlots.length > 0) {
+      let weekSlotsArray = [];
+      for (let i = 0; i < weekSlots.length; i++) {
+        let currentWeekSlot = weekSlots[i];
+        let [day, month, year] = currentWeekSlot.booking_date.split('-');
+        let weekSlotDateObj = new Date(`${month}/${day}/${year}`);
+        let formattedWeekSlot = weekSlotDateObj.toLocaleDateString('bg-BG', options);
+        weekSlotsArray.push({ ...currentWeekSlot, booking_date: formattedWeekSlot })
+      }
+      setWeekData(weekSlotsArray);
+    }
+
+    console.log('weekData: ', weekData);
+    console.log('weekSlots: ', weekSlots);
+
     setDayOfWeek(currentDate.getDay());
     setMonthDate(currentDate.getDate());
     setMonth(`${months[currentMonth]} ${currentYear}`);
 
-    if (timetableData.date || timetableData.startOfWeek) {
+    if (sendNextDate || sendPrevDate || sendNextWeek || sendPrevWeek) {
+      setSendNextDate(false);
+      setSendPrevDate(false);
+      setSendNextWeek(false);
+      setSendPrevWeek(false);
       submitData();
     }
 
-  }, [timetableData, currentDate]);
+  }, [sendNextDate, sendPrevDate, sendNextWeek, sendPrevWeek, weekSlots]);
 
   const showToast = (data) => {
     if (toast.current) {
@@ -94,7 +121,8 @@ export default function Timetable({ auth, date, dateSlots, startOfWeek, endOfWee
     prevDate.setDate(currentDate.getDate() - 1);
     const formattedDate = prevDate.toLocaleDateString('en', { year: 'numeric', month: '2-digit', day: '2-digit' });
     setCurrentDate(prevDate);
-    setTimetableData({ date: '', startOfWeek: formattedDate });
+    setData({ date: formattedDate, startOfWeek: '' });
+    setSendPrevDate(true);
   }
 
   const onNextDateHandler = () => {
@@ -102,8 +130,8 @@ export default function Timetable({ auth, date, dateSlots, startOfWeek, endOfWee
     nextDate.setDate(currentDate.getDate() + 1);
     const formattedDate = nextDate.toLocaleDateString('en', { year: 'numeric', month: '2-digit', day: '2-digit' });
     setCurrentDate(nextDate);
-    setTimetableData({ date: '', startOfWeek: formattedDate });
-    
+    setData({ date: formattedDate, startOfWeek: '' });
+    setSendNextDate(true);
   }
 
   const onPrevWeekHandler = () => {
@@ -112,7 +140,8 @@ export default function Timetable({ auth, date, dateSlots, startOfWeek, endOfWee
     const formattedDate = prevWeek.toLocaleDateString('en', { year: 'numeric', month: '2-digit', day: '2-digit' });
     setCurrentStartOfWeek(prevWeek);
     setCurrentDate(prevWeek);
-    setTimetableData({ date: '', startOfWeek: formattedDate });
+    setData({ date: '', startOfWeek: formattedDate });
+    setSendPrevWeek(true);
   }
 
   const onNextWeekHandler = () => {
@@ -121,11 +150,12 @@ export default function Timetable({ auth, date, dateSlots, startOfWeek, endOfWee
     const formattedDate = nextWeek.toLocaleDateString('en', { year: 'numeric', month: '2-digit', day: '2-digit' });
     setCurrentStartOfWeek(nextWeek);
     setCurrentDate(nextWeek);
-    setTimetableData({ date: '', startOfWeek: formattedDate });
+    setData({ date: '', startOfWeek: formattedDate });
+    setSendNextWeek(true);
   }
 
   const submitData = () => {
-    post(route('timetable.dates', timetableData), {
+    post(route('timetable.dates'), {
       preserveScroll: true,
       onSuccess: () => { },
       onError: (er) => {
@@ -139,17 +169,20 @@ export default function Timetable({ auth, date, dateSlots, startOfWeek, endOfWee
   }
 
   const onSelectHandler = (row) => {
-    // Specify the date format options
-    const options = { timeZone: 'Europe/Sofia', year: 'numeric', month: 'long', day: 'numeric' };
-    const [selectedDate, currentMonth, currentYear] = row.booking_date.split('-');
-    let dateObj = new Date(currentYear, currentMonth, selectedDate);
-    // Convert the date to the specific format
-    const formattedDate = dateObj.toLocaleDateString('bg-BG', options);
-
     const numericPhoneNumber = '+359' + row.customer.phone.replace(/\D/g, '');
     const formattedPhoneNumber = numericPhoneNumber.replace(/(\d{1,3})/g, '$1 ').trim();
+    let selectedRowData;
+    if (activeIndex == 1) {
+      const [selectedDate, currentMonth, currentYear] = row.booking_date.split('-');
+      let dateObj = new Date(currentYear, currentMonth - 1, selectedDate);
+      // Convert the date to the specific format
+      const formattedDate = dateObj.toLocaleDateString('bg-BG', options);
 
-    let selectedRowData = { ...row, booking_date: formattedDate, phone: formattedPhoneNumber }
+      selectedRowData = { ...row, booking_date: formattedDate, phone: formattedPhoneNumber };
+    } else {
+      selectedRowData = { ...row, phone: formattedPhoneNumber };
+    }
+
     setModalData(selectedRowData);
     setShowModal(true);
   };
@@ -223,9 +256,9 @@ export default function Timetable({ auth, date, dateSlots, startOfWeek, endOfWee
                 <button className='mx-2 px-2 border text-secondary hover:bg-secondary hover:text-white' onClick={onPrevWeekHandler}><i className="pi pi-angle-double-left"></i></button>
                 <button className='ml-2 px-2 border text-secondary hover:bg-secondary hover:text-white' onClick={onNextWeekHandler}><i className="pi pi-angle-double-right"></i></button>
               </div>
-              {weekSlots.length > 0 &&
+              {weekData.length > 0 &&
                 <div className="card">
-                  <DataTable value={weekSlots} selectionMode="single" onSelectionChange={(e) => onSelectHandler(e.value)} dataKey="key"
+                  <DataTable value={weekData} selectionMode="single" onSelectionChange={(e) => onSelectHandler(e.value)} dataKey="key"
                     rowGroupMode="subheader" groupRowsBy="booking_date" sortMode="single" sortField="booking_date"
                     sortOrder={1} scrollable scrollHeight="40rem" rowGroupHeaderTemplate={headerTemplate} >
                     <Column header="Дата" headerStyle={{ width: '6rem' }}></Column>
@@ -235,7 +268,7 @@ export default function Timetable({ auth, date, dateSlots, startOfWeek, endOfWee
                   </DataTable>
                 </div>
               }
-              {weekSlots.length == 0 &&
+              {weekData.length == 0 &&
                 <div className="card mt-5">
                   <h1 className="text-xl text-center">Няма запазени часове за тази седмица</h1>
                 </div>

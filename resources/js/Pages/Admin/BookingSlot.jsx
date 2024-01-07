@@ -3,7 +3,6 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { useState, useEffect, useRef } from 'react';
 import { Head, useForm } from '@inertiajs/react';
 
-import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
@@ -210,7 +209,6 @@ export default function BookingSlot({ auth, services, preferences, holidays }) {
                                             className="mt-1 block w-full"
                                             autoComplete="vehicleCategory"
                                         />
-                                        <InputError message={errors.password} className="mt-2" />
                                     </div>
                                 </div>
                             </div>
@@ -228,7 +226,6 @@ export default function BookingSlot({ auth, services, preferences, holidays }) {
                                         onChange={(e) => setData('firstname', e.target.value)}
                                     />
 
-                                    <InputError message={errors.firstname} className="mt-2" />
                                 </div>
 
                                 <div className="w-full sm:max-w-lg mt-6 p-2 overflow-hidden">
@@ -244,7 +241,6 @@ export default function BookingSlot({ auth, services, preferences, holidays }) {
                                         onChange={(e) => setData('lastname', e.target.value)}
                                     />
 
-                                    <InputError message={errors.password} className="mt-2" />
                                 </div>
                             </div>
                             <div className='flex flex-col w-full items-center lg:justify-center lg:flex-row'>
@@ -264,7 +260,6 @@ export default function BookingSlot({ auth, services, preferences, holidays }) {
                                         />
                                     </span>
 
-                                    <InputError message={errors.firstname} className="mt-2" />
                                 </div>
 
                                 <div className="w-full sm:max-w-lg mt-6 p-2 overflow-hidden">
@@ -279,7 +274,6 @@ export default function BookingSlot({ auth, services, preferences, holidays }) {
                                         onChange={(e) => setData('plateLicense', e.target.value.toUpperCase())}
                                     />
 
-                                    <InputError message={errors.password} className="mt-2" />
                                 </div>
                             </div>
 

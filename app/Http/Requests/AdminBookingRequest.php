@@ -23,11 +23,11 @@ class AdminBookingRequest extends FormRequest
     {
         return [
             'vehicleCategory' => 'required|numeric',
-            'plateLicense' => 'required|string|min:6',
+            'plateLicense' => 'required|string|min:6|regex:/^[\p{Cyrillic}0-9]+$/u',
             'selectedDate' => 'required|date_format:m/d/Y',
             'selectedHour' => 'required|string',
-            'firstname' => 'required|string|min:3',
-            'lastname' => 'required|string|min:3',
+            'firstname' => 'required|string|min:3|regex:/^[\p{Cyrillic}0-9]+$/u',
+            'lastname' => 'required|string|min:3|regex:/^[\p{Cyrillic}0-9]+$/u',
             'phone' => 'required|string|size:9',
             'email' => 'nullable|email',
             'status' => 'nullable|in:Запазен,Пропуснат,Отменен,Неуспешен,Завършен',

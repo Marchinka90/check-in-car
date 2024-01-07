@@ -71,6 +71,7 @@ export default function ChangeBookingSlot({ auth, services, preferences, holiday
   const options = { timeZone: 'Europe/Sofia', year: 'numeric', month: 'long', day: 'numeric' };
   // // Convert the date to the specific format
   let [day, month, year] = takenSlot.booking_date.split('-');
+
   const oldSelectedDate = `${month}/${day}/${year}`;
   const oldSelectedHour = takenSlot.booking_hour;
 

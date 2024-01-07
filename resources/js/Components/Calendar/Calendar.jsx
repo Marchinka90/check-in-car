@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 export default function Calendar(props) {
   const [calendar, setCalendar] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  
   const saturdayShiftOn = props.preferences.saturdayShiftOn;
   const holidays = props.holidays;
 
