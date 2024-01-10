@@ -18,7 +18,7 @@ class WebController extends Controller
 {
   public function Welcome() {
     $preferences = Preference::select('name', 'value')->pluck('value', 'name');
-
+    
     if ($preferences['saturdayShiftOn'] == 'Включен') {
         $preferences['saturdayShiftOn'] = 1;
     } else {
@@ -27,8 +27,13 @@ class WebController extends Controller
 
     $vehicleCategories = VehicleCategory::all();
     $categories = [];
+    $promoPrice = '51.00';
 
     foreach ($vehicleCategories as $vehicleCategory) {
+      if ($vehicleCategory->id == 1) {
+        $promoPrice = $vehicleCategory->price;
+      }
+      
       array_push($categories, (object)[
         'key' => $vehicleCategory->id,
         'label' => $vehicleCategory->name . ' - ' . $vehicleCategory->price . '.лв'
@@ -43,6 +48,7 @@ class WebController extends Controller
       'categories' => $categories,
       'preferences' => $preferences,
       'holidays' => $holidays,
+      'promoPrice' => $promoPrice
     ]);
   }
 

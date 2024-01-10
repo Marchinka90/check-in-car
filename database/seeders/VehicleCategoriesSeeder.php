@@ -16,7 +16,7 @@ class VehicleCategoriesSeeder extends Seeder
         $data = [
             [
                 'name' => 'Лек Автомобил',
-                'price' => '49.00'
+                'price' => '51.00'
             ],
             [
                 'name' => 'Лек Автомобил Джип /4x4/',

@@ -10,7 +10,7 @@ import Contacts from './Web/Contacts';
 import { useState } from 'react';
 import { Dialog } from 'primereact/dialog';
 
-export default function Welcome({ categories, preferences, holidays }) {
+export default function Welcome({ categories, preferences, holidays, promoPrice }) {
   const [showDialog, setShowDialog] = useState(true);
 
   let contentPolocy;
@@ -28,9 +28,15 @@ export default function Welcome({ categories, preferences, holidays }) {
 
   return (
     <>
-      <Head title="ВИТА 21" />
+      {/* <Head>
+        <title>My app</title>
+        <meta head-key="description" name="description" content="This is the default description" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+      </Head> */}
+      <Head title="ВИТА 21"/>
+      
       <WebLayout>
-        <Home />
+        <Home promoPrice={promoPrice}/>
         <Reservation categories={categories} preferences={preferences} holidays={holidays} />
         <Services />
         <Documents />
