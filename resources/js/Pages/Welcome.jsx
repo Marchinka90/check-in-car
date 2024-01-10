@@ -27,14 +27,7 @@ export default function Welcome({ categories, preferences, holidays, promoPrice 
   )
 
   return (
-    <>
-      {/* <Head>
-        <title>My app</title>
-        <meta head-key="description" name="description" content="This is the default description" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-      </Head> */}
-      <Head title="ВИТА 21"/>
-      
+    <>      
       <WebLayout>
         <Home promoPrice={promoPrice}/>
         <Reservation categories={categories} preferences={preferences} holidays={holidays} />

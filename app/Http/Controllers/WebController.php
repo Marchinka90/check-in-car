@@ -14,9 +14,22 @@ use App\Models\Holiday;
 use App\Http\Requests\ContactUsRequest;
 use App\Http\Controllers\MailController;
 
+use SEOMeta;
+
 class WebController extends Controller
 {
   public function Welcome() {
+    SEOMeta::setTitle('ВИТА 21 - Запазете час за годишния си технически преглед');
+    SEOMeta::setDescription('Запазете час за годишния си технически преглед бързо и лесно. Предлагаме технически прегледи за всякакви автомобили на достъпни цени.');
+    SEOMeta::setCanonical('https://vita21.bg');
+    SEOMeta::addMeta('Home', 'Начало', 'section');
+    SEOMeta::addMeta('Reservation', 'Запази час', 'section');
+    SEOMeta::addMeta('Services', 'Видове технически прегледи', 'section');
+    SEOMeta::addMeta('Documents', 'Необходими документи', 'section');
+    SEOMeta::addMeta('AboutUs', 'Кои сме ние', 'section');
+    SEOMeta::addMeta('Contacts', 'Пишете ни', 'section');
+    SEOMeta::addKeyword(['годишни технически прегледи', 'технически преглед', 'автосервиз', 'услуги за автомобили', 'варна', 'часове', 'автомобили', 'мотори', 'товарни автомобили', 'услуги', 'свидетелство за регистрация', 'МПС', 'превозното средство']);
+    
     $preferences = Preference::select('name', 'value')->pluck('value', 'name');
     
     if ($preferences['saturdayShiftOn'] == 'Включен') {
