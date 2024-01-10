@@ -102,7 +102,7 @@ export default function BookingSlot({ auth, services, preferences, holidays }) {
 
     const submit = (e) => {
         e.preventDefault();
-        console.log(data)
+        
         if (isValidForm()) {
             post(route('booking-slot.store'), {
                 preserveScroll: true,
@@ -167,6 +167,18 @@ export default function BookingSlot({ auth, services, preferences, holidays }) {
         }
         if (data.plateLicense === '' || data.plateLicense.length < 6) {
             toastData = { severity: 'error', summary: 'Грешка', detail: 'Полето за Регистрационен номер не може да бъде празно или по-малко от 6 символа' };
+            showToast(toastData);
+            return false;
+        }
+        const regexSpaces = /\s/;
+        if (regexSpaces.test(data.plateLicense)) {
+            toastData = { severity: 'error', summary: 'Грешка', detail: 'Полето Регистрационен не трябва да съдържа празни места' };
+            showToast(toastData);
+            return false;
+        }
+        const regexLattin = /^[A-Za-z0-9]+$/;
+        if (!regexLattin.test(data.plateLicense)) {
+            toastData = { severity: 'error', summary: 'Грешка', detail: 'Полето Регистрационен трябва да бъде попълнено на латиница' };
             showToast(toastData);
             return false;
         }

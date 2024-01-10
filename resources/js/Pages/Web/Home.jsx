@@ -7,9 +7,9 @@ export default function Home(){
             {/* <div className="container w-full h-full relative bg-[url('/img/engine.jpg')] bg-cover	bg-no-repeat bg-left-top border-box "> */}
             <div className="lg:container home-wrapper w-full h-full relative">
               {/* <div className='w-full h-full bg-gradient-to-r from-background-dark to-backgrount-dark-transperant opacity-50'></div> */}
-              <h1 className="absolute text-white text-2xl text-center left-8 top-16 z-3 font-montserrat md:text-3xl lg:text-5xl lg:text-left lg:top-16 lg:left-14">Годишни Технически Прегледи</h1>
-              <h2 className="absolute text-white text-xl text-center left-8 top-32 z-3 font-montserrat md:text-2xl lg:text-3xl lg:text-left lg:top-40 lg:left-14">Онлайн часове на промо цена</h2>
-              <h2 className="absolute text-white text-xl text-center left-8 top-40 z-3 font-montserrat md:text-2xl lg:text-3xl lg:text-left lg:top-52 lg:left-14">на леки автомобили<span className='text-secondary text-2xl md:text-3xl lg:text-4xl'> 49.00 ЛВ</span></h2>
+              <h1 className="absolute text-white text-xl text-center left-2 top-16 z-3 font-montserrat sm:text-2xl md:text-3xl lg:text-5xl lg:text-left lg:top-16 lg:left-14">Годишни Технически Прегледи</h1>
+              <h2 className="absolute text-white text-lg text-center left-2 top-32 z-3 font-montserrat sm:text-xl md:text-2xl lg:text-3xl lg:text-left lg:top-40 lg:left-14">Онлайн часове на промо цена</h2>
+              <h2 className="absolute text-white text-lg text-center left-2 top-40 z-3 font-montserrat sm:text-xl md:text-2xl lg:text-3xl lg:text-left lg:top-52 lg:left-14">на леки автомобили<span className='text-secondary text-2xl md:text-3xl lg:text-4xl'> 49.00 ЛВ</span></h2>
             </div>
         </Section>
         <style>{`

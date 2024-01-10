@@ -26,7 +26,7 @@ export default function MainNavigation(props) {
         </nav>
       </SideDrawer>
       <MainHeader>
-        <div className='lg:container flex items-center justify-between py-5 border-b-2 border-solid border-black'>
+        <div className='lg:container flex items-center justify-between md:py-2 md:py-5 border-b-2 border-solid border-black'>
           {/* Button for small devices  */}
           <button className='w-12 h-12 bg-transparent	flex flex-col justify-around ml-8 cursor-pointer lg:hidden' onClick={openDrawerHandler}>
             <span className='block w-12 h-0.5	bg-white'/>

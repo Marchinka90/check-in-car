@@ -25,15 +25,6 @@ use App\Http\Controllers\HolidaysController;
 
 Route::get('/', [WebController::class, 'Welcome']);
 
-// Route::get('/welcome', function () {
-//     return Inertia::render('Welcome', [
-//         'canLogin' => Route::has('login'),
-//         'canRegister' => Route::has('register'),
-//         'laravelVersion' => Application::VERSION,
-//         'phpVersion' => PHP_VERSION,
-//     ]);
-// });
-
 Route::middleware('auth')->group(function () {
     /*
     | Profile Routes

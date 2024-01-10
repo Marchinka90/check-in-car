@@ -81,11 +81,30 @@ export default function Reservation(props) {
 
   const checkFirstStepDataHandler = () => {
     if (plateLicense === '' || plateLicense.length < 6) {
-      toastData = { severity: 'error', summary: 'Грешка', detail: 'Полето за Регистрационен номер не може да бъде празно или по-малко от 6 символа' };
+      toastData = { severity: 'error', summary: 'Грешка', detail: 'Полето Регистрационен номер не може да бъде празно или по-малко от 6 символа' };
       setIsValidFirstStep(false);
       showToast(toastData);
       return false;
     }
+
+    const regexSpaces = /\s/;
+
+    if (regexSpaces.test(plateLicense)) {
+      toastData = { severity: 'error', summary: 'Грешка', detail: 'Полето Регистрационен не трябва да съдържа празни места' };
+      setIsValidFirstStep(false);
+      showToast(toastData);
+      return false;
+    }
+
+    const regexLattin = /^[A-Za-z0-9]+$/;
+
+    if (!regexLattin.test(plateLicense)) {
+      toastData = { severity: 'error', summary: 'Грешка', detail: 'Полето Регистрационен трябва да бъде попълнено на латиница' };
+      setIsValidFirstStep(false);
+      showToast(toastData);
+      return false;
+    }
+
     if (!vehicleCategory || vehicleCategory < 1 || vehicleCategory > 7) {
       toastData = { severity: 'error', summary: 'Грешка', detail: 'Не сте избрали Категория на автомобила' };
       setIsValidFirstStep(false);
@@ -272,7 +291,6 @@ export default function Reservation(props) {
         let errorsObj = er.response.data.errors;
 
         Object.entries(errorsObj).forEach(([key, message]) => {
-          console.log(message[0])
           toastData = { severity: 'error', summary: 'Грешка', detail: message[0] };
           showToast(toastData);
         });
@@ -319,13 +337,13 @@ export default function Reservation(props) {
     <>
       <Toast ref={toast} />
       <Section id='reservation' className='bg-background-light pb-20'>
-        <h1 className="text-primary text-center font-montserrat text-3xl py-10 lg:py-14 lg:text-4xl">Запази час</h1>
+        <h1 className="text-primary text-center font-montserrat text-2xl sm:text-3xl py-10 lg:py-14 lg:text-4xl">Запази час</h1>
         <div className="lg:container">
           <Card>
             {!successMessage && <> <Steps model={steps} activeIndex={activeIndex - 1} readOnly={true} className='mb-16' />
               <form onSubmit={onSubmitHandler}>
                 {renderStepContent()}
-                <div className='flex justify-end mt-5'>
+                <div className='flex justify-end mt-5 mr-2'>
                   <Button type="button" label="Назад" severity="secondary" className='mr-2' onClick={handlePrevStep} disabled={activeIndex === 1} />
                   {activeIndex < totalSteps && (<>
                     <Button type="button" label="Напред" onClick={handleNextStep} disabled={activeIndex === totalSteps} loading={loading} />
@@ -377,6 +395,18 @@ export default function Reservation(props) {
         }
         .p-treeselect-header {
           display: none;
+        }
+        @media (max-width: 480px) {
+          .p-card .p-card-body {
+            padding: 0;
+          } 
+          .p-float-label label {
+            font-size: 0.9rem;
+          }
+          .p-button {
+            font-size: 0.9rem;
+            padding: 0.7rem
+          }
         }
       `}</style>
     </>

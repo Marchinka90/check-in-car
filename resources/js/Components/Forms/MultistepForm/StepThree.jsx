@@ -20,26 +20,28 @@ export default function StepThree(props) {
   return (
     <>
       <div className="flex justify-center items-center w-full flex-col lg:flex-row lg:justify-around">
-        <div className='text-primary font-lato tracking-wide leading-relaxed mb-5 w-96 md:w-128'>
+        <div className='text-primary w-full font-lato tracking-wide leading-relaxed px-5 mb-5 sm:w-96 md:w-128'>
           <p>Дата: <strong>{formattedDate}</strong></p>
           <p>Час: <strong>{props.selectedHour}</strong></p>
           <p>Регистрационен номер: <strong>{props.plateLicense}</strong></p>
-          <p>Категория на автомобила: <strong>{props.vehicleCategoryLabel}</strong></p>
+          <p className='sm:hidden'>Категория на автомобила:</p>
+          <p className='sm:hidden'><strong>{props.vehicleCategoryLabel}</strong></p>
+          <p className='hidden sm:block'>Категория на автомобила: <strong>{props.vehicleCategoryLabel}</strong></p>
           <p>Име: <strong>{props.firstname}</strong></p>
           <p>Фамилия: <strong>{props.lastname}</strong></p>
           <p>Телефон: <strong>{props.phone}</strong></p>
           <p>Имейл: <strong>{props.email}</strong></p>
         </div>
-        <div className='text-primary font-lato tracking-wide leading-relaxed w-96 md:w-128'>
+        <div className='text-primary w-full font-lato tracking-wide leading-relaxed sm:w-96 md:w-128'>
           <div className='bg-background-light p-2'>
             <div className="flex justify-content-center mb-2 ">
-              <div className="w-48">
+              <div className="sm:w-48">
                 <img src={props.captchaImage} alt="captchaImage" />
               </div>
               <Button type="button" className="text-xs" label="Презареди" icon="pi pi-refresh" onClick={props.refreshCaptcha} loading={props.loadingCaptcha} />
             </div>
 
-            <div className="p-float-label mt-8 mb-3 w-full ">
+            <div className="p-float-label mt-8 mb-3 w-full">
               <InputText className='w-full' id="captcha" value={props.captcha} onChange={(e) => props.setCaptcha(e.target.value)} />
               <label htmlFor="captcha">Попълнете символите от картинката</label>
             </div>

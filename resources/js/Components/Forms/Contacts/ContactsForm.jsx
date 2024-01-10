@@ -97,7 +97,6 @@ export default function ContactsForm() {
         let errorsObj = er.response.data.errors;
 
         Object.entries(errorsObj).forEach(([key, message]) => {
-          console.log(message[0])
           toastData = { severity: 'error', summary: 'Грешка', detail: message[0] };
           showToast(toastData);
         });

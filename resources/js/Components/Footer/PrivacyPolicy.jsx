@@ -99,7 +99,7 @@ export default function PrivacyPolicy(props) {
 
   return (
     <>
-      <Dialog header={props.title} visible={props.visible}  style={{ width: '60vw' }} onHide={() => props.setVisible(false)}>
+      <Dialog header={props.title} visible={props.visible}  style={{ width: '85vw' }} onHide={() => props.setVisible(false)}>
         {contentPolocy}
       </Dialog>
     </>

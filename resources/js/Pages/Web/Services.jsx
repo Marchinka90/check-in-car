@@ -16,7 +16,7 @@ export default function Services() {
       icon: 'motorcycle',
       description: 'Ние сме вашата дестинация за грижа на мотоциклети. С нашия опит, ние предлагаме бързи и надеждни годишни прегледи, за да гарантираме, че мотоциклетът ви е в отлично състояние. Карайте с увереност – изберете нас за благополучието на вашия мотоциклет. Насрочете своя годишен преглед на мотор днес и поддържайте мотора си в най-добра форма.',
       image: 'motor-resized.webp',
-    },{
+    }, {
       name: 'Товарен автомобил',
       icon: 'local_shipping',
       description: 'Поддържайте безпроблемната работа на вашия камион с нашата годишна инспекция. Извършване на подробна проверка на критичните компоненти, за да се гарантира безопасност и надеждност. Получете изчерпателен отчет за вашето спокойствие на пътя. Планирайте годишната техническа проверка на вашия камион днес за надеждна работа през цялата година.',
@@ -49,9 +49,9 @@ export default function Services() {
         <div className="mb-3">
           <img src={`./img/${product.image}`} alt={product.name} className="w-auto shadow-6 h-64 mx-auto" />
         </div>
-        <div className='flex flex-wrap flex-col xl:h-80 justify-between items-center'>
-          <h4 className="mb-1 flex text-primary font-montserrat text-xl font-bold justify-center"><span className="material-icons text-secondary mr-2">{product.icon}</span> {product.name}</h4>
-          <p className='text-primary font-lato text-justify mx-3'>{product.description}</p>
+        <div className='flex flex-wrap flex-col xl:h-85 justify-between items-center'>
+          <h4 className="mb-1 flex text-primary font-montserrat text-lg sm:text-xl font-bold justify-center"><span className="material-icons text-secondary mr-2">{product.icon}</span> {product.name}</h4>
+          <p className='text-primary font-lato text-left text-md sm:text-lg mx-3 mb-3'>{product.description}</p>
           <ScrollLink
             to='reservation'
             smooth={true}
@@ -68,11 +68,14 @@ export default function Services() {
 
   return (
     <>
-      <Section id='services' className='bg-white pt-16'>
+      <Section id='services' className=' bg-white pt-16 '>
         <div className="lg:container">
-          <h1 className="text-primary text-center font-montserrat text-3xl lg:py-14 lg:text-4xl">Видове технически прегледи</h1>
-          <div className="card pt-12">
+          <h1 className="text-primary text-center font-montserrat text-2xl sm:text-3xl lg:py-14 lg:text-4xl">Видове технически прегледи</h1>
+          <div className="card pt-12 hidden sm:block">
             <Carousel value={products} numVisible={3} numScroll={1} responsiveOptions={responsiveOptions} className="custom-carousel" circular itemTemplate={productTemplate} />
+          </div>
+          <div className="card flex justify-content-center sm:hidden">
+            <Carousel value={products} numVisible={1} numScroll={1} orientation="vertical" verticalViewPortHeight="45rem" circular itemTemplate={productTemplate} />
         </div>
         </div>
       </Section>

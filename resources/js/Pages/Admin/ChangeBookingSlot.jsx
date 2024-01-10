@@ -231,6 +231,19 @@ export default function ChangeBookingSlot({ auth, services, preferences, holiday
       showToast(toastData);
       return false;
     }
+    const regexSpaces = /\s/;
+    if (regexSpaces.test(data.plateLicense)) {
+      toastData = { severity: 'error', summary: 'Грешка', detail: 'Полето Регистрационен не трябва да съдържа празни места' };
+      showToast(toastData);
+      return false;
+    }
+
+    const regexLattin = /^[A-Za-z0-9]+$/;
+    if (!regexLattin.test(data.plateLicense)) {
+      toastData = { severity: 'error', summary: 'Грешка', detail: 'Полето Регистрационен трябва да бъде попълнено на латиница' };
+      showToast(toastData);
+      return false;
+    }
     return true;
   }
 
@@ -243,7 +256,7 @@ export default function ChangeBookingSlot({ auth, services, preferences, holiday
 
     destroy(route('booking-slot.destroy', takenSlot.key), {
       preserveScroll: true,
-      onSuccess: () => {},
+      onSuccess: () => { },
       onError: (er) => {
         Object.entries(er).forEach(([key, message]) => {
           toastData = { severity: 'error', summary: 'Грешка', detail: message };
@@ -278,7 +291,7 @@ export default function ChangeBookingSlot({ auth, services, preferences, holiday
                 {isCalendarVisible ? 'Остави старата дата и час' : 'Промени дата и час'}
               </h2>
               <div className={`flex flex-col items-center lg:items-start lg:flex-row max-w-7xl transition-all duration-500 ${isCalendarVisible ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
-                <Calendar setSelectedDate={(e) => setData('selectedDateObj', e )} preferences={preferences} holidays={holidays} />
+                <Calendar setSelectedDate={(e) => setData('selectedDateObj', e)} preferences={preferences} holidays={holidays} />
                 <div className='w-full sm:max-w-lg overflow-hidden pt-2 lg:max-w-2xl lg:p-2 lg:ml:0 lg:w-2/3 '>
                   <div className='w-full sm:max-w-2xl bg-background-light flex flex-wrap justify-center'>
                     <h2 className='w-full block text-center text-xl lg:text-2xl my-5 font-montserrat text-primary'>
@@ -304,7 +317,7 @@ export default function ChangeBookingSlot({ auth, services, preferences, holiday
                     name="plateLicense"
                     value={data.plateLicense}
                     className="mt-1 block w-full"
-                    onChange={(e) => setData('plateLicense', e.target.value.toUpperCase() )}
+                    onChange={(e) => setData('plateLicense', e.target.value.toUpperCase())}
                   />
                 </div>
 
@@ -314,7 +327,7 @@ export default function ChangeBookingSlot({ auth, services, preferences, holiday
                     id="vehicleCategory"
                     options={services}
                     value={data.vehicleCategory}
-                    onChange={(e) => setData('vehicleCategory', e.target.value )}
+                    onChange={(e) => setData('vehicleCategory', e.target.value)}
                     type="text"
                     className="mt-1 block w-full"
                     autoComplete="vehicleCategory"
@@ -332,7 +345,7 @@ export default function ChangeBookingSlot({ auth, services, preferences, holiday
                     name="firstname"
                     value={data.firstname}
                     className="mt-1 block w-full"
-                    onChange={(e) => setData('firstname', e.target.value )}
+                    onChange={(e) => setData('firstname', e.target.value)}
                   />
                 </div>
 
@@ -346,7 +359,7 @@ export default function ChangeBookingSlot({ auth, services, preferences, holiday
                     value={data.lastname}
                     className="mt-1 block w-full"
 
-                    onChange={(e) => setData('lastname', e.target.value )}
+                    onChange={(e) => setData('lastname', e.target.value)}
                   />
                 </div>
               </div>
@@ -364,7 +377,7 @@ export default function ChangeBookingSlot({ auth, services, preferences, holiday
                       value={data.phone}
                       className="mt-1 block w-full border-left: none"
                       autoComplete="phone"
-                      onChange={(e) => setData('phone', e.target.value )}
+                      onChange={(e) => setData('phone', e.target.value)}
                     />
                   </span>
                 </div>
@@ -390,7 +403,7 @@ export default function ChangeBookingSlot({ auth, services, preferences, holiday
                     id="status"
                     options={statuses}
                     value={data.status}
-                    onChange={(e) => setData('status', e.target.value )}
+                    onChange={(e) => setData('status', e.target.value)}
                     type="text"
                     className="mt-1 block w-full"
                     autoComplete="status"

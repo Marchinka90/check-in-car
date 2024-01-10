@@ -70,8 +70,6 @@ export default function Timetable({ auth, date, dateSlots, startOfWeek, endOfWee
       setShowSuccess(false);
     }
 
-    console.log('reload');
-
     setWeekData([]);
     if (weekSlots.length > 0) {
       let weekSlotsArray = [];
@@ -84,9 +82,6 @@ export default function Timetable({ auth, date, dateSlots, startOfWeek, endOfWee
       }
       setWeekData(weekSlotsArray);
     }
-
-    console.log('weekData: ', weekData);
-    console.log('weekSlots: ', weekSlots);
 
     setDayOfWeek(currentDate.getDay());
     setMonthDate(currentDate.getDate());
