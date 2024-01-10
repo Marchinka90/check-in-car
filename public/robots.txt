@@ -1,2 +1,9 @@
 User-agent: *
-Disallow:
+Disallow: /profile
+Disallow: /preferences
+Disallow: /services
+Disallow: /booking-slot
+Disallow: /timetable
+Disallow: /holidays
+Allow: /
+Sitemap: https://www.vita21.com/sitemap.xml
