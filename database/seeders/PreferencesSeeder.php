@@ -26,12 +26,12 @@ class PreferencesSeeder extends Seeder
             ],
             [
                 'name' => 'regularDaysShiftEnd',
-                'value' => '18:00',
+                'value' => '17:00',
                 'description' => 'Край на работното време през седмицата'
             ],
             [
                 'name' => 'saturdayShiftOn',
-                'value' => 'Включен',
+                'value' => 'Изключен',
                 'description' => 'Работен ден в събота'
             ],
             [

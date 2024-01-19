@@ -21,7 +21,7 @@ export default function StepOne(props) {
         <div className='w-full mt-8 lg:w-1/2 lg:mr-5'>
           <div className="p-float-label w-full">
             <InputText className='w-full' id="car-license-plate" value={props.plateLicense} onChange={(e) => props.setPlateLicense(e.target.value.toUpperCase())} required/>
-            <label htmlFor="car-license-plate">Регистрационен номер на латиница (пр: В2345РА)</label>
+            <label htmlFor="car-license-plate">Регистрационен номер</label>
           </div>
 
           <div className="card flex justify-content-center mt-10 w-full">

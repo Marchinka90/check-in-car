@@ -20,15 +20,15 @@ class VehicleCategoriesSeeder extends Seeder
             ],
             [
                 'name' => 'Лек Автомобил Джип /4x4/',
-                'price' => '49.00'
+                'price' => '51.00'
             ],
             [
                 'name' => 'Таксиметров автомобил',
-                'price' => '49.00'
+                'price' => '70.00'
             ],
             [
                 'name' => 'Мотоциклет',
-                'price' => '40.00'
+                'price' => '45.00'
             ],
             [
                 'name' => 'Ремаркета до 750 кг.',
@@ -36,11 +36,11 @@ class VehicleCategoriesSeeder extends Seeder
             ],
             [
                 'name' => 'Товарен автомобил до 3.5 тона',
-                'price' => '55.00'
+                'price' => '65.00'
             ],
             [
                 'name' => 'Проверка на амортисьори (на ос)',
-                'price' => '49.00'
+                'price' => '20.00'
             ]
         ];
 

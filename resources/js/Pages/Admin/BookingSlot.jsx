@@ -176,12 +176,12 @@ export default function BookingSlot({ auth, services, preferences, holidays }) {
             showToast(toastData);
             return false;
         }
-        const regexLattin = /^[A-Za-z0-9]+$/;
-        if (!regexLattin.test(data.plateLicense)) {
-            toastData = { severity: 'error', summary: 'Грешка', detail: 'Полето Регистрационен трябва да бъде попълнено на латиница' };
-            showToast(toastData);
-            return false;
-        }
+        // const regexLattin = /^[A-Za-z0-9]+$/;
+        // if (!regexLattin.test(data.plateLicense)) {
+        //     toastData = { severity: 'error', summary: 'Грешка', detail: 'Полето Регистрационен трябва да бъде попълнено на латиница' };
+        //     showToast(toastData);
+        //     return false;
+        // }
         return true;
     }
 

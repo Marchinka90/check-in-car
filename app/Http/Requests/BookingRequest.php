@@ -23,7 +23,7 @@ class BookingRequest extends FormRequest
     {
         return [
             'vehicleCategory' => 'required|numeric',
-            'plateLicense' => 'required|string|min:6|regex:/^[A-Za-z0-9]+$/',
+            'plateLicense' => 'required|string|min:6',
             'selectedDate' => 'required|date_format:m/d/Y',
             'selectedHour' => 'required|string',
             'firstname' => 'required|string|min:3',

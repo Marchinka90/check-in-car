@@ -34,8 +34,8 @@ export default function MainNavigation(props) {
             <span className='block w-12 h-0.5	bg-white'/>
           </button>
 
-          <article className='text-white text-3xl my-2.5 mx-2 pl-5 mr-10 lg:mr-0'>
-            <Link to='/'>ВИТА 21</Link>
+          <article className='text-white text-3xl my-2.5 mx-2 pl-5 sm:mr-10 lg:mr-0'>
+            <Link to='/'><img src='./img/logo_vita_21.png' alt='ВИТА 21' className="w-[14rem]" /></Link>
           </article>
 
           <nav className='text-white text-lg pr-5 hidden lg:block'>

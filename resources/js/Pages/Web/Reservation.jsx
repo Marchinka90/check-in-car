@@ -96,14 +96,14 @@ export default function Reservation(props) {
       return false;
     }
 
-    const regexLattin = /^[A-Za-z0-9]+$/;
+    // const regexLattin = /^[A-Za-z0-9]+$/;
 
-    if (!regexLattin.test(plateLicense)) {
-      toastData = { severity: 'error', summary: 'Грешка', detail: 'Полето Регистрационен трябва да бъде попълнено на латиница' };
-      setIsValidFirstStep(false);
-      showToast(toastData);
-      return false;
-    }
+    // if (!regexLattin.test(plateLicense)) {
+    //   toastData = { severity: 'error', summary: 'Грешка', detail: 'Полето Регистрационен трябва да бъде попълнено на латиница' };
+    //   setIsValidFirstStep(false);
+    //   showToast(toastData);
+    //   return false;
+    // }
 
     if (!vehicleCategory || vehicleCategory < 1 || vehicleCategory > 7) {
       toastData = { severity: 'error', summary: 'Грешка', detail: 'Не сте избрали Категория на автомобила' };

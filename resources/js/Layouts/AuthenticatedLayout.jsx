@@ -15,7 +15,8 @@ export default function Authenticated({ user, header, children }) {
                         <div className="flex">
                             <div className="shrink-0 flex items-center">
                                 <Link href={route('timetable')}>
-                                    <span className='text-2xl sm:mr-10 lg:mr-0'>ВИТА 21</span>
+                                    <img src='./img/admin_logo_vita_21.png' alt='ВИТА 21' className="w-[14rem]" />
+                                    {/* <span className='text-2xl sm:mr-10 lg:mr-0'>ВИТА 21</span> */}
                                 </Link>
                             </div>
 

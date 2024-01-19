@@ -19,9 +19,10 @@ use SEOMeta;
 class WebController extends Controller
 {
   public function Welcome() {
-    SEOMeta::setTitle('ВИТА 21 - Запазете час за годишния си технически преглед');
+    SEOMeta::setTitle('ВИТА 21 - Годишни Технически Прегледи Варна');
     SEOMeta::setDescription('Запазете час за годишния си технически преглед бързо и лесно. Предлагаме технически прегледи за всякакви автомобили на достъпни цени.');
     SEOMeta::setCanonical('https://vita21.bg');
+    SEOMeta::addMeta('language', 'bg', 'name');
     SEOMeta::addMeta('Home', 'Начало', 'section');
     SEOMeta::addMeta('Reservation', 'Запази час', 'section');
     SEOMeta::addMeta('Services', 'Видове технически прегледи', 'section');
